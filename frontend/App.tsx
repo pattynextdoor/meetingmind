@@ -14,15 +14,9 @@ const Navbar = () => {
         </a>
         
         <div className="hidden md:flex items-center gap-8">
-          {['Features', 'Pricing', 'Docs'].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`} 
-              className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors"
-            >
-              {item}
-            </a>
-          ))}
+          <a href="#features" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Features</a>
+          <a href="#pricing" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Pricing</a>
+          <a href="https://docs.meetingmind.app" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Docs</a>
         </div>
 
         <div className="flex items-center gap-4">
@@ -417,7 +411,7 @@ const Footer = () => (
       <div className="flex items-center gap-8">
         <a href="#" className="font-serif text-xl text-stone-900">Meeting<span className="text-emerald-800">Mind</span></a>
         <div className="hidden md:flex gap-6 text-sm text-stone-500">
-          <a href="#" className="hover:text-stone-900 transition-colors">Documentation</a>
+          <a href="https://docs.meetingmind.app" className="hover:text-stone-900 transition-colors">Documentation</a>
           <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
           <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
         </div>
