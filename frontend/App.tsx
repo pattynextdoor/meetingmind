@@ -281,7 +281,7 @@ const HowItWorks = () => (
         <StepCard 
           number="01"
           title="Import Transcripts"
-          desc="Connect Otter.ai, watch a folder, or manually import VTT/SRT/JSON files. MeetingMind handles the rest."
+          desc="Export from Otter.ai, watch a folder, or manually import VTT/SRT/JSON files. MeetingMind handles the rest."
         />
         <StepCard 
           number="02"
@@ -357,7 +357,7 @@ const Pricing = () => {
         "Auto-linking to existing vault notes",
         "Participant tracking & note creation",
         "Folder watcher for auto-import",
-        "Otter.ai sync integration",
+        "Otter.ai export support",
         "Dataview-ready frontmatter"
       ],
       cta: "Install Free",

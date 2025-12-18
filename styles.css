@@ -393,3 +393,37 @@
   font-size: 0.9em !important;
 }
 
+/* Otter.ai Export Guide */
+.meetingmind-otter-guide {
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  border-left: 3px solid var(--color-accent);
+}
+
+.meetingmind-otter-guide h4 {
+  margin: 0 0 8px 0;
+  font-size: 1em;
+  color: var(--text-normal);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.meetingmind-otter-steps {
+  margin: 12px 0;
+  padding-left: 20px;
+}
+
+.meetingmind-otter-steps li {
+  padding: 4px 0;
+  font-size: 0.9em;
+  color: var(--text-normal);
+}
+
+.meetingmind-otter-tip {
+  margin-top: 12px !important;
+  color: var(--color-green) !important;
+  font-weight: 500;
+}
+

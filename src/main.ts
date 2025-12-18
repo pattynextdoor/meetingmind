@@ -159,13 +159,6 @@ export default class MeetingMindPlugin extends Plugin {
    * Register all commands
    */
   private registerCommands(): void {
-    // Sync now
-    this.addCommand({
-      id: 'sync-now',
-      name: 'Sync now',
-      callback: () => this.syncNow(),
-    });
-    
     // Import file
     this.addCommand({
       id: 'import-file',
@@ -479,17 +472,6 @@ export default class MeetingMindPlugin extends Plugin {
   
   // ===== Command Implementations =====
   
-  /**
-   * Trigger immediate sync
-   */
-  async syncNow(): Promise<void> {
-    if (this.settings.otterEnabled && this.settings.otterAccessToken) {
-      new Notice('Starting Otter.ai sync...');
-      await this.otterService.sync();
-    } else {
-      new Notice('Otter.ai sync is not configured');
-    }
-  }
   
   /**
    * Import a file manually (skips duplicate check for manual imports)

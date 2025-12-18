@@ -61,72 +61,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
   private createSourcesSection(containerEl: HTMLElement): void {
     containerEl.createEl('h2', { text: '📥 Sources' });
     
-    // Otter.ai toggle
-    new Setting(containerEl)
-      .setName('Enable Otter.ai sync')
-      .setDesc('Automatically sync transcripts from your Otter.ai account')
-      .addToggle(toggle => toggle
-        .setValue(this.plugin.settings.otterEnabled)
-        .onChange(async (value) => {
-          this.plugin.settings.otterEnabled = value;
-          await this.plugin.saveSettings();
-          this.display(); // Refresh to show/hide related settings
-        })
-      );
-    
-    if (this.plugin.settings.otterEnabled) {
-      // Otter connection status and button
-      const otterStatus = this.plugin.settings.otterAccessToken 
-        ? `Connected as ${this.plugin.settings.otterEmail || 'user'}`
-        : 'Not connected';
-      
-      new Setting(containerEl)
-        .setName('Otter.ai connection')
-        .setDesc(otterStatus)
-        .addButton(button => {
-          if (this.plugin.settings.otterAccessToken) {
-            button
-              .setButtonText('Disconnect')
-              .setWarning()
-              .onClick(async () => {
-                this.plugin.otterService.disconnect();
-                this.plugin.settings.otterAccessToken = '';
-                this.plugin.settings.otterRefreshToken = '';
-                this.plugin.settings.otterEmail = '';
-                await this.plugin.saveSettings();
-                new Notice('Disconnected from Otter.ai');
-                this.display();
-              });
-          } else {
-            button
-              .setButtonText('Connect to Otter.ai')
-              .setCta()
-              .onClick(() => {
-                // For now, show instructions since OAuth requires server-side component
-                new Notice('Otter.ai OAuth integration requires API credentials. Please check documentation.');
-              });
-          }
-        });
-      
-      // Sync interval
-      new Setting(containerEl)
-        .setName('Sync interval')
-        .setDesc('How often to check for new transcripts')
-        .addDropdown(dropdown => dropdown
-          .addOption('5', '5 minutes')
-          .addOption('15', '15 minutes')
-          .addOption('30', '30 minutes')
-          .addOption('60', '60 minutes')
-          .setValue(this.plugin.settings.syncInterval.toString())
-          .onChange(async (value) => {
-            this.plugin.settings.syncInterval = parseInt(value);
-            await this.plugin.saveSettings();
-            this.plugin.restartOtterSync();
-          })
-        );
-    }
-    
-    // Folder watcher toggle
+    // Folder watcher toggle (primary method)
     new Setting(containerEl)
       .setName('Enable folder watcher')
       .setDesc('Watch a folder for new transcript files (.vtt, .srt, .txt, .json)')
@@ -157,6 +92,23 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .onChange(debouncedWatchFolderUpdate)
         );
     }
+    
+    // Otter.ai export guide
+    const otterGuide = containerEl.createDiv({ cls: 'meetingmind-otter-guide' });
+    otterGuide.createEl('h4', { text: '🦦 Using Otter.ai?' });
+    otterGuide.createEl('p', { 
+      text: 'Export your transcripts from Otter.ai and drop them in your watched folder:',
+      cls: 'setting-item-description'
+    });
+    const steps = otterGuide.createEl('ol', { cls: 'meetingmind-otter-steps' });
+    steps.createEl('li', { text: 'Open your transcript in Otter.ai' });
+    steps.createEl('li', { text: 'Click the "..." menu → Export' });
+    steps.createEl('li', { text: 'Choose "Text" or "SRT" format' });
+    steps.createEl('li', { text: 'Save to your watched folder' });
+    otterGuide.createEl('p', { 
+      text: 'MeetingMind will automatically import and process it!',
+      cls: 'setting-item-description meetingmind-otter-tip'
+    });
   }
   
   /**
@@ -617,7 +569,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       
       const freeEl = benefitsEl.createDiv({ cls: 'meetingmind-free-note' });
       freeEl.createEl('p', { 
-        text: '✓ Everything else is free: transcript parsing, auto-linking, folder watcher, participant tracking, and Otter.ai sync.'
+        text: '✓ Everything else is free: transcript parsing, auto-linking, folder watcher, and participant tracking.'
       });
       
       new Setting(upgradeContainer)

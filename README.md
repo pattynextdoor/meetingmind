@@ -7,7 +7,7 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 ## Features
 
 ### 📥 Multi-Source Import
-- **Otter.ai Integration**: Sync transcripts directly from your Otter.ai account
+- **Otter.ai Support**: Export transcripts from Otter.ai and drop them in your watched folder
 - **Folder Watcher**: Automatically import transcripts dropped into a watched folder
 - **Manual Import**: Import individual files via command palette
 - **Supported Formats**: VTT, SRT, TXT, JSON
@@ -52,8 +52,8 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 
 1. **Enable the plugin** in Obsidian settings
 2. **Configure a source**:
-   - Set up Otter.ai connection, or
    - Enable folder watcher and set a watch folder
+   - Export transcripts from Otter.ai (or other tools) to your watched folder
 3. **Configure AI** (optional, requires Pro):
    - Choose Claude or OpenAI
    - Enter your API key
@@ -98,7 +98,6 @@ Team decided to maintain backward compatibility through Q1.
 
 | Command | Description |
 |---------|-------------|
-| `MeetingMind: Sync now` | Trigger immediate Otter.ai sync |
 | `MeetingMind: Import file` | Import a transcript file manually |
 | `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
 | `MeetingMind: View sync log` | Show recent sync activity |
@@ -108,7 +107,7 @@ Team decided to maintain backward compatibility through Q1.
 
 | Tier | Price | Features |
 |------|-------|----------|
-| **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, Otter.ai sync, Dataview-ready output |
+| **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, Dataview-ready output |
 | **Pro** | $25 one-time | + AI summaries, action items, decisions, tag suggestions, participant insights (BYOK) |
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
