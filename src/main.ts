@@ -19,7 +19,9 @@ import {
   RawTranscript, 
   ProcessedMeeting,
   SyncLogEntry,
-  SyncStatus
+  SyncStatus,
+  TranscriptSegment,
+  AIEnrichment
 } from './types';
 
 import { TranscriptParser } from './services/TranscriptParser';
@@ -532,10 +534,224 @@ export default class MeetingMindPlugin extends Plugin {
   
   /**
    * Reprocess an existing meeting note
+   * Re-runs AI enrichment and auto-linking on the note
    */
   async reprocessNote(file: TFile): Promise<void> {
-    new Notice('Reprocessing feature coming soon');
-    // TODO: Implement re-processing of existing notes
+    try {
+      new Notice(`Reprocessing ${file.basename}...`);
+      
+      // Read the current note content
+      const content = await this.app.vault.read(file);
+      
+      // Parse the note to extract transcript data
+      const parsed = this.parseExistingNote(content);
+      if (!parsed) {
+        new Notice('Could not parse note. Is this a MeetingMind meeting note?');
+        return;
+      }
+      
+      const { transcript, existingEnrichment } = parsed;
+      
+      // AI enrichment (if enabled and licensed)
+      let enrichment = existingEnrichment;
+      const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+      
+      if (this.settings.aiEnabled && this.aiService.isEnabled() && hasAILicense) {
+        try {
+          this.updateStatusBar('syncing', 'AI processing...');
+          enrichment = await this.aiService.processTranscript(transcript);
+          new Notice('AI enrichment complete');
+        } catch (error) {
+          console.error('MeetingMind: AI enrichment failed during reprocess', error);
+          new Notice('AI enrichment failed, keeping existing content');
+        }
+      }
+      
+      // Re-run auto-linking on transcript segments
+      let suggestedLinks: { term: string; candidates: string[] }[] = [];
+      
+      if (this.settings.autoLinkingEnabled) {
+        for (const segment of transcript.segments) {
+          const linkResult = this.autoLinker.processText(segment.text);
+          segment.text = linkResult.linkedText;
+          
+          for (const suggestion of linkResult.suggestedLinks) {
+            if (!suggestedLinks.find(s => s.term.toLowerCase() === suggestion.term.toLowerCase())) {
+              suggestedLinks.push(suggestion);
+            }
+          }
+        }
+        
+        // Also apply to summary if available
+        if (enrichment?.summary) {
+          const summaryResult = this.autoLinker.processText(enrichment.summary);
+          enrichment.summary = summaryResult.linkedText;
+        }
+      }
+      
+      // Create processed meeting object
+      const processedMeeting: ProcessedMeeting = {
+        transcript,
+        enrichment: enrichment || undefined,
+        autoLinks: new Map(),
+        suggestedLinks,
+      };
+      
+      // Generate new note content
+      const newContent = this.noteGenerator.buildNoteContent(processedMeeting);
+      
+      // Update the file in place
+      await this.app.vault.modify(file, newContent);
+      
+      this.updateStatusBar('idle');
+      new Notice(`Reprocessed ${file.basename}`);
+      
+    } catch (error: any) {
+      console.error('MeetingMind: Reprocess failed', error);
+      new Notice(`Reprocess failed: ${error.message}`);
+      this.updateStatusBar('error', error.message);
+    }
+  }
+  
+  /**
+   * Parse an existing meeting note to extract transcript data
+   */
+  private parseExistingNote(content: string): { transcript: RawTranscript; existingEnrichment: AIEnrichment | null } | null {
+    try {
+      // Extract frontmatter
+      const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+      if (!frontmatterMatch) {
+        return null;
+      }
+      
+      const frontmatter = frontmatterMatch[1];
+      
+      // Parse frontmatter values
+      const dateMatch = frontmatter.match(/date:\s*(.+)/);
+      const durationMatch = frontmatter.match(/duration:\s*(\d+)/);
+      const sourceMatch = frontmatter.match(/source:\s*(\w+)/);
+      const tagsMatch = frontmatter.match(/tags:\s*\n((?:\s+-\s*.+\n)*)/);
+      
+      // Extract participants/attendees
+      const attendeesMatch = frontmatter.match(/attendees:\s*\n((?:\s+-\s*.+\n)*)/);
+      const participants: string[] = [];
+      if (attendeesMatch) {
+        const attendeeLines = attendeesMatch[1].match(/-\s*"?\[\[([^\]]+)\]\]"?/g) || [];
+        for (const line of attendeeLines) {
+          const nameMatch = line.match(/\[\[([^\]|]+)/);
+          if (nameMatch) {
+            participants.push(nameMatch[1]);
+          }
+        }
+      }
+      
+      // Extract transcript from callout
+      const transcriptMatch = content.match(/## Transcript\n\n> \[\!note\][^\n]*\n([\s\S]*?)(?=\n## |$)/);
+      if (!transcriptMatch) {
+        return null;
+      }
+      
+      const transcriptLines = transcriptMatch[1].split('\n').filter(line => line.startsWith('> '));
+      const segments: TranscriptSegment[] = [];
+      
+      for (const line of transcriptLines) {
+        // Parse: > **Speaker** (00:00): Text  or  > (00:00): Text
+        const segmentMatch = line.match(/^>\s*(?:\*\*([^*]+)\*\*\s*)?\((\d+:\d+(?::\d+)?)\):\s*(.+)/);
+        if (segmentMatch) {
+          const speaker = segmentMatch[1] || '';
+          const timestampStr = segmentMatch[2];
+          const text = segmentMatch[3];
+          
+          // Parse timestamp to seconds
+          const timeParts = timestampStr.split(':').map(Number);
+          let timestamp = 0;
+          if (timeParts.length === 3) {
+            timestamp = timeParts[0] * 3600 + timeParts[1] * 60 + timeParts[2];
+          } else if (timeParts.length === 2) {
+            timestamp = timeParts[0] * 60 + timeParts[1];
+          }
+          
+          segments.push({ speaker, timestamp, text });
+        }
+      }
+      
+      if (segments.length === 0) {
+        return null;
+      }
+      
+      // Extract existing enrichment if present
+      let existingEnrichment: AIEnrichment | null = null;
+      
+      const summaryMatch = content.match(/## Summary\n\n([\s\S]*?)(?=\n## |$)/);
+      const actionItemsMatch = content.match(/## Action Items\n\n([\s\S]*?)(?=\n## |$)/);
+      const decisionsMatch = content.match(/## Decisions\n\n([\s\S]*?)(?=\n## |$)/);
+      
+      if (summaryMatch || actionItemsMatch || decisionsMatch) {
+        existingEnrichment = {
+          summary: summaryMatch ? summaryMatch[1].trim() : '',
+          actionItems: [],
+          decisions: [],
+          suggestedTags: [],
+        };
+        
+        // Parse action items
+        if (actionItemsMatch) {
+          const itemLines = actionItemsMatch[1].match(/- \[.\]\s+(.+)/g) || [];
+          for (const itemLine of itemLines) {
+            const taskMatch = itemLine.match(/- \[.\]\s+(.+?)(?:\s+\(([^)]+)\))?$/);
+            if (taskMatch) {
+              const task = taskMatch[1];
+              const metadata = taskMatch[2] || '';
+              const assigneeMatch = metadata.match(/@(\w+)/);
+              const dueMatch = metadata.match(/due:\s*([^,)]+)/);
+              
+              existingEnrichment.actionItems.push({
+                task,
+                assignee: assigneeMatch ? assigneeMatch[1] : undefined,
+                dueDate: dueMatch ? dueMatch[1].trim() : undefined,
+              });
+            }
+          }
+        }
+        
+        // Parse decisions
+        if (decisionsMatch) {
+          const decisionLines = decisionsMatch[1].match(/^-\s+(.+)/gm) || [];
+          existingEnrichment.decisions = decisionLines.map(line => line.replace(/^-\s+/, ''));
+        }
+        
+        // Parse existing tags from frontmatter
+        if (tagsMatch) {
+          const tagLines = tagsMatch[1].match(/-\s*(.+)/g) || [];
+          existingEnrichment.suggestedTags = tagLines.map(line => line.replace(/^-\s*/, '').trim());
+        }
+      }
+      
+      // Build RawTranscript
+      const date = dateMatch ? new Date(dateMatch[1]) : new Date();
+      const duration = durationMatch ? parseInt(durationMatch[1]) : 0;
+      const source = (sourceMatch ? sourceMatch[1] : 'local') as 'otter' | 'local';
+      
+      // Generate hash from transcript content
+      const transcriptText = segments.map(s => s.text).join(' ');
+      const hash = this.transcriptParser.generateHash(transcriptText);
+      
+      const transcript: RawTranscript = {
+        source,
+        title: '', // Will use existing filename
+        date,
+        duration,
+        participants,
+        segments,
+        hash,
+      };
+      
+      return { transcript, existingEnrichment };
+      
+    } catch (error) {
+      console.error('MeetingMind: Failed to parse existing note', error);
+      return null;
+    }
   }
   
   /**

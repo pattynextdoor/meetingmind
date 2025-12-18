@@ -51,7 +51,7 @@ export class NoteGenerator {
   /**
    * Build the complete note content
    */
-  private buildNoteContent(meeting: ProcessedMeeting): string {
+  buildNoteContent(meeting: ProcessedMeeting): string {
     const sections: string[] = [];
     
     // Frontmatter
