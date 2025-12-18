@@ -1,12 +1,11 @@
 {
   "id": "meetingmind",
   "name": "MeetingMind",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "minAppVersion": "1.4.0",
-  "description": "Automatically import meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking",
-  "author": "Patrick",
-  "authorUrl": "https://github.com/patrick",
-  "fundingUrl": "",
+  "description": "Import meeting transcripts with AI summaries, action items, and auto-linking to your vault",
+  "author": "Patrick Tumbucon",
+  "authorUrl": "https://github.com/pattynextdoor",
+  "fundingUrl": "https://tumbucon.gumroad.com/l/meetingmind-pro",
   "isDesktopOnly": true
 }
-

@@ -7,18 +7,18 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 ## Features
 
 ### 📥 Multi-Source Import
-- **Otter.ai Integration**: Sync transcripts directly from your Otter.ai account via OAuth
+- **Otter.ai Integration**: Sync transcripts directly from your Otter.ai account
 - **Folder Watcher**: Automatically import transcripts dropped into a watched folder
 - **Manual Import**: Import individual files via command palette
 - **Supported Formats**: VTT, SRT, TXT, JSON
 
-### 🤖 AI Enrichment
+### 🤖 AI Enrichment (Pro)
 - **Summary Generation**: 2-4 sentence meeting summaries
-- **Action Item Extraction**: Automatic task detection formatted as Obsidian tasks
+- **Action Item Extraction**: Automatic task detection with assigned owners
 - **Decision Extraction**: Capture key decisions made during meetings
-- **Tag Suggestions**: AI-recommended tags based on content
-- **BYOK Support**: Use your own Claude or OpenAI API key
-- **Cloud Option**: Hosted AI processing (Pro + Cloud tier)
+- **Tag Suggestions**: AI-recommended tags based on your existing vault tags
+- **Participant Insights**: AI-generated insights per participant
+- **BYOK**: Bring your own Claude or OpenAI API key
 
 ### 🔗 Auto-Linking
 - **Intelligent Linking**: Automatically create `[[wiki-links]]` to existing notes
@@ -26,15 +26,19 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 - **Disambiguation**: Handle ambiguous references gracefully
 - **Suggested Links**: Surface potential links for manual resolution
 
+### 👥 Participant Tracking
+- **Auto-Create Notes**: Automatically create notes for meeting participants
+- **Meeting History**: Track meetings per person
+- **Update Existing**: Add meeting references to existing participant notes
+
 ### 📝 Smart Formatting
 - **Structured Output**: Clean Markdown with YAML frontmatter
 - **Collapsible Transcripts**: Full transcript in expandable callout
 - **Dataview Compatible**: Frontmatter works with Dataview queries
-- **Attendee Links**: Participants linked to people notes
 
 ## Installation
 
-### From Obsidian Community Plugins (Coming Soon)
+### From Obsidian Community Plugins
 1. Open Settings → Community Plugins
 2. Search for "MeetingMind"
 3. Install and enable
@@ -48,15 +52,14 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 
 1. **Enable the plugin** in Obsidian settings
 2. **Configure a source**:
-   - Set up Otter.ai OAuth, or
+   - Set up Otter.ai connection, or
    - Enable folder watcher and set a watch folder
-3. **Configure AI** (optional):
+3. **Configure AI** (optional, requires Pro):
    - Choose Claude or OpenAI
    - Enter your API key
 4. **Import a transcript**:
    - Drop a file in the watched folder, or
-   - Use `MeetingMind: Import file` command, or
-   - Let Otter.ai sync automatically
+   - Use `MeetingMind: Import file` command
 
 ## Example Output
 
@@ -64,7 +67,7 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 ---
 date: 2025-01-15
 duration: 47
-attendees:
+participants:
   - "[[Sarah Chen]]"
   - "[[Marcus Webb]]"
   - "[[Patrick]]"
@@ -98,37 +101,17 @@ Team decided to maintain backward compatibility through Q1.
 | `MeetingMind: Sync now` | Trigger immediate Otter.ai sync |
 | `MeetingMind: Import file` | Import a transcript file manually |
 | `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
-| `MeetingMind: Reprocess current note` | Re-run AI and linking on active note |
 | `MeetingMind: View sync log` | Show recent sync activity |
-
-## Settings
-
-### Sources
-- **Otter.ai Sync**: Enable/disable, connect account, set sync interval
-- **Folder Watcher**: Enable/disable, set watch folder path
-
-### Output
-- **Destination Folder**: Where meeting notes are saved
-- **Filename Template**: Customize naming (supports YYYY, MM, DD, Title)
-
-### AI Enrichment
-- **Provider**: Claude, OpenAI, or Cloud
-- **API Key**: Your provider API key
-- **Features**: Toggle summary, action items, decisions, tags
-
-### Auto-Linking
-- **Enable/Disable**: Master toggle
-- **Implicit Aliases**: Generate aliases from multi-word titles
-- **Max Matches**: Skip linking if too many matches
-- **Excluded Folders**: Folders to ignore for linking
+| `MeetingMind: Clear import history` | Allow re-importing transcripts |
 
 ## Pricing
 
 | Tier | Price | Features |
 |------|-------|----------|
-| Free | $0 | Folder watcher, basic parsing, manual linking |
-| Pro | $29 one-time | + AI enrichment (BYOK), auto-linking, Otter.ai, templates |
-| Pro + Cloud | $5/month | + Hosted AI processing, priority support |
+| **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, Otter.ai sync, Dataview-ready output |
+| **Pro** | $25 one-time | + AI summaries, action items, decisions, tag suggestions, participant insights (BYOK) |
+
+[Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
 
 ## Development
 
@@ -150,9 +133,7 @@ npm run build
 
 ## Support
 
-- [Documentation](https://meetingmind.app/docs)
-- [GitHub Issues](https://github.com/meetingmind/obsidian-plugin/issues)
-- [Discord Community](https://discord.gg/meetingmind)
+- [GitHub Issues](https://github.com/pattynextdoor/meetingmind/issues)
 
 ## License
 
@@ -160,5 +141,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-Made with ♥ by Patrick
-
+Made with ♥ by [Patrick Tumbucon](https://github.com/pattynextdoor)

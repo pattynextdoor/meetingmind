@@ -340,10 +340,10 @@ const PricingCard = ({ tier }: { tier: PricingTier }) => (
       href={tier.href}
       className={`
         w-full py-3 rounded-lg font-medium text-sm transition-colors text-center block
-        ${tier.featured
-          ? 'bg-emerald-800 text-white hover:bg-emerald-900'
-          : 'bg-transparent border border-stone-300 text-stone-900 hover:bg-stone-50'
-        }
+      ${tier.featured
+        ? 'bg-emerald-800 text-white hover:bg-emerald-900'
+        : 'bg-transparent border border-stone-300 text-stone-900 hover:bg-stone-50'
+      }
       `}
     >
       {tier.cta}

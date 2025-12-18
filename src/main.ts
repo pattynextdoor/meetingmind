@@ -308,12 +308,12 @@ export default class MeetingMindPlugin extends Plugin {
           console.log('MeetingMind: AI features require Pro license');
           // Don't show notice for every transcript, just log it
         } else {
-          try {
-            this.updateStatusBar('syncing', 'AI processing...');
-            enrichment = await this.aiService.processTranscript(transcript);
-          } catch (error) {
-            console.error('MeetingMind: AI enrichment failed', error);
-            // Continue without AI enrichment
+        try {
+          this.updateStatusBar('syncing', 'AI processing...');
+          enrichment = await this.aiService.processTranscript(transcript);
+        } catch (error) {
+          console.error('MeetingMind: AI enrichment failed', error);
+          // Continue without AI enrichment
           }
         }
       }
