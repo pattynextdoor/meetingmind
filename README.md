@@ -7,7 +7,8 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 ## Features
 
 ### 📥 Multi-Source Import
-- **Meeting Tools**: Export from Otter.ai, Fireflies.ai, Fathom, and more
+- **Fireflies.ai Sync**: Direct API integration - automatically sync transcripts
+- **Meeting Tool Exports**: Export from Otter.ai, Fathom, Zoom, and more
 - **Folder Watcher**: Automatically import transcripts dropped into a watched folder
 - **Manual Import**: Import individual files via command palette
 - **Supported Formats**: VTT, SRT, TXT, JSON
@@ -132,6 +133,7 @@ This plugin connects to the following external services:
 
 | Service | URL | Purpose |
 |---------|-----|---------|
+| **Fireflies.ai API** | `api.fireflies.ai` | Sync transcripts (when enabled) |
 | **Gumroad API** | `api.gumroad.com` | Validates Pro license keys |
 | **Anthropic API** | `api.anthropic.com` | AI processing when Claude is selected (Pro) |
 | **OpenAI API** | `api.openai.com` | AI processing when GPT-4 is selected (Pro) |

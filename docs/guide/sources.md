@@ -2,6 +2,14 @@
 
 MeetingMind supports multiple ways to import transcripts.
 
+## Fireflies.ai Sync ⭐
+
+**Best for:** Fireflies.ai users who want automatic sync
+
+Direct API integration syncs your transcripts automatically.
+
+[Learn more →](/features/fireflies)
+
 ## Folder Watcher
 
 **Best for:** Manual exports, automation workflows
@@ -48,9 +56,9 @@ Import individual files via command palette.
 
 | Method | Auto-Import | Setup Required | Best For |
 |--------|-------------|----------------|----------|
+| Fireflies.ai Sync | ✅ | API key | Fireflies.ai users |
 | Folder Watcher | ✅ | Minimal | Most users |
 | Otter.ai Export | ✅* | Minimal | Otter.ai users |
-| Fireflies.ai Export | ✅* | Minimal | Fireflies.ai users |
 | Fathom Export | ✅* | Minimal | Fathom users |
 | Manual Import | ❌ | None | One-off imports |
 

@@ -1,12 +1,49 @@
-# Fireflies.ai Support
+# Fireflies.ai Integration
 
-Import transcripts from Fireflies.ai using their export feature.
+MeetingMind offers **direct API integration** with Fireflies.ai for automatic transcript syncing.
 
-## How It Works
+## Option 1: API Sync (Recommended)
 
-Fireflies.ai automatically joins your meetings and creates transcripts. Export your transcripts and drop them in your watched folder for MeetingMind to process.
+Automatically sync transcripts from your Fireflies.ai account.
 
-## Export Steps
+### Setup
+
+1. **Get your API key:**
+   - Go to [app.fireflies.ai](https://app.fireflies.ai)
+   - Navigate to **Integrations**
+   - Click **Fireflies API**
+   - Copy your API key
+
+2. **Configure in MeetingMind:**
+   - Open **Settings → MeetingMind → Sources**
+   - Enable **Fireflies.ai sync**
+   - Paste your API key
+   - Click **Test Connection** to verify
+   - Set your preferred sync interval
+
+### Features
+
+| Feature | Description |
+|---------|-------------|
+| **Auto-sync** | New transcripts sync automatically at your chosen interval |
+| **Manual sync** | Click "Sync Now" anytime to fetch latest transcripts |
+| **Full transcript** | Speaker labels, timestamps, and full text |
+| **Participants** | Automatic participant extraction |
+
+### Sync Intervals
+
+| Interval | Best For |
+|----------|----------|
+| 5 minutes | Frequent meetings, real-time sync |
+| 15 minutes | Most users (default) |
+| 30 minutes | Occasional meetings |
+| 60 minutes | Low-frequency sync |
+
+## Option 2: Manual Export
+
+If you prefer not to use API sync, you can export transcripts manually.
+
+### Export Steps
 
 1. **Go to [Fireflies.ai](https://app.fireflies.ai)** and sign in
 2. **Open the meeting** you want to export
@@ -17,34 +54,18 @@ Fireflies.ai automatically joins your meetings and creates transcripts. Export y
    - **JSON** - Full metadata
 5. **Save to your watch folder**
 
-MeetingMind will automatically import and process it within seconds.
+## What Gets Imported
 
-## Supported Export Formats
+From Fireflies.ai, MeetingMind imports:
 
-| Format | Extension | Features |
-|--------|-----------|----------|
-| Text | `.txt` | Speaker labels, paragraphs |
-| SRT | `.srt` | Timestamps, speaker labels |
-| JSON | `.json` | Full metadata, action items |
-| DOCX | `.docx` | Convert to TXT first |
+- Meeting title and date
+- Duration
+- All participants/speakers
+- Full transcript with timestamps
+- Speaker labels for each segment
 
 ## Tips
 
-- **SRT format** works best for preserving timestamps
-- **Batch export**: Download multiple meetings and drop them all at once
-- **Action items**: Fireflies extracts action items—these appear in the JSON export
-- **Reprocess**: Use "MeetingMind: Reprocess current note" to add AI enrichment later
-
-## Fireflies.ai Features
-
-Fireflies.ai includes its own AI features:
-- Meeting summaries
-- Action items
-- Topic detection
-
-MeetingMind can add value on top by:
-- **Auto-linking** mentions to your Obsidian vault
-- **Connecting participants** to people notes
-- **Re-processing** with your preferred AI (Claude/GPT-4)
-- **Dataview integration** for queries across all meetings
-
+- **API sync** is the easiest option—set it and forget it
+- **Reprocess anytime**: Use "MeetingMind: Reprocess current note" to add AI enrichment
+- **Combine with AI**: Enable Pro features to get summaries on top of Fireflies transcripts

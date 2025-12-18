@@ -6,7 +6,7 @@ MeetingMind transforms your meeting transcripts into connected, actionable notes
 
 MeetingMind is an Obsidian plugin that:
 
-- **Imports transcripts** from multiple sources (Otter.ai, folder watcher, manual upload)
+- **Imports transcripts** from multiple sources (Fireflies.ai API, folder watcher, manual upload)
 - **Auto-links** mentions to existing notes in your vault
 - **Generates AI summaries** with action items and decisions (Pro)
 - **Creates participant notes** automatically

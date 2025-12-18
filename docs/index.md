@@ -16,7 +16,7 @@ hero:
 features:
   - icon: 📥
     title: Multi-Format Import
-    details: Import VTT, SRT, TXT, or JSON transcripts from Otter.ai, folder watcher, or manual upload
+    details: Sync from Fireflies.ai API, or import VTT, SRT, TXT, JSON from any source
   - icon: 🔗
     title: Auto-Linking
     details: Automatically link mentions to existing notes in your vault with alias support
