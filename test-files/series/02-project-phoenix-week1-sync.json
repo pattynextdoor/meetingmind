@@ -1,0 +1,99 @@
+{
+  "title": "Project Phoenix - Week 1 Progress Sync",
+  "created_at": "2025-01-09T10:00:00Z",
+  "duration": 1800,
+  "speakers": ["Sarah Chen", "Marcus Webb", "Jordan Kim", "Alex Rivera"],
+  "transcripts": [
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 0,
+      "end_time": 20,
+      "text": "Alright team, first progress check on Project Phoenix. Let's go around and share updates. Alex, want to start with infrastructure?"
+    },
+    {
+      "speaker": "Alex Rivera",
+      "start_time": 20,
+      "end_time": 60,
+      "text": "Good news - the Kubernetes cluster is up and running in our staging environment. I've got three nodes provisioned with auto-scaling configured. CI/CD is mostly done - GitHub Actions workflows are working for build and test. Still working on the ArgoCD integration for deployments, should be done by tomorrow."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 60,
+      "end_time": 75,
+      "text": "Great progress Alex. Any blockers?"
+    },
+    {
+      "speaker": "Alex Rivera",
+      "start_time": 75,
+      "end_time": 100,
+      "text": "One thing - I need Marcus to finalize the service list so I can set up the deployment manifests properly. Right now I'm working with placeholder services."
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 100,
+      "end_time": 140,
+      "text": "Yeah, about that. I finished the service boundaries document. We're going with five services: user-service, billing-service, portal-api, notification-service, and analytics-service. I'll share the doc right after this call. I've also started on the user-service - basic CRUD operations and authentication are working locally."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 140,
+      "end_time": 155,
+      "text": "Perfect. Jordan, how's the frontend coming along?"
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 155,
+      "end_time": 200,
+      "text": "Component library is scaffolded. I met with the design team on Tuesday and we've defined our theme - colors, typography, spacing tokens. I've implemented about 15 base components so far - buttons, inputs, cards, modals. The login and dashboard pages are in progress. One issue though - I'm waiting on Marcus for the API contracts so I can wire up the real data."
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 200,
+      "end_time": 225,
+      "text": "Fair point. I'll have the OpenAPI specs for user-service and portal-api ready by end of day Monday. That should unblock you. We should also discuss the authentication flow - I'm implementing OAuth 2.0 with JWT tokens."
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 225,
+      "end_time": 250,
+      "text": "That works. I'll build the auth context to handle the JWT flow. Just make sure the token includes the user's role so I can handle permissions on the frontend. Oh, and I found a bug in our date handling - we need to standardize on UTC everywhere."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 250,
+      "end_time": 280,
+      "text": "Good catch Jordan. Let's document that as a team standard. Marcus, add it to the architecture decision records. Speaking of documentation, I've set up the Linear project. All our epics are in there - Infrastructure, User Management, Billing, Portal Core, and Launch Prep. Please log your tasks there."
+    },
+    {
+      "speaker": "Alex Rivera",
+      "start_time": 280,
+      "end_time": 310,
+      "text": "Will do. One heads up - I talked to the security team about our Datadog setup. They want us to use their enterprise account instead of spinning up our own. That actually saves us money but I need to coordinate with them on access. Meeting with them tomorrow."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 310,
+      "end_time": 345,
+      "text": "Perfect, that's a good call. Alright, action items for next week. Marcus - OpenAPI specs by Monday, continue user-service development. Jordan - complete auth flow once you have the specs, keep building components. Alex - finish ArgoCD, coordinate with security on Datadog. I'll be working on the project roadmap and stakeholder updates. Same time next Thursday?"
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 345,
+      "end_time": 360,
+      "text": "Works for me. Quick note - I might need Jordan's help with some frontend validation logic. Can we pair for an hour next week?"
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 360,
+      "end_time": 375,
+      "text": "Absolutely. Tuesday afternoon works for me. Let's sync on Slack to confirm the time."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 375,
+      "end_time": 390,
+      "text": "Great collaboration. We're on track for week 1. Keep up the momentum team!"
+    }
+  ]
+}
+

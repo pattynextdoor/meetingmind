@@ -48,6 +48,9 @@ export class MeetingSyncSettingsTab extends PluginSettingTab {
     // Linking Section
     this.createLinkingSection(containerEl);
     
+    // Participants Section
+    this.createParticipantsSection(containerEl);
+    
     // License Section
     this.createLicenseSection(containerEl);
   }
@@ -428,6 +431,56 @@ export class MeetingSyncSettingsTab extends PluginSettingTab {
             new Notice('Vault index rebuilt successfully');
             button.setButtonText('Rebuild Index');
             button.setDisabled(false);
+          })
+        );
+    }
+  }
+  
+  /**
+   * Create Participants section
+   */
+  private createParticipantsSection(containerEl: HTMLElement): void {
+    containerEl.createEl('h2', { text: '👥 Participants' });
+    
+    // Auto-create participant notes
+    new Setting(containerEl)
+      .setName('Auto-create participant notes')
+      .setDesc('Automatically create notes for meeting participants who don\'t have one')
+      .addToggle(toggle => toggle
+        .setValue(this.plugin.settings.autoCreateParticipants)
+        .onChange(async (value) => {
+          this.plugin.settings.autoCreateParticipants = value;
+          await this.plugin.saveSettings();
+          this.display();
+        })
+      );
+    
+    if (this.plugin.settings.autoCreateParticipants) {
+      // People folder - debounced
+      const debouncedPeopleFolderUpdate = debounce(async (value: string) => {
+        this.plugin.settings.peopleFolder = value;
+        await this.plugin.saveSettings();
+        this.plugin.updateParticipantService();
+      }, 1000);
+      
+      new Setting(containerEl)
+        .setName('People folder')
+        .setDesc('Folder where participant notes are created (leave empty for vault root)')
+        .addText(text => text
+          .setPlaceholder('People')
+          .setValue(this.plugin.settings.peopleFolder)
+          .onChange(debouncedPeopleFolderUpdate)
+        );
+      
+      // Update existing participant notes
+      new Setting(containerEl)
+        .setName('Update existing participant notes')
+        .setDesc('Add meeting references to existing participant notes')
+        .addToggle(toggle => toggle
+          .setValue(this.plugin.settings.updateExistingParticipants)
+          .onChange(async (value) => {
+            this.plugin.settings.updateExistingParticipants = value;
+            await this.plugin.saveSettings();
           })
         );
     }

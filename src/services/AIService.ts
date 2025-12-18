@@ -4,7 +4,7 @@
  */
 
 import { requestUrl, RequestUrlResponse } from 'obsidian';
-import { AIEnrichment, AIProvider, RawTranscript, TranscriptSegment } from '../types';
+import { AIEnrichment, AIProvider, RawTranscript, TranscriptSegment, ParticipantInsight } from '../types';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
@@ -88,11 +88,117 @@ export class AIService {
     // Check if we need to chunk
     const estimatedTokens = transcriptText.length / CHARS_PER_TOKEN;
     
+    let enrichment: AIEnrichment | null;
+    
     if (estimatedTokens > MAX_TOKENS_PER_CHUNK) {
-      return await this.processLongTranscript(transcript, transcriptText);
+      enrichment = await this.processLongTranscript(transcript, transcriptText);
+    } else {
+      enrichment = await this.processChunk(transcriptText);
     }
     
-    return await this.processChunk(transcriptText);
+    // Generate participant insights if we have participants
+    if (enrichment && transcript.participants.length > 0) {
+      try {
+        const insights = await this.generateParticipantInsights(transcript);
+        if (insights) {
+          enrichment.participantInsights = insights;
+        }
+      } catch (error) {
+        console.error('MeetingSync: Failed to generate participant insights', error);
+        // Continue without participant insights
+      }
+    }
+    
+    return enrichment;
+  }
+  
+  /**
+   * Generate per-participant insights from the transcript
+   */
+  async generateParticipantInsights(transcript: RawTranscript): Promise<ParticipantInsight[] | null> {
+    if (!this.isEnabled()) {
+      return null;
+    }
+    
+    const transcriptText = this.formatTranscriptForAI(transcript);
+    const participants = transcript.participants.join(', ');
+    
+    const prompt = `Analyze this meeting transcript and provide insights for each participant.
+
+PARTICIPANTS: ${participants}
+
+For each participant, extract:
+1. Their likely role or expertise (inferred from what they discuss)
+2. Key points they made or contributed
+3. Action items specifically assigned to them
+4. Their overall engagement/sentiment (brief)
+
+Return as JSON:
+{
+  "participants": [
+    {
+      "name": "Participant Name",
+      "role": "Their likely role (e.g., 'Frontend Engineer', 'Project Manager')",
+      "keyPoints": ["Point 1", "Point 2"],
+      "actionItems": [{"task": "Task description", "dueDate": "date if mentioned"}],
+      "sentiment": "Brief description of their engagement"
+    }
+  ]
+}
+
+Only include participants who actually spoke in the transcript. Return valid JSON only.
+
+TRANSCRIPT:
+${transcriptText}`;
+
+    try {
+      let response: string;
+      
+      if (this.provider === 'claude') {
+        response = await this.callClaude(prompt);
+      } else if (this.provider === 'openai') {
+        response = await this.callOpenAI(prompt);
+      } else if (this.provider === 'cloud') {
+        response = await this.callClaude(prompt);
+      } else {
+        return null;
+      }
+      
+      return this.parseParticipantInsights(response);
+    } catch (error) {
+      console.error('MeetingSync: Failed to generate participant insights', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Parse participant insights from AI response
+   */
+  private parseParticipantInsights(response: string): ParticipantInsight[] {
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in response');
+      }
+      
+      const data = JSON.parse(jsonMatch[0]);
+      const participants = data.participants || [];
+      
+      return participants.map((p: any) => ({
+        name: p.name || '',
+        role: p.role || undefined,
+        keyPoints: p.keyPoints || [],
+        actionItems: (p.actionItems || []).map((item: any) => ({
+          task: item.task || item,
+          assignee: p.name,
+          dueDate: item.dueDate || item.due_date || undefined,
+        })),
+        sentiment: p.sentiment || undefined,
+      }));
+    } catch (error) {
+      console.error('MeetingSync: Failed to parse participant insights', error);
+      return [];
+    }
   }
   
   /**

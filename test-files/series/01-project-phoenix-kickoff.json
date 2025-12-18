@@ -1,0 +1,99 @@
+{
+  "title": "Project Phoenix - Kickoff Meeting",
+  "created_at": "2025-01-06T10:00:00Z",
+  "duration": 2400,
+  "speakers": ["Sarah Chen", "Marcus Webb", "Jordan Kim", "Alex Rivera"],
+  "transcripts": [
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 0,
+      "end_time": 25,
+      "text": "Welcome everyone to the Project Phoenix kickoff. For those who don't know, Phoenix is our initiative to rebuild the customer portal from the ground up. We've got 12 weeks and a team of four. Let me introduce everyone - I'm Sarah, the tech lead. Marcus is our backend specialist, Jordan handles frontend, and Alex is on DevOps."
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 25,
+      "end_time": 45,
+      "text": "Thanks Sarah. Quick question before we dive in - are we doing a complete rewrite or migrating incrementally? That's going to affect my database planning significantly."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 45,
+      "end_time": 70,
+      "text": "Good question. Leadership wants a clean break. The current system has too much technical debt. So yes, complete rewrite. But we'll run both systems in parallel during the transition period."
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 70,
+      "end_time": 95,
+      "text": "That makes my life easier honestly. The current frontend is jQuery spaghetti. I'm proposing we go with React and TypeScript. I've already done some prototyping. Marcus, what are you thinking for the backend?"
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 95,
+      "end_time": 125,
+      "text": "I want to move from the monolith to microservices. Not too many - maybe 5 or 6 core services. User management, billing, notifications, the main portal API, and a reporting service. Alex, thoughts on infrastructure?"
+    },
+    {
+      "speaker": "Alex Rivera",
+      "start_time": 125,
+      "end_time": 160,
+      "text": "Kubernetes for orchestration, definitely. I'll set up the cluster this week. We should also establish CI/CD pipelines early - I don't want deployment to be an afterthought. I'm thinking GitHub Actions for CI and ArgoCD for continuous deployment to the cluster."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 160,
+      "end_time": 190,
+      "text": "This is all sounding good. Let's make some decisions. First, we're going with React and TypeScript for frontend - Jordan, you own that. Second, microservices architecture - Marcus, I want you to draft the service boundaries document by Friday. Alex, get the Kubernetes cluster running by end of week."
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 190,
+      "end_time": 215,
+      "text": "On it. I'll have the component library scaffold ready by Wednesday. One thing though - we need a design system. Are we using an existing one or building custom? That needs to be decided soon."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 215,
+      "end_time": 240,
+      "text": "Let's use Material UI as our base and customize from there. We don't have time for a fully custom design system. Jordan, work with the design team to define our theme and component overrides."
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 240,
+      "end_time": 270,
+      "text": "For the database, I'm recommending PostgreSQL for our primary data and Redis for caching and sessions. Jordan, for the frontend state management, are you thinking Redux or something lighter?"
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 270,
+      "end_time": 295,
+      "text": "I want to try Zustand actually - it's much simpler than Redux and we don't need the complexity. Plus React Query for server state. That combination should cover us."
+    },
+    {
+      "speaker": "Alex Rivera",
+      "start_time": 295,
+      "end_time": 320,
+      "text": "One more thing - we need to decide on observability stack early. I'm proposing Datadog for metrics and logging, PagerDuty for alerting. Want to avoid the situation where we're flying blind after launch."
+    },
+    {
+      "speaker": "Sarah Chen",
+      "start_time": 320,
+      "end_time": 360,
+      "text": "Agreed, let's go with Datadog. Alright, let's recap the action items. Marcus - service boundaries doc by Friday. Jordan - component library scaffold by Wednesday, and schedule design system sync. Alex - K8s cluster and CI/CD pipeline by end of week. I'll set up the project tracking in Linear and share it today. Let's meet again Thursday for a progress check. Any questions?"
+    },
+    {
+      "speaker": "Marcus Webb",
+      "start_time": 360,
+      "end_time": 375,
+      "text": "All clear from me. This is going to be a lot of work but I'm excited to finally modernize this thing."
+    },
+    {
+      "speaker": "Jordan Kim",
+      "start_time": 375,
+      "end_time": 385,
+      "text": "Same here. Let's crush it team."
+    }
+  ]
+}
+

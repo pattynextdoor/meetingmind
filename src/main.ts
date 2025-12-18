@@ -29,6 +29,7 @@ import { AIService } from './services/AIService';
 import { FolderWatcher } from './services/FolderWatcher';
 import { OtterService } from './services/OtterService';
 import { NoteGenerator } from './services/NoteGenerator';
+import { ParticipantService } from './services/ParticipantService';
 import { MeetingSyncSettingsTab } from './ui/SettingsTab';
 import { SyncLogModal } from './ui/SyncLogModal';
 
@@ -46,6 +47,7 @@ export default class MeetingSyncPlugin extends Plugin {
   folderWatcher: FolderWatcher;
   otterService: OtterService;
   noteGenerator: NoteGenerator;
+  participantService: ParticipantService;
   
   // UI Elements
   statusBarItem: HTMLElement;
@@ -105,6 +107,7 @@ export default class MeetingSyncPlugin extends Plugin {
     this.folderWatcher = new FolderWatcher(this.app);
     this.otterService = new OtterService();
     this.noteGenerator = new NoteGenerator(this.app);
+    this.participantService = new ParticipantService(this.app);
     
     // Configure services with current settings
     this.updateAllServices();
@@ -120,6 +123,7 @@ export default class MeetingSyncPlugin extends Plugin {
     this.updateFolderWatcher();
     this.updateOtterService();
     this.updateNoteGenerator();
+    this.updateParticipantService();
   }
   
   /**
@@ -334,6 +338,41 @@ export default class MeetingSyncPlugin extends Plugin {
       
       // Generate note
       const file = await this.noteGenerator.generateNote(processedMeeting);
+      
+      // Auto-create/update participant notes (if enabled)
+      if (this.settings.autoCreateParticipants && transcript.participants.length > 0) {
+        try {
+          const meetingTitle = transcript.title;
+          const meetingPath = file.path;
+          const meetingDate = transcript.date;
+          
+          // Get participant insights from AI enrichment
+          const participantInsights = enrichment?.participantInsights;
+          
+          const result = await this.participantService.processParticipants(
+            transcript.participants,
+            meetingTitle,
+            meetingPath,
+            meetingDate,
+            participantInsights
+          );
+          
+          if (result.created.length > 0) {
+            console.log(`MeetingSync: Created participant notes for: ${result.created.join(', ')}`);
+            new Notice(`Created notes for: ${result.created.join(', ')}`);
+            
+            // Rebuild vault index to include new participant notes
+            this.vaultIndex.scheduleIncrementalUpdate();
+          }
+          
+          if (result.updated.length > 0) {
+            console.log(`MeetingSync: Updated participant notes for: ${result.updated.join(', ')}`);
+          }
+        } catch (error) {
+          console.error('MeetingSync: Failed to process participant notes', error);
+          // Continue - don't block meeting note creation
+        }
+      }
       
       // Mark as processed
       this.markProcessed(transcript.hash);
@@ -558,6 +597,12 @@ export default class MeetingSyncPlugin extends Plugin {
     this.noteGenerator.configure(
       this.settings.outputFolder,
       this.settings.filenameTemplate
+    );
+  }
+  
+  updateParticipantService(): void {
+    this.participantService.configure(
+      this.settings.peopleFolder
     );
   }
   

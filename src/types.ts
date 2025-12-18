@@ -37,6 +37,15 @@ export interface AIEnrichment {
   actionItems: ActionItem[];
   decisions: string[];
   suggestedTags: string[];
+  participantInsights?: ParticipantInsight[];
+}
+
+export interface ParticipantInsight {
+  name: string;
+  role?: string;
+  keyPoints: string[];
+  actionItems: ActionItem[];
+  sentiment?: string;
 }
 
 export interface ActionItem {
@@ -98,6 +107,11 @@ export interface MeetingSyncSettings {
   maxMatchesBeforeSkip: number;
   excludedFolders: string;
   
+  // Participant settings
+  autoCreateParticipants: boolean;
+  peopleFolder: string;
+  updateExistingParticipants: boolean;
+  
   // License settings
   licenseKey: string;
   licenseStatus: 'free' | 'pro' | 'cloud';
@@ -134,6 +148,10 @@ export const DEFAULT_SETTINGS: MeetingSyncSettings = {
   generateImplicitAliases: true,
   maxMatchesBeforeSkip: 3,
   excludedFolders: 'templates,archive',
+  
+  autoCreateParticipants: true,
+  peopleFolder: '',
+  updateExistingParticipants: true,
   
   licenseKey: '',
   licenseStatus: 'free',
