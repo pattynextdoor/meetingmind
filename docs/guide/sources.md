@@ -10,11 +10,11 @@ Drop transcript files into a watched folder for automatic import.
 
 [Learn more →](/features/folder-watcher)
 
-## Otter.ai Sync
+## Otter.ai Export
 
-**Best for:** Otter.ai users who want automatic sync
+**Best for:** Otter.ai users
 
-Connect your Otter.ai account for automatic transcript sync.
+Export transcripts from Otter.ai and drop them in your watched folder.
 
 [Learn more →](/features/otter-sync)
 
@@ -33,8 +33,10 @@ Import individual files via command palette.
 | Method | Auto-Import | Setup Required | Best For |
 |--------|-------------|----------------|----------|
 | Folder Watcher | ✅ | Minimal | Most users |
-| Otter.ai Sync | ✅ | OAuth | Otter.ai users |
+| Otter.ai Export | ✅* | Minimal | Otter.ai users |
 | Manual Import | ❌ | None | One-off imports |
+
+*Via folder watcher after export
 
 ## Supported Formats
 

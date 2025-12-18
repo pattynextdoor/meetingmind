@@ -99,6 +99,7 @@ Team decided to maintain backward compatibility through Q1.
 | Command | Description |
 |---------|-------------|
 | `MeetingMind: Import file` | Import a transcript file manually |
+| `MeetingMind: Reprocess current note` | Re-run AI enrichment and auto-linking on the active meeting note |
 | `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
 | `MeetingMind: View sync log` | Show recent sync activity |
 | `MeetingMind: Clear import history` | Allow re-importing transcripts |

@@ -1,41 +1,39 @@
-# Otter.ai Sync
+# Otter.ai Support
 
-Sync transcripts directly from your Otter.ai account.
+Import transcripts from Otter.ai using their export feature.
 
-## Setup
+## How It Works
 
-1. **Settings → MeetingMind → Sources**
-2. Enable **Otter.ai sync**
-3. Click **Connect to Otter.ai**
-4. Authorize MeetingMind in the popup
-5. Set your **sync interval**
+MeetingMind supports Otter.ai transcripts through their export functionality. Simply export your transcript from Otter and drop it in your watched folder.
 
-## Sync Intervals
+## Export Steps
 
-| Interval | Best For |
-|----------|----------|
-| 5 minutes | Frequent meetings, real-time sync |
-| 15 minutes | Most users (default) |
-| 30 minutes | Occasional meetings |
-| 60 minutes | Low-frequency sync |
+1. **Open your transcript** in Otter.ai
+2. **Click the "..." menu** (or Share button)
+3. **Select Export**
+4. **Choose a format:**
+   - **Text (.txt)** - Simple transcript
+   - **SRT (.srt)** - Includes timestamps
+5. **Save to your watch folder**
 
-## Manual Sync
+MeetingMind will automatically import and process it within seconds.
 
-Trigger an immediate sync:
-1. `Cmd/Ctrl + P`
-2. Run "MeetingMind: Sync now"
+## Supported Export Formats
 
-## What Gets Synced
+| Format | Extension | Features |
+|--------|-----------|----------|
+| Text | `.txt` | Speaker labels, basic text |
+| SRT | `.srt` | Timestamps, speaker labels |
+| JSON | `.json` | Full metadata (if available) |
 
-- New transcripts since last sync
-- Meeting title, date, duration
-- Full transcript with speaker labels
-- Participant names
+## Tips
 
-## Disconnecting
+- **Batch exports**: Export multiple transcripts and drop them all in your watch folder
+- **Auto-processing**: Enable AI enrichment to automatically get summaries and action items
+- **Reprocess anytime**: Use "MeetingMind: Reprocess current note" to re-run AI on older imports
 
-1. **Settings → MeetingMind → Sources**
-2. Click **Disconnect** next to Otter.ai
+## Why Not Direct Sync?
 
-This removes your connection but keeps previously imported notes.
+Otter.ai's API is currently in closed beta and only available to enterprise customers. The export workflow provides the same functionality without requiring API access.
 
+We're monitoring Otter's API availability and will add direct sync when it becomes publicly available.

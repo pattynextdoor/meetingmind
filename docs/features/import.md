@@ -36,15 +36,26 @@ Import individual files via command palette.
 2. Select file from your system
 3. Note is created and opened
 
-### 3. Otter.ai Sync
+### 3. Otter.ai Export
 
-Automatically sync transcripts from Otter.ai.
+Import transcripts exported from Otter.ai.
 
-**Setup:**
-1. Settings → MeetingMind → Sources
-2. Enable "Otter.ai sync"
-3. Click "Connect to Otter.ai"
-4. Set sync interval
+**Usage:**
+1. Open your transcript in Otter.ai
+2. Click the "..." menu → Export
+3. Choose "Text" or "SRT" format
+4. Save to your watched folder (or import manually)
+
+MeetingMind will automatically process the export!
+
+## Reprocessing Notes
+
+Already imported a transcript but want to add AI enrichment or update links?
+
+1. Open the meeting note
+2. `Cmd/Ctrl + P` → "MeetingMind: Reprocess current note"
+
+This re-runs AI enrichment and auto-linking with your current settings.
 
 ## Output
 

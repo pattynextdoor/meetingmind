@@ -18,7 +18,7 @@ MeetingMind is an Obsidian plugin that:
 | Multi-format import (VTT, SRT, TXT, JSON) | ✅ | ✅ |
 | Auto-linking to vault notes | ✅ | ✅ |
 | Folder watcher | ✅ | ✅ |
-| Otter.ai sync | ✅ | ✅ |
+| Otter.ai export support | ✅ | ✅ |
 | Participant note creation | ✅ | ✅ |
 | Dataview-ready frontmatter | ✅ | ✅ |
 | AI summaries | ❌ | ✅ |
