@@ -44,7 +44,7 @@ const Hero = () => {
         </h1>
         
         <p className="font-sans text-lg md:text-xl text-stone-500 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-up" style={{ animationDelay: '200ms' }}>
-          Import transcripts from Otter.ai or any folder into Obsidian. 
+          Import transcripts from Otter.ai, Fireflies, Fathom, or any folder into Obsidian. 
           Get AI summaries, action items, and automatic links to your existing notes—without lifting a finger.
         </p>
 
@@ -281,7 +281,7 @@ const HowItWorks = () => (
         <StepCard 
           number="01"
           title="Import Transcripts"
-          desc="Export from Otter.ai, watch a folder, or manually import VTT/SRT/JSON files. MeetingMind handles the rest."
+          desc="Export from Otter.ai, Fireflies, Fathom, or manually import VTT/SRT/JSON files. MeetingMind handles the rest."
         />
         <StepCard 
           number="02"
@@ -357,7 +357,7 @@ const Pricing = () => {
         "Auto-linking to existing vault notes",
         "Participant tracking & note creation",
         "Folder watcher for auto-import",
-        "Otter.ai export support",
+        "Otter, Fireflies, Fathom support",
         "Dataview-ready frontmatter"
       ],
       cta: "Install Free",

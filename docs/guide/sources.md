@@ -18,6 +18,22 @@ Export transcripts from Otter.ai and drop them in your watched folder.
 
 [Learn more →](/features/otter-sync)
 
+## Fireflies.ai Export
+
+**Best for:** Fireflies.ai users
+
+Export transcripts from Fireflies.ai and drop them in your watched folder.
+
+[Learn more →](/features/fireflies)
+
+## Fathom Export
+
+**Best for:** Fathom users
+
+Export transcripts from Fathom and drop them in your watched folder.
+
+[Learn more →](/features/fathom)
+
 ## Manual Import
 
 **Best for:** One-off imports, testing
@@ -34,6 +50,8 @@ Import individual files via command palette.
 |--------|-------------|----------------|----------|
 | Folder Watcher | ✅ | Minimal | Most users |
 | Otter.ai Export | ✅* | Minimal | Otter.ai users |
+| Fireflies.ai Export | ✅* | Minimal | Fireflies.ai users |
+| Fathom Export | ✅* | Minimal | Fathom users |
 | Manual Import | ❌ | None | One-off imports |
 
 *Via folder watcher after export
