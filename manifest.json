@@ -1,0 +1,12 @@
+{
+  "id": "meetingsync",
+  "name": "MeetingSync",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Automatically import meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking",
+  "author": "Patrick",
+  "authorUrl": "https://github.com/patrick",
+  "fundingUrl": "",
+  "isDesktopOnly": true
+}
+
