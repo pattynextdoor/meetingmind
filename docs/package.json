@@ -1,13 +1,16 @@
 {
   "name": "meetingmind-docs",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
   "devDependencies": {
-    "vitepress": "^1.5.0"
+    "vitepress": "^1.4.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
-

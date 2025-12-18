@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 
+// https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'MeetingMind',
   description: 'Transform meeting transcripts into connected knowledge',
