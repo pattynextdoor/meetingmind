@@ -20,6 +20,9 @@ features:
   - icon: 🔗
     title: Auto-Linking
     details: Automatically link mentions to existing notes in your vault with alias support
+  - icon: 📊
+    title: Meeting Dashboard
+    details: Generate statistics on meeting patterns, top collaborators, and time investment
   - icon: 🤖
     title: AI Enrichment
     details: Get summaries, action items, decisions, and smart tags powered by Claude or GPT-4

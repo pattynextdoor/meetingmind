@@ -101,6 +101,8 @@ Team decided to maintain backward compatibility through Q1.
 |---------|-------------|
 | `MeetingMind: Import file` | Import a transcript file manually |
 | `MeetingMind: Reprocess current note` | Re-run AI enrichment and auto-linking on the active meeting note |
+| `MeetingMind: Generate meeting dashboard` | Create/update a stats dashboard with meeting insights |
+| `MeetingMind: Update dashboard` | Refresh the meeting dashboard |
 | `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
 | `MeetingMind: View sync log` | Show recent sync activity |
 | `MeetingMind: Clear import history` | Allow re-importing transcripts |
@@ -109,7 +111,7 @@ Team decided to maintain backward compatibility through Q1.
 
 | Tier | Price | Features |
 |------|-------|----------|
-| **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, Dataview-ready output |
+| **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, meeting dashboard, Dataview-ready output |
 | **Pro** | $25 one-time | + AI summaries, action items, decisions, tag suggestions, participant insights (BYOK) |
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)

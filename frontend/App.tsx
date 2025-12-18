@@ -356,6 +356,7 @@ const Pricing = () => {
         "Clean Markdown note generation",
         "Auto-linking to existing vault notes",
         "Participant tracking & note creation",
+        "Meeting dashboard with statistics",
         "Folder watcher for auto-import",
         "Fireflies.ai API sync",
         "Dataview-ready frontmatter"

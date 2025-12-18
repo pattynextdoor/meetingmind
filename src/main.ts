@@ -34,6 +34,7 @@ import { FirefliesService } from './services/FirefliesService';
 import { NoteGenerator } from './services/NoteGenerator';
 import { ParticipantService } from './services/ParticipantService';
 import { LicenseService } from './services/LicenseService';
+import { StatsService } from './services/StatsService';
 import { MeetingMindSettingsTab } from './ui/SettingsTab';
 import { SyncLogModal } from './ui/SyncLogModal';
 
@@ -54,6 +55,7 @@ export default class MeetingMindPlugin extends Plugin {
   noteGenerator: NoteGenerator;
   participantService: ParticipantService;
   licenseService: LicenseService;
+  statsService: StatsService;
   
   // UI Elements
   statusBarItem: HTMLElement;
@@ -117,6 +119,7 @@ export default class MeetingMindPlugin extends Plugin {
     this.noteGenerator = new NoteGenerator(this.app);
     this.participantService = new ParticipantService(this.app);
     this.licenseService = new LicenseService();
+    this.statsService = new StatsService(this.app);
     
     // Initialize license
     if (this.settings.licenseKey) {
@@ -213,6 +216,20 @@ export default class MeetingMindPlugin extends Plugin {
       id: 'clear-import-history',
       name: 'Clear import history',
       callback: () => this.clearImportHistory(),
+    });
+    
+    // Generate meeting dashboard
+    this.addCommand({
+      id: 'generate-dashboard',
+      name: 'Generate meeting dashboard',
+      callback: () => this.generateDashboard(),
+    });
+    
+    // Update meeting dashboard
+    this.addCommand({
+      id: 'update-dashboard',
+      name: 'Update dashboard',
+      callback: () => this.generateDashboard(),
     });
   }
   
@@ -540,6 +557,24 @@ export default class MeetingMindPlugin extends Plugin {
     this.settings.processedHashes = [];
     await this.saveSettings();
     new Notice('Import history cleared. You can now re-import transcripts.');
+  }
+  
+  /**
+   * Generate or update the meeting dashboard
+   */
+  async generateDashboard(): Promise<void> {
+    try {
+      new Notice('Generating meeting dashboard...');
+      const dashboardPath = `${this.settings.outputFolder}/Meeting Dashboard.md`;
+      const file = await this.statsService.generateDashboardNote(dashboardPath);
+      
+      // Open the dashboard
+      await this.app.workspace.getLeaf().openFile(file);
+      new Notice('Meeting dashboard updated!');
+    } catch (error: any) {
+      console.error('MeetingMind: Dashboard generation failed', error);
+      new Notice(`Dashboard failed: ${error.message}`);
+    }
   }
   
   /**
