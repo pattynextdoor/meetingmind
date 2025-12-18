@@ -1,0 +1,5 @@
+{
+  "name": "MeetingMind",
+  "description": "Landing page for MeetingMind, an Obsidian plugin that transforms meeting transcripts into connected, actionable notes.",
+  "requestFramePermissions": []
+}

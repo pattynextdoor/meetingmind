@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeetingMind — Meeting transcripts that actually connect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --paper: #faf9f7;
+        --paper-warm: #f5f3ef;
+        --ink: #1a1a1a;
+      }
+      body {
+        background-color: var(--paper);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+      .font-serif {
+        font-family: 'Instrument Serif', serif;
+      }
+      .font-sans {
+        font-family: 'DM Sans', sans-serif;
+      }
+      .font-mono {
+        font-family: 'Fira Code', monospace;
+      }
+      
+      /* Smooth fade in animation */
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+      }
+      
+      /* Cursor blink for typing effect */
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+      .cursor-blink {
+        animation: blink 1s step-end infinite;
+      }
+
+      /* Scanline animation */
+      @keyframes scan {
+        0% { top: 0%; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+      }
+      .scan-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #2d5a3d;
+        box-shadow: 0 0 10px #2d5a3d;
+        animation: scan 3s linear infinite;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
