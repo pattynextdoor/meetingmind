@@ -256,33 +256,43 @@ ${transcriptText}`;
    * Call Claude API
    */
   private async callClaude(prompt: string): Promise<string> {
-    const response: RequestUrlResponse = await requestUrl({
-      url: CLAUDE_API_URL,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': this.claudeApiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 4096,
-        messages: [
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-      }),
-    });
-    
-    if (response.status !== 200) {
-      const error = response.json;
-      throw new Error(`Claude API error: ${error.error?.message || response.status}`);
+    try {
+      const response: RequestUrlResponse = await requestUrl({
+        url: CLAUDE_API_URL,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': this.claudeApiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4096,
+          messages: [
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+        }),
+      });
+      
+      if (response.status !== 200) {
+        const error = response.json;
+        console.error('Claude API response:', response.status, error);
+        throw new Error(`Claude API error: ${error.error?.message || error.message || response.status}`);
+      }
+      
+      const data = response.json;
+      return data.content[0].text;
+    } catch (error: any) {
+      console.error('Claude API call failed:', error);
+      // Re-throw with more context
+      if (error.message) {
+        throw error;
+      }
+      throw new Error(`Claude API request failed: ${error}`);
     }
-    
-    const data = response.json;
-    return data.content[0].text;
   }
   
   /**

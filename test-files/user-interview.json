@@ -1,0 +1,111 @@
+{
+  "title": "User Research Interview - Power User Segment",
+  "created_at": "2025-01-13T11:00:00Z",
+  "duration": 1800,
+  "speakers": ["Interviewer", "Participant"],
+  "transcripts": [
+    {
+      "speaker": "Interviewer",
+      "start_time": 0,
+      "end_time": 15,
+      "text": "Thanks for taking the time to chat with us today. We're trying to understand how people use our note-taking app in their daily workflow. Can you start by telling me a bit about what you do and how you use the app?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 15,
+      "end_time": 45,
+      "text": "Sure. I'm a product manager at a tech startup, so I'm in meetings constantly. I use the app mainly for meeting notes and keeping track of project documentation. I'd say I create maybe 5 to 10 notes per day, and I reference old notes pretty frequently."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 45,
+      "end_time": 55,
+      "text": "That's really helpful. When you say you reference old notes frequently, can you walk me through what that looks like? Like a specific example?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 55,
+      "end_time": 95,
+      "text": "Yeah, so yesterday I was in a meeting about our Q2 roadmap, and someone mentioned a decision we made back in October about pricing. I knew I had notes from that meeting somewhere, but it took me like 5 minutes to find them. I ended up just searching for the word pricing and scrolling through results. It was frustrating."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 95,
+      "end_time": 105,
+      "text": "That sounds frustrating. How often would you say that happens - spending time searching for something you know you wrote down?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 105,
+      "end_time": 130,
+      "text": "Honestly? Multiple times a day. The search is okay but it's just keyword matching. I wish it was smarter - like if I could search for decisions we made about pricing or action items assigned to Sarah, you know? More semantic search."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 130,
+      "end_time": 140,
+      "text": "That's really interesting. What would ideal search look like for you if you could wave a magic wand?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 140,
+      "end_time": 180,
+      "text": "Oh man, okay. I'd want to be able to ask natural questions like 'what did we decide about the API timeline' and have it find the relevant section, not just notes that mention API. Also, automatically linking related notes would be huge. Like if I mention Project Mercury in a new note, it should know I have a Project Mercury page and link them."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 180,
+      "end_time": 195,
+      "text": "Auto-linking is interesting. Do you currently create links between your notes manually?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 195,
+      "end_time": 225,
+      "text": "Sometimes, but I'm not consistent about it. When I'm in a meeting I'm just trying to capture everything, I don't have time to think about linking. Then later I never go back and add them. So my notes end up being these isolated documents that don't connect to each other."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 225,
+      "end_time": 240,
+      "text": "That makes sense. Let me shift gears a bit. Are there any features you've tried but stopped using? Or features you wish existed?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 240,
+      "end_time": 285,
+      "text": "I tried the templates feature but it felt clunky. The templates are too rigid. What I really want is something that automatically structures my notes after I write them. Like, I just dump my meeting notes in, and then AI or something organizes it - pulls out action items, summarizes the key points, tags it appropriately. That would save me so much time."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 285,
+      "end_time": 295,
+      "text": "AI-powered organization is something we've been exploring. Would you have any concerns about AI processing your notes?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 295,
+      "end_time": 330,
+      "text": "Privacy for sure. Some of my notes have sensitive information - client data, internal strategy stuff. I'd want to know exactly what's being sent where. Ideally it would process locally, but if it has to go to the cloud, I'd need to trust that it's not being stored or used for training. That would be a dealbreaker for my work stuff."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 330,
+      "end_time": 345,
+      "text": "That's really valuable feedback about privacy. Last question - if you could change one thing about how you capture and organize meeting notes, what would it be?"
+    },
+    {
+      "speaker": "Participant",
+      "start_time": 345,
+      "end_time": 390,
+      "text": "Just make it automatic. I don't want to think about organization at all. Record the meeting, transcribe it, pull out what matters, link it to relevant stuff, and put it where it belongs. Basically be my personal assistant for knowledge management. I'd pay good money for that."
+    },
+    {
+      "speaker": "Interviewer",
+      "start_time": 390,
+      "end_time": 405,
+      "text": "That's exactly the kind of insight we're looking for. Thank you so much for your time today - this has been incredibly helpful."
+    }
+  ]
+}
+

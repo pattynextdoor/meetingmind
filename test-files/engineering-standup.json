@@ -1,0 +1,63 @@
+{
+  "title": "Engineering Team Standup",
+  "created_at": "2025-01-16T09:00:00Z",
+  "duration": 900,
+  "speakers": ["Alice Kim", "Bob Martinez", "Charlie Davis", "Diana Patel"],
+  "transcripts": [
+    {
+      "speaker": "Alice Kim",
+      "start_time": 0,
+      "end_time": 12,
+      "text": "Good morning everyone. Let's do our daily standup. I'll start. Yesterday I finished the authentication refactor and opened a PR. Today I'm going to work on the password reset flow."
+    },
+    {
+      "speaker": "Bob Martinez",
+      "start_time": 12,
+      "end_time": 28,
+      "text": "Nice work Alice. Yesterday I was debugging that memory leak in the dashboard. Turns out it was the chart library not cleaning up properly. I've got a fix ready, just need to write tests. Today I'll finish that and start on the notification system."
+    },
+    {
+      "speaker": "Charlie Davis",
+      "start_time": 28,
+      "end_time": 45,
+      "text": "I'm still working on the database migration scripts. Hit a blocker yesterday - the staging database credentials aren't working. Diana, can you help me get access? Should be quick."
+    },
+    {
+      "speaker": "Diana Patel",
+      "start_time": 45,
+      "end_time": 58,
+      "text": "Sure Charlie, I'll send you the new credentials right after this call. On my end, I deployed the API rate limiting to production yesterday. Monitoring looks good so far. Today I'm reviewing PRs and then starting the caching layer design doc."
+    },
+    {
+      "speaker": "Alice Kim",
+      "start_time": 58,
+      "end_time": 72,
+      "text": "Great progress everyone. One thing - we need to decide on the error handling strategy for the new APIs. Can we schedule a quick 30-minute sync tomorrow to discuss?"
+    },
+    {
+      "speaker": "Bob Martinez",
+      "start_time": 72,
+      "end_time": 82,
+      "text": "Tomorrow works for me. Maybe 2pm? Also, reminder that code freeze for the release is Friday, so let's make sure our PRs are in by Thursday EOD."
+    },
+    {
+      "speaker": "Diana Patel",
+      "start_time": 82,
+      "end_time": 95,
+      "text": "2pm works. And yes, I'll prioritize the PR reviews to unblock everyone before the freeze. Charlie, your migration scripts are top of my list."
+    },
+    {
+      "speaker": "Charlie Davis",
+      "start_time": 95,
+      "end_time": 105,
+      "text": "Appreciate it Diana. I should have the full migration tested by Wednesday if I get those credentials today."
+    },
+    {
+      "speaker": "Alice Kim",
+      "start_time": 105,
+      "end_time": 115,
+      "text": "Perfect. Alright, that's a wrap. Let's crush it today team!"
+    }
+  ]
+}
+
