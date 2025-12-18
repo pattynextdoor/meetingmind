@@ -1,0 +1,18 @@
+[00:00] Sarah Chen: Good morning everyone. Let's do a quick standup.
+
+[00:05] Marcus Webb: Sure. Yesterday I finished the database migration scripts.
+
+[00:12] Patrick: Nice work! I reviewed the pull request and it looks solid.
+
+[00:20] Sarah Chen: Great. Any blockers?
+
+[00:25] Marcus Webb: I need access to the staging environment to test the migration.
+
+[00:32] Patrick: I can help with that. I'll send you the credentials after this call.
+
+[00:40] Sarah Chen: Perfect. Let's sync again tomorrow at the same time.
+
+[00:45] Marcus Webb: Sounds good. Talk to you then.
+
+[00:48] Patrick: Thanks everyone!
+

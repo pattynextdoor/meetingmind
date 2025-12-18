@@ -190,6 +190,13 @@ export default class MeetingSyncPlugin extends Plugin {
       name: 'View sync log',
       callback: () => this.showSyncLog(),
     });
+    
+    // Clear import history
+    this.addCommand({
+      id: 'clear-import-history',
+      name: 'Clear import history',
+      callback: () => this.clearImportHistory(),
+    });
   }
   
   /**
@@ -270,11 +277,12 @@ export default class MeetingSyncPlugin extends Plugin {
   
   /**
    * Process a transcript and create a note
+   * @param skipDuplicateCheck - If true, skips the duplicate check (for manual imports)
    */
-  async processTranscript(transcript: RawTranscript): Promise<TFile | null> {
+  async processTranscript(transcript: RawTranscript, skipDuplicateCheck: boolean = false): Promise<TFile | null> {
     try {
-      // Check for duplicate
-      if (this.isDuplicate(transcript.hash)) {
+      // Check for duplicate (unless skipped for manual imports)
+      if (!skipDuplicateCheck && this.isDuplicate(transcript.hash)) {
         console.log(`MeetingSync: Skipping duplicate transcript ${transcript.title}`);
         return null;
       }
@@ -296,13 +304,24 @@ export default class MeetingSyncPlugin extends Plugin {
       let suggestedLinks: { term: string; candidates: string[] }[] = [];
       
       if (this.settings.autoLinkingEnabled) {
-        // Get all text to process
-        const textToProcess = this.getTextForAutoLinking(transcript, enrichment);
-        const linkResult = this.autoLinker.processText(textToProcess);
-        suggestedLinks = linkResult.suggestedLinks;
+        // Apply auto-linking to transcript segments
+        for (const segment of transcript.segments) {
+          const linkResult = this.autoLinker.processText(segment.text);
+          segment.text = linkResult.linkedText;
+          
+          // Collect suggested links (deduplicated)
+          for (const suggestion of linkResult.suggestedLinks) {
+            if (!suggestedLinks.find(s => s.term.toLowerCase() === suggestion.term.toLowerCase())) {
+              suggestedLinks.push(suggestion);
+            }
+          }
+        }
         
-        // Build autoLinks map from the result
-        // We'll apply links during note generation
+        // Also apply to AI enrichment if available
+        if (enrichment?.summary) {
+          const summaryResult = this.autoLinker.processText(enrichment.summary);
+          enrichment.summary = summaryResult.linkedText;
+        }
       }
       
       // Create processed meeting object
@@ -418,7 +437,7 @@ export default class MeetingSyncPlugin extends Plugin {
   }
   
   /**
-   * Import a file manually
+   * Import a file manually (skips duplicate check for manual imports)
    */
   async importFile(): Promise<void> {
     // Use Obsidian's file picker
@@ -434,13 +453,9 @@ export default class MeetingSyncPlugin extends Plugin {
         const content = await file.text();
         const transcript = await this.transcriptParser.parseFile(content, file.name);
         
-        if (this.isDuplicate(transcript.hash)) {
-          new Notice('This transcript has already been imported');
-          return;
-        }
-        
+        // Manual imports skip duplicate check - user explicitly chose to import
         new Notice(`Importing ${file.name}...`);
-        const note = await this.processTranscript(transcript);
+        const note = await this.processTranscript(transcript, true); // skipDuplicateCheck = true
         
         if (note) {
           new Notice(`Created: ${note.basename}`);
@@ -455,6 +470,15 @@ export default class MeetingSyncPlugin extends Plugin {
     };
     
     input.click();
+  }
+  
+  /**
+   * Clear the import history to allow re-importing transcripts
+   */
+  async clearImportHistory(): Promise<void> {
+    this.settings.processedHashes = [];
+    await this.saveSettings();
+    new Notice('Import history cleared. You can now re-import transcripts.');
   }
   
   /**
