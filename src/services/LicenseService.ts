@@ -1,5 +1,6 @@
 /**
  * LicenseService - Handle license validation and feature gating
+ * Supports Gumroad license keys with API validation
  */
 
 import { Notice, requestUrl } from 'obsidian';
@@ -10,6 +11,7 @@ export interface LicenseInfo {
   status: LicenseStatus;
   email?: string;
   validUntil?: string;
+  purchaseDate?: string;
   features: {
     aiEnrichment: boolean;
     participantInsights: boolean;
@@ -36,11 +38,16 @@ const TIER_FEATURES = {
   },
 };
 
+// Gumroad product configuration
+// Product: https://tumbucon.gumroad.com/l/meetingmind-pro
+const GUMROAD_PRODUCT_ID = 'meetingmind-pro';
+
 export class LicenseService {
   private licenseKey: string = '';
   private licenseInfo: LicenseInfo;
   private lastValidation: number = 0;
   private readonly VALIDATION_INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
+  private readonly GRACE_PERIOD = 7 * 24 * 60 * 60 * 1000; // 7 days offline grace
   
   constructor() {
     this.licenseInfo = {
@@ -78,65 +85,128 @@ export class LicenseService {
       return this.licenseInfo;
     }
     
-    // Check if we validated recently
+    // Check if we validated recently (cache valid licenses)
     const now = Date.now();
     if (now - this.lastValidation < this.VALIDATION_INTERVAL && this.licenseInfo.status !== 'free') {
       return this.licenseInfo;
     }
     
     try {
-      // For now, use simple key format validation
-      // Format: MM-PRO-XXXXX-XXXXX or MM-SUP-XXXXX-XXXXX
+      // Detect key format and validate accordingly
+      if (this.isGumroadKey(this.licenseKey)) {
+        // Gumroad keys MUST be validated via API - no fallback to prevent abuse
+        const result = await this.validateWithGumroad(this.licenseKey);
+        this.licenseInfo = result;
+        this.lastValidation = now;
+        return this.licenseInfo;
+      }
+      
+      // Non-Gumroad keys (dev/test only)
       const result = this.validateKeyFormat(this.licenseKey);
       this.licenseInfo = result;
       this.lastValidation = now;
       
-      // In production, you'd call a validation API:
-      // const result = await this.validateWithAPI(this.licenseKey);
-      
       return this.licenseInfo;
     } catch (error) {
       console.error('MeetingMind: License validation failed', error);
-      // On network error, keep existing status for grace period
+      
+      // On network error, keep existing Pro status for grace period
+      // This only applies if they previously had a validated license
+      if (this.licenseInfo.status !== 'free' && now - this.lastValidation < this.GRACE_PERIOD) {
+        console.log('MeetingMind: Using cached license during grace period');
+        return this.licenseInfo;
+      }
+      
+      // Network failed and no cached license - return free
+      this.licenseInfo = {
+        status: 'free',
+        features: TIER_FEATURES.free,
+      };
       return this.licenseInfo;
     }
   }
   
   /**
-   * Simple key format validation (for development/testing)
-   * Production would use an API call to Gumroad/LemonSqueezy
+   * Check if key looks like a Gumroad license key
+   * Gumroad keys are typically: XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX (32 hex + 3 dashes = 35 chars)
    */
-  private validateKeyFormat(key: string): LicenseInfo {
-    const upperKey = key.toUpperCase().trim();
-    
-    // Pro key format: MM-PRO-XXXXX-XXXXX
-    if (upperKey.startsWith('MM-PRO-') && upperKey.length >= 17) {
-      return {
-        status: 'pro',
-        features: TIER_FEATURES.pro,
-        validUntil: 'lifetime',
-      };
+  private isGumroadKey(key: string): boolean {
+    // Gumroad format: 8 hex chars, dash, repeated 4 times
+    const gumroadPattern = /^[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}-[A-F0-9]{8}$/i;
+    return gumroadPattern.test(key.trim());
+  }
+  
+  /**
+   * Validate license key with Gumroad API
+   */
+  private async validateWithGumroad(key: string): Promise<LicenseInfo> {
+    try {
+      console.log('MeetingMind: Validating license with Gumroad...');
+      console.log('MeetingMind: Product ID:', GUMROAD_PRODUCT_ID);
+      console.log('MeetingMind: License key format check passed');
+      
+      const response = await requestUrl({
+        url: 'https://api.gumroad.com/v2/licenses/verify',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `product_id=${GUMROAD_PRODUCT_ID}&license_key=${encodeURIComponent(key)}`,
+        throw: false, // Don't throw on non-200 responses
+      });
+      
+      console.log('MeetingMind: Gumroad response status:', response.status);
+      
+      let data;
+      try {
+        data = response.json;
+        console.log('MeetingMind: Gumroad response:', JSON.stringify(data, null, 2));
+      } catch (e) {
+        console.log('MeetingMind: Response text:', response.text);
+      }
+      
+      if (response.status === 200 && data?.success) {
+        console.log('MeetingMind: Gumroad license valid!');
+        
+        // Check if the license has been refunded
+        if (data.purchase?.refunded) {
+          console.log('MeetingMind: License has been refunded');
+          return {
+            status: 'free',
+            features: TIER_FEATURES.free,
+          };
+        }
+        
+        // Check if it's a supporter tier (you can add variants in Gumroad)
+        const isSupporter = data.purchase?.variants?.includes('supporter') || 
+                          data.purchase?.price >= 5000; // $50+ = supporter
+        
+        return {
+          status: isSupporter ? 'supporter' : 'pro',
+          email: data.purchase?.email,
+          purchaseDate: data.purchase?.created_at,
+          features: isSupporter ? TIER_FEATURES.supporter : TIER_FEATURES.pro,
+          validUntil: 'lifetime',
+        };
+      } else {
+        // Log the specific error from Gumroad
+        console.log('MeetingMind: Gumroad validation failed');
+        console.log('MeetingMind: Error message:', data?.message || 'Unknown error');
+        
+        // If Gumroad says the license is valid format but wrong product, 
+        // it might be a product_id mismatch
+        if (data?.message?.includes('product')) {
+          console.log('MeetingMind: Possible product_id mismatch. Check Gumroad dashboard for correct permalink.');
+        }
+      }
+    } catch (error: any) {
+      console.error('MeetingMind: Gumroad API error:', error);
+      console.error('MeetingMind: Error details:', error.message || error);
+      
+      // Network errors - don't invalidate existing license, trigger grace period
+      throw error;
     }
     
-    // Supporter key format: MM-SUP-XXXXX-XXXXX
-    if (upperKey.startsWith('MM-SUP-') && upperKey.length >= 17) {
-      return {
-        status: 'supporter',
-        features: TIER_FEATURES.supporter,
-        validUntil: 'lifetime',
-      };
-    }
-    
-    // Legacy format support: PRO-XXXXX or CLOUD-XXXXX
-    if (upperKey.startsWith('PRO-')) {
-      return {
-        status: 'pro',
-        features: TIER_FEATURES.pro,
-        validUntil: 'lifetime',
-      };
-    }
-    
-    // Invalid key
     return {
       status: 'free',
       features: TIER_FEATURES.free,
@@ -144,34 +214,38 @@ export class LicenseService {
   }
   
   /**
-   * Validate with remote API (for production)
+   * Format validation for non-Gumroad keys (development/testing only)
+   * Gumroad keys MUST be validated via API - no fallback
    */
-  private async validateWithAPI(key: string): Promise<LicenseInfo> {
-    try {
-      const response = await requestUrl({
-        url: 'https://api.meetingmind.app/validate-license',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ license_key: key }),
-      });
-      
-      if (response.status === 200) {
-        const data = response.json;
-        return {
-          status: data.tier || 'free',
-          email: data.email,
-          validUntil: data.valid_until,
-          features: TIER_FEATURES[data.tier as keyof typeof TIER_FEATURES] || TIER_FEATURES.free,
-        };
-      }
-    } catch (error) {
-      console.error('MeetingMind: API validation failed', error);
+  private validateKeyFormat(key: string): LicenseInfo {
+    const upperKey = key.toUpperCase().trim();
+    
+    // Gumroad-format keys are NOT accepted here - they must pass API validation
+    // This prevents abuse by generating random keys
+    if (this.isGumroadKey(key)) {
+      console.log('MeetingMind: Gumroad keys require API validation');
+      return {
+        status: 'free',
+        features: TIER_FEATURES.free,
+      };
     }
     
-    // Fallback to format validation if API fails
-    return this.validateKeyFormat(key);
+    // Development/testing keys (remove these before public release if desired)
+    if (process.env.NODE_ENV === 'development') {
+      if (upperKey === 'DEV-MODE' || upperKey === 'TEST-PRO') {
+        return {
+          status: 'pro',
+          features: TIER_FEATURES.pro,
+          validUntil: 'development',
+        };
+      }
+    }
+    
+    // Invalid key
+    return {
+      status: 'free',
+      features: TIER_FEATURES.free,
+    };
   }
   
   /**
@@ -207,7 +281,7 @@ export class LicenseService {
    */
   showUpgradeNotice(feature: string): void {
     new Notice(
-      `${feature} requires MeetingMind Pro.\n\nUpgrade at meetingmind.app for $25 (lifetime).`,
+      `${feature} requires MeetingMind Pro.\n\nGet it at tumbucon.gumroad.com/l/meetingmind-pro for $25 (lifetime).`,
       8000
     );
   }
@@ -220,10 +294,18 @@ export class LicenseService {
       case 'supporter':
         return '⭐ Supporter Edition';
       case 'pro':
-        return '✓ Pro License';
+        return '✓ Pro License (Active)';
       default:
         return 'Free (AI features locked)';
     }
   }
+  
+  /**
+   * Get the license key (masked for display)
+   */
+  getMaskedKey(): string {
+    if (!this.licenseKey) return '';
+    if (this.licenseKey.length <= 8) return '****';
+    return this.licenseKey.slice(0, 4) + '...' + this.licenseKey.slice(-4);
+  }
 }
-

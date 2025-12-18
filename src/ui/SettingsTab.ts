@@ -222,7 +222,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         cls: 'mod-cta' 
       });
       upgradeBtn.addEventListener('click', () => {
-        window.open('https://meetingmind.app/pricing', '_blank');
+        window.open('https://tumbucon.gumroad.com/l/meetingmind-pro', '_blank');
       });
     }
     
@@ -554,9 +554,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // License key input
     new Setting(containerEl)
       .setName('License key')
-      .setDesc('Enter your MeetingMind Pro license key (MM-PRO-XXXXX-XXXXX)')
+      .setDesc('Enter your license key from Gumroad (e.g., XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX)')
       .addText(text => text
-        .setPlaceholder('MM-PRO-XXXXX-XXXXX')
+        .setPlaceholder('Paste your Gumroad license key')
         .setValue(this.plugin.settings.licenseKey)
         .onChange(async (value) => {
           this.plugin.settings.licenseKey = value;
@@ -625,7 +625,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .setButtonText('Get Pro License')
           .setCta()
           .onClick(() => {
-            window.open('https://meetingmind.app/pricing', '_blank');
+            window.open('https://tumbucon.gumroad.com/l/meetingmind-pro', '_blank');
           })
         );
     } else {

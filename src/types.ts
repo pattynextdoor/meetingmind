@@ -114,7 +114,7 @@ export interface MeetingMindSettings {
   
   // License settings
   licenseKey: string;
-  licenseStatus: 'free' | 'pro' | 'cloud';
+  licenseStatus: 'free' | 'pro' | 'supporter';
   licenseExpiry: string;
   
   // Processed transcripts (for deduplication)
