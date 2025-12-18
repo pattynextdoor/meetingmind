@@ -1,8 +1,8 @@
-# MeetingSync for Obsidian
+# MeetingMind for Obsidian
 
 **Transform meeting transcripts into connected knowledge.**
 
-MeetingSync is an Obsidian plugin that automatically imports meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking. Bridge the gap between meeting recording tools and personal knowledge management.
+MeetingMind is an Obsidian plugin that automatically imports meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking. Bridge the gap between meeting recording tools and personal knowledge management.
 
 ## Features
 
@@ -36,12 +36,12 @@ MeetingSync is an Obsidian plugin that automatically imports meeting transcripts
 
 ### From Obsidian Community Plugins (Coming Soon)
 1. Open Settings → Community Plugins
-2. Search for "MeetingSync"
+2. Search for "MeetingMind"
 3. Install and enable
 
 ### Manual Installation
 1. Download the latest release from GitHub
-2. Extract to `.obsidian/plugins/meetingsync/`
+2. Extract to `.obsidian/plugins/meetingmind/`
 3. Enable in Settings → Community Plugins
 
 ## Quick Start
@@ -55,7 +55,7 @@ MeetingSync is an Obsidian plugin that automatically imports meeting transcripts
    - Enter your API key
 4. **Import a transcript**:
    - Drop a file in the watched folder, or
-   - Use `MeetingSync: Import file` command, or
+   - Use `MeetingMind: Import file` command, or
    - Let Otter.ai sync automatically
 
 ## Example Output
@@ -95,11 +95,11 @@ Team decided to maintain backward compatibility through Q1.
 
 | Command | Description |
 |---------|-------------|
-| `MeetingSync: Sync now` | Trigger immediate Otter.ai sync |
-| `MeetingSync: Import file` | Import a transcript file manually |
-| `MeetingSync: Rebuild vault index` | Re-index notes for auto-linking |
-| `MeetingSync: Reprocess current note` | Re-run AI and linking on active note |
-| `MeetingSync: View sync log` | Show recent sync activity |
+| `MeetingMind: Sync now` | Trigger immediate Otter.ai sync |
+| `MeetingMind: Import file` | Import a transcript file manually |
+| `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
+| `MeetingMind: Reprocess current note` | Re-run AI and linking on active note |
+| `MeetingMind: View sync log` | Show recent sync activity |
 
 ## Settings
 
@@ -150,9 +150,9 @@ npm run build
 
 ## Support
 
-- [Documentation](https://meetingsync.app/docs)
-- [GitHub Issues](https://github.com/meetingsync/obsidian-plugin/issues)
-- [Discord Community](https://discord.gg/meetingsync)
+- [Documentation](https://meetingmind.app/docs)
+- [GitHub Issues](https://github.com/meetingmind/obsidian-plugin/issues)
+- [Discord Community](https://discord.gg/meetingmind)
 
 ## License
 

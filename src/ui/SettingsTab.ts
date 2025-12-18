@@ -3,7 +3,7 @@
  */
 
 import { App, PluginSettingTab, Setting, Notice, ButtonComponent, TextComponent } from 'obsidian';
-import MeetingSyncPlugin from '../main';
+import MeetingMindPlugin from '../main';
 import { AIProvider } from '../types';
 
 // Debounce utility for text inputs
@@ -18,10 +18,10 @@ function debounce<T extends (...args: any[]) => any>(
   };
 }
 
-export class MeetingSyncSettingsTab extends PluginSettingTab {
-  plugin: MeetingSyncPlugin;
+export class MeetingMindSettingsTab extends PluginSettingTab {
+  plugin: MeetingMindPlugin;
   
-  constructor(app: App, plugin: MeetingSyncPlugin) {
+  constructor(app: App, plugin: MeetingMindPlugin) {
     super(app, plugin);
     this.plugin = plugin;
   }
@@ -30,9 +30,9 @@ export class MeetingSyncSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     
-    containerEl.createEl('h1', { text: 'MeetingSync Settings' });
+    containerEl.createEl('h1', { text: 'MeetingMind Settings' });
     containerEl.createEl('p', { 
-      text: 'Configure how MeetingSync imports and processes your meeting transcripts.',
+      text: 'Configure how MeetingMind imports and processes your meeting transcripts.',
       cls: 'setting-item-description'
     });
     
@@ -535,7 +535,7 @@ export class MeetingSyncSettingsTab extends PluginSettingTab {
           .setButtonText('Learn More')
           .setCta()
           .onClick(() => {
-            window.open('https://meetingsync.app/pricing', '_blank');
+            window.open('https://meetingmind.app/pricing', '_blank');
           })
         );
     }

@@ -152,10 +152,10 @@ export class ParticipantService {
     
     try {
       await this.app.vault.create(filePath, content);
-      console.log(`MeetingSync: Created participant note for ${name}`);
+      console.log(`MeetingMind: Created participant note for ${name}`);
       return filePath;
     } catch (error) {
-      console.error(`MeetingSync: Failed to create note for ${name}`, error);
+      console.error(`MeetingMind: Failed to create note for ${name}`, error);
       return null;
     }
   }
@@ -250,7 +250,7 @@ tags: [person]
       
       // Check if this meeting is already referenced
       if (content.includes(meetingLink)) {
-        console.log(`MeetingSync: Meeting already referenced in ${notePath}`);
+        console.log(`MeetingMind: Meeting already referenced in ${notePath}`);
         return;
       }
       
@@ -310,10 +310,10 @@ tags: [person]
       }
       
       await this.app.vault.modify(file, content);
-      console.log(`MeetingSync: Updated participant note ${notePath}`);
+      console.log(`MeetingMind: Updated participant note ${notePath}`);
       
     } catch (error) {
-      console.error(`MeetingSync: Failed to update ${notePath}`, error);
+      console.error(`MeetingMind: Failed to update ${notePath}`, error);
     }
   }
   

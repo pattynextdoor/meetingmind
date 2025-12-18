@@ -1,5 +1,5 @@
 /**
- * MeetingSync - Obsidian Plugin
+ * MeetingMind - Obsidian Plugin
  * Automatically import meeting transcripts with AI-powered enrichment and auto-linking
  */
 
@@ -14,7 +14,7 @@ import {
 } from 'obsidian';
 
 import { 
-  MeetingSyncSettings, 
+  MeetingMindSettings, 
   DEFAULT_SETTINGS, 
   RawTranscript, 
   ProcessedMeeting,
@@ -30,14 +30,14 @@ import { FolderWatcher } from './services/FolderWatcher';
 import { OtterService } from './services/OtterService';
 import { NoteGenerator } from './services/NoteGenerator';
 import { ParticipantService } from './services/ParticipantService';
-import { MeetingSyncSettingsTab } from './ui/SettingsTab';
+import { MeetingMindSettingsTab } from './ui/SettingsTab';
 import { SyncLogModal } from './ui/SyncLogModal';
 
 // Custom icon for status bar
 const SYNC_ICON = `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="40"/><path d="M50 25v25l15 15"/></svg>`;
 
-export default class MeetingSyncPlugin extends Plugin {
-  settings: MeetingSyncSettings;
+export default class MeetingMindPlugin extends Plugin {
+  settings: MeetingMindSettings;
   
   // Services
   transcriptParser: TranscriptParser;
@@ -57,7 +57,7 @@ export default class MeetingSyncPlugin extends Plugin {
   private maxLogs = 100;
   
   async onload(): Promise<void> {
-    console.log('MeetingSync: Loading plugin');
+    console.log('MeetingMind: Loading plugin');
     
     // Load settings
     await this.loadSettings();
@@ -69,7 +69,7 @@ export default class MeetingSyncPlugin extends Plugin {
     addIcon('meeting-sync', SYNC_ICON);
     
     // Add settings tab
-    this.addSettingTab(new MeetingSyncSettingsTab(this.app, this));
+    this.addSettingTab(new MeetingMindSettingsTab(this.app, this));
     
     // Add status bar item
     this.statusBarItem = this.addStatusBarItem();
@@ -85,11 +85,11 @@ export default class MeetingSyncPlugin extends Plugin {
     // Start services
     await this.startServices();
     
-    console.log('MeetingSync: Plugin loaded successfully');
+    console.log('MeetingMind: Plugin loaded successfully');
   }
   
   async onunload(): Promise<void> {
-    console.log('MeetingSync: Unloading plugin');
+    console.log('MeetingMind: Unloading plugin');
     
     // Clean up services
     this.folderWatcher?.destroy();
@@ -275,7 +275,7 @@ export default class MeetingSyncPlugin extends Plugin {
       
     } catch (error: any) {
       this.addLog('Import', 'error', `Failed to import ${file.name}`, error.message);
-      console.error('MeetingSync: Import failed', error);
+      console.error('MeetingMind: Import failed', error);
     }
   }
   
@@ -287,7 +287,7 @@ export default class MeetingSyncPlugin extends Plugin {
     try {
       // Check for duplicate (unless skipped for manual imports)
       if (!skipDuplicateCheck && this.isDuplicate(transcript.hash)) {
-        console.log(`MeetingSync: Skipping duplicate transcript ${transcript.title}`);
+        console.log(`MeetingMind: Skipping duplicate transcript ${transcript.title}`);
         return null;
       }
       
@@ -298,7 +298,7 @@ export default class MeetingSyncPlugin extends Plugin {
           this.updateStatusBar('syncing', 'AI processing...');
           enrichment = await this.aiService.processTranscript(transcript);
         } catch (error) {
-          console.error('MeetingSync: AI enrichment failed', error);
+          console.error('MeetingMind: AI enrichment failed', error);
           // Continue without AI enrichment
         }
       }
@@ -358,7 +358,7 @@ export default class MeetingSyncPlugin extends Plugin {
           );
           
           if (result.created.length > 0) {
-            console.log(`MeetingSync: Created participant notes for: ${result.created.join(', ')}`);
+            console.log(`MeetingMind: Created participant notes for: ${result.created.join(', ')}`);
             new Notice(`Created notes for: ${result.created.join(', ')}`);
             
             // Rebuild vault index to include new participant notes
@@ -366,10 +366,10 @@ export default class MeetingSyncPlugin extends Plugin {
           }
           
           if (result.updated.length > 0) {
-            console.log(`MeetingSync: Updated participant notes for: ${result.updated.join(', ')}`);
+            console.log(`MeetingMind: Updated participant notes for: ${result.updated.join(', ')}`);
           }
         } catch (error) {
-          console.error('MeetingSync: Failed to process participant notes', error);
+          console.error('MeetingMind: Failed to process participant notes', error);
           // Continue - don't block meeting note creation
         }
       }
@@ -504,7 +504,7 @@ export default class MeetingSyncPlugin extends Plugin {
         
       } catch (error: any) {
         new Notice(`Import failed: ${error.message}`);
-        console.error('MeetingSync: Import failed', error);
+        console.error('MeetingMind: Import failed', error);
       }
     };
     
@@ -623,21 +623,21 @@ export default class MeetingSyncPlugin extends Plugin {
   private updateStatusBar(status: 'idle' | 'syncing' | 'error', message?: string): void {
     this.statusBarItem.empty();
     
-    const icon = this.statusBarItem.createSpan({ cls: 'meetingsync-status-icon' });
+    const icon = this.statusBarItem.createSpan({ cls: 'meetingmind-status-icon' });
     
     switch (status) {
       case 'idle':
         setIcon(icon, 'check');
-        this.statusBarItem.setAttribute('aria-label', 'MeetingSync: Idle');
+        this.statusBarItem.setAttribute('aria-label', 'MeetingMind: Idle');
         break;
       case 'syncing':
         setIcon(icon, 'sync');
-        icon.addClass('meetingsync-spinning');
-        this.statusBarItem.setAttribute('aria-label', `MeetingSync: ${message || 'Syncing...'}`);
+        icon.addClass('meetingmind-spinning');
+        this.statusBarItem.setAttribute('aria-label', `MeetingMind: ${message || 'Syncing...'}`);
         break;
       case 'error':
         setIcon(icon, 'alert-triangle');
-        this.statusBarItem.setAttribute('aria-label', `MeetingSync: ${message || 'Error'}`);
+        this.statusBarItem.setAttribute('aria-label', `MeetingMind: ${message || 'Error'}`);
         break;
     }
   }

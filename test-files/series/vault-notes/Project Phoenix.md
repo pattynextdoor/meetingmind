@@ -20,5 +20,5 @@ Customer portal rebuild initiative.
 - analytics-service
 
 ## Related Meetings
-<!-- MeetingSync will auto-link these -->
+<!-- MeetingMind will auto-link these -->
 

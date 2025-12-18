@@ -104,7 +104,7 @@ export class AIService {
           enrichment.participantInsights = insights;
         }
       } catch (error) {
-        console.error('MeetingSync: Failed to generate participant insights', error);
+        console.error('MeetingMind: Failed to generate participant insights', error);
         // Continue without participant insights
       }
     }
@@ -166,7 +166,7 @@ ${transcriptText}`;
       
       return this.parseParticipantInsights(response);
     } catch (error) {
-      console.error('MeetingSync: Failed to generate participant insights', error);
+      console.error('MeetingMind: Failed to generate participant insights', error);
       return null;
     }
   }
@@ -196,7 +196,7 @@ ${transcriptText}`;
         sentiment: p.sentiment || undefined,
       }));
     } catch (error) {
-      console.error('MeetingSync: Failed to parse participant insights', error);
+      console.error('MeetingMind: Failed to parse participant insights', error);
       return [];
     }
   }
@@ -309,7 +309,7 @@ ${transcriptText}`;
       
       return this.parseResponse(response);
     } catch (error) {
-      console.error('MeetingSync: AI processing failed', error);
+      console.error('MeetingMind: AI processing failed', error);
       throw error;
     }
   }
@@ -460,7 +460,7 @@ ${transcriptText}`;
         ),
       };
     } catch (error) {
-      console.error('MeetingSync: Failed to parse AI response', error, response);
+      console.error('MeetingMind: Failed to parse AI response', error, response);
       return {
         summary: '',
         actionItems: [],

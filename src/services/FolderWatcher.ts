@@ -60,7 +60,7 @@ export class FolderWatcher {
     // Also check immediately
     this.checkForNewFiles();
     
-    console.log(`MeetingSync: Folder watcher started for ${this.watchFolder}`);
+    console.log(`MeetingMind: Folder watcher started for ${this.watchFolder}`);
   }
   
   /**
@@ -71,7 +71,7 @@ export class FolderWatcher {
       clearInterval(this.watchInterval);
       this.watchInterval = null;
     }
-    console.log('MeetingSync: Folder watcher stopped');
+    console.log('MeetingMind: Folder watcher stopped');
   }
   
   /**
@@ -102,20 +102,20 @@ export class FolderWatcher {
         const fileKey = `${file.path}:${file.stat.mtime}`;
         
         if (!this.processedFiles.has(fileKey)) {
-          console.log(`MeetingSync: New transcript file detected: ${file.name}`);
+          console.log(`MeetingMind: New transcript file detected: ${file.name}`);
           this.processedFiles.add(fileKey);
           
           try {
             await this.callback(file);
-            new Notice(`MeetingSync: Imported ${file.name}`);
+            new Notice(`MeetingMind: Imported ${file.name}`);
           } catch (error) {
-            console.error(`MeetingSync: Failed to process ${file.name}`, error);
-            new Notice(`MeetingSync: Failed to import ${file.name}`);
+            console.error(`MeetingMind: Failed to process ${file.name}`, error);
+            new Notice(`MeetingMind: Failed to import ${file.name}`);
           }
         }
       }
     } catch (error) {
-      console.error('MeetingSync: Folder watch error', error);
+      console.error('MeetingMind: Folder watch error', error);
     }
   }
   

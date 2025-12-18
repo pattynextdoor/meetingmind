@@ -16,7 +16,7 @@ export class SyncLogModal extends Modal {
   onOpen(): void {
     const { contentEl } = this;
     
-    contentEl.createEl('h2', { text: 'MeetingSync Activity Log' });
+    contentEl.createEl('h2', { text: 'MeetingMind Activity Log' });
     
     if (this.logs.length === 0) {
       contentEl.createEl('p', { 

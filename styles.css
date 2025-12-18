@@ -1,23 +1,23 @@
-/* MeetingSync Plugin Styles */
+/* MeetingMind Plugin Styles */
 
 /* Status Bar */
-.meetingsync-status-icon {
+.meetingmind-status-icon {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
   padding: 2px 4px;
 }
 
-.meetingsync-status-icon:hover {
+.meetingmind-status-icon:hover {
   background-color: var(--background-modifier-hover);
   border-radius: 4px;
 }
 
-.meetingsync-spinning {
-  animation: meetingsync-spin 1s linear infinite;
+.meetingmind-spinning {
+  animation: meetingmind-spin 1s linear infinite;
 }
 
-@keyframes meetingsync-spin {
+@keyframes meetingmind-spin {
   from {
     transform: rotate(0deg);
   }
@@ -27,14 +27,14 @@
 }
 
 /* Settings Tab */
-.meetingsync-settings h2 {
+.meetingmind-settings h2 {
   margin-top: 2em;
   margin-bottom: 0.5em;
   padding-bottom: 0.5em;
   border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.meetingsync-settings h4 {
+.meetingmind-settings h4 {
   margin-top: 1.5em;
   margin-bottom: 0.5em;
   color: var(--text-muted);
@@ -43,24 +43,24 @@
   letter-spacing: 0.05em;
 }
 
-.meetingsync-settings .setting-item {
+.meetingmind-settings .setting-item {
   padding: 12px 0;
 }
 
-.meetingsync-settings .setting-item-info {
+.meetingmind-settings .setting-item-info {
   flex-grow: 1;
 }
 
-.meetingsync-settings .setting-item-control {
+.meetingmind-settings .setting-item-control {
   flex-shrink: 0;
 }
 
 /* Sync Log Modal */
-.meetingsync-log-modal {
+.meetingmind-log-modal {
   max-width: 600px;
 }
 
-.meetingsync-log-entry {
+.meetingmind-log-entry {
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -70,38 +70,38 @@
   border-left: 3px solid var(--text-muted);
 }
 
-.meetingsync-log-entry.success {
+.meetingmind-log-entry.success {
   border-left-color: var(--color-green);
 }
 
-.meetingsync-log-entry.error {
+.meetingmind-log-entry.error {
   border-left-color: var(--color-red);
 }
 
-.meetingsync-log-entry.warning {
+.meetingmind-log-entry.warning {
   border-left-color: var(--color-orange);
 }
 
-.meetingsync-log-header {
+.meetingmind-log-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
 }
 
-.meetingsync-log-action {
+.meetingmind-log-action {
   font-weight: 600;
 }
 
-.meetingsync-log-time {
+.meetingmind-log-time {
   color: var(--text-muted);
   font-size: 0.85em;
 }
 
-.meetingsync-log-message {
+.meetingmind-log-message {
   color: var(--text-normal);
 }
 
-.meetingsync-log-details {
+.meetingmind-log-details {
   margin-top: 6px;
   padding: 6px 8px;
   background-color: var(--background-primary);
@@ -112,35 +112,35 @@
 }
 
 /* Meeting Notes Styling */
-.meetingsync-meeting-note .summary {
+.meetingmind-meeting-note .summary {
   background-color: var(--background-secondary);
   padding: 16px;
   border-radius: 8px;
   margin-bottom: 16px;
 }
 
-.meetingsync-meeting-note .action-items {
+.meetingmind-meeting-note .action-items {
   list-style: none;
   padding-left: 0;
 }
 
-.meetingsync-meeting-note .action-items li {
+.meetingmind-meeting-note .action-items li {
   padding: 8px 0;
   border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.meetingsync-meeting-note .action-items li:last-child {
+.meetingmind-meeting-note .action-items li:last-child {
   border-bottom: none;
 }
 
-.meetingsync-meeting-note .decisions {
+.meetingmind-meeting-note .decisions {
   background-color: var(--background-secondary-alt);
   padding: 12px 16px;
   border-radius: 6px;
   border-left: 3px solid var(--color-accent);
 }
 
-.meetingsync-meeting-note .suggested-links {
+.meetingmind-meeting-note .suggested-links {
   background-color: var(--background-secondary);
   padding: 12px 16px;
   border-radius: 6px;
@@ -148,7 +148,7 @@
   font-size: 0.9em;
 }
 
-.meetingsync-meeting-note .suggested-links-title {
+.meetingmind-meeting-note .suggested-links-title {
   color: var(--text-muted);
   font-size: 0.85em;
   margin-bottom: 8px;
@@ -173,7 +173,7 @@
 }
 
 /* Import Progress */
-.meetingsync-progress {
+.meetingmind-progress {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -182,7 +182,7 @@
   border-radius: 6px;
 }
 
-.meetingsync-progress-bar {
+.meetingmind-progress-bar {
   flex-grow: 1;
   height: 4px;
   background-color: var(--background-modifier-border);
@@ -190,13 +190,13 @@
   overflow: hidden;
 }
 
-.meetingsync-progress-fill {
+.meetingmind-progress-fill {
   height: 100%;
   background-color: var(--color-accent);
   transition: width 0.3s ease;
 }
 
-.meetingsync-progress-text {
+.meetingmind-progress-text {
   color: var(--text-muted);
   font-size: 0.85em;
   min-width: 50px;
@@ -204,7 +204,7 @@
 }
 
 /* Connection Status */
-.meetingsync-connection-status {
+.meetingmind-connection-status {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -213,23 +213,23 @@
   font-size: 0.85em;
 }
 
-.meetingsync-connection-status.connected {
+.meetingmind-connection-status.connected {
   background-color: rgba(var(--color-green-rgb), 0.1);
   color: var(--color-green);
 }
 
-.meetingsync-connection-status.disconnected {
+.meetingmind-connection-status.disconnected {
   background-color: rgba(var(--color-red-rgb), 0.1);
   color: var(--color-red);
 }
 
-.meetingsync-connection-status.syncing {
+.meetingmind-connection-status.syncing {
   background-color: rgba(var(--color-accent-rgb), 0.1);
   color: var(--color-accent);
 }
 
 /* Feature Badges */
-.meetingsync-badge {
+.meetingmind-badge {
   display: inline-block;
   padding: 2px 6px;
   border-radius: 3px;
@@ -239,17 +239,17 @@
   letter-spacing: 0.03em;
 }
 
-.meetingsync-badge.pro {
+.meetingmind-badge.pro {
   background-color: rgba(var(--color-purple-rgb), 0.15);
   color: var(--color-purple);
 }
 
-.meetingsync-badge.cloud {
+.meetingmind-badge.cloud {
   background-color: rgba(var(--color-cyan-rgb), 0.15);
   color: var(--color-cyan);
 }
 
-.meetingsync-badge.beta {
+.meetingmind-badge.beta {
   background-color: rgba(var(--color-orange-rgb), 0.15);
   color: var(--color-orange);
 }

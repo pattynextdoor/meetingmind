@@ -1,5 +1,5 @@
 /**
- * MeetingSync Type Definitions
+ * MeetingMind Type Definitions
  * Based on the PRD technical data structures
  */
 
@@ -74,7 +74,7 @@ export interface SyncStatus {
 
 export type AIProvider = 'claude' | 'openai' | 'cloud' | 'disabled';
 
-export interface MeetingSyncSettings {
+export interface MeetingMindSettings {
   // Otter.ai settings
   otterEnabled: boolean;
   otterAccessToken: string;
@@ -121,7 +121,7 @@ export interface MeetingSyncSettings {
   processedHashes: string[];
 }
 
-export const DEFAULT_SETTINGS: MeetingSyncSettings = {
+export const DEFAULT_SETTINGS: MeetingMindSettings = {
   otterEnabled: false,
   otterAccessToken: '',
   otterRefreshToken: '',

@@ -1,5 +1,5 @@
 {
-  "name": "meetingsync",
+  "name": "meetingmind",
   "version": "0.1.0",
   "description": "Automatically import meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking",
   "main": "main.js",

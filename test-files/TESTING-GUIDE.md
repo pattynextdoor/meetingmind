@@ -1,4 +1,4 @@
-# MeetingSync Testing Guide
+# MeetingMind Testing Guide
 
 ## Quick Test Steps
 
@@ -6,7 +6,7 @@
 
 1. Open Obsidian with your test vault
 2. Press `Cmd+P` (Mac) or `Ctrl+P` (Windows)
-3. Type "MeetingSync: Import file"
+3. Type "MeetingMind: Import file"
 4. Select one of the test files:
    - `sample-otter-export.json` - Otter.ai style export
    - `sample-meeting.vtt` - WebVTT format
@@ -58,7 +58,7 @@ Then import a transcript. You should see:
 
 ### 3. AI Enrichment Test
 
-1. Go to Settings → MeetingSync → AI Enrichment
+1. Go to Settings → MeetingMind → AI Enrichment
 2. Enable AI enrichment
 3. Select provider (Claude or OpenAI)
 4. Enter your API key
@@ -75,7 +75,7 @@ Then import a transcript. You should see:
 
 ### 4. Folder Watcher Test
 
-1. Go to Settings → MeetingSync → Sources
+1. Go to Settings → MeetingMind → Sources
 2. Enable "Folder watcher"
 3. Set watch folder to something like `Transcripts/Import`
 4. Create that folder in your vault
@@ -91,10 +91,10 @@ Test each command via `Cmd+P` / `Ctrl+P`:
 
 | Command | What to Expect |
 |---------|----------------|
-| MeetingSync: Import file | Opens file picker |
-| MeetingSync: Rebuild vault index | Notification confirms rebuild |
-| MeetingSync: View sync log | Opens modal with activity log |
-| MeetingSync: Sync now | Triggers Otter sync (needs setup) |
+| MeetingMind: Import file | Opens file picker |
+| MeetingMind: Rebuild vault index | Notification confirms rebuild |
+| MeetingMind: View sync log | Opens modal with activity log |
+| MeetingMind: Sync now | Triggers Otter sync (needs setup) |
 
 ---
 
@@ -112,7 +112,7 @@ Click the icon to open the sync log.
 ## Test Files Location
 
 ```
-/Users/patty/dev/meetingsync/test-files/
+/Users/patty/dev/meetingmind/test-files/
 ├── sample-otter-export.json   # Otter.ai JSON format
 ├── sample-meeting.vtt         # WebVTT format  
 ├── simple-meeting.txt         # Plain text format
@@ -122,7 +122,7 @@ Click the icon to open the sync log.
 ## Troubleshooting
 
 ### Plugin not showing in settings?
-- Make sure folder is named `meetingsync` (lowercase)
+- Make sure folder is named `meetingmind` (lowercase)
 - Restart Obsidian
 - Check Developer Console (Cmd+Option+I) for errors
 

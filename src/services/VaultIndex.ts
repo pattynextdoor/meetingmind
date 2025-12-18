@@ -120,7 +120,7 @@ export class VaultIndexService {
     this.index.lastUpdated = new Date();
     
     const elapsed = Date.now() - startTime;
-    console.log(`MeetingSync: Vault index built in ${elapsed}ms with ${files.length} files, ${this.index.sortedTerms.length} terms`);
+    console.log(`MeetingMind: Vault index built in ${elapsed}ms with ${files.length} files, ${this.index.sortedTerms.length} terms`);
   }
   
   /**
