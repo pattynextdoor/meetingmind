@@ -6,6 +6,18 @@ import { App, PluginSettingTab, Setting, Notice, ButtonComponent, TextComponent 
 import MeetingSyncPlugin from '../main';
 import { AIProvider } from '../types';
 
+// Debounce utility for text inputs
+function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null;
+  return (...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+
 export class MeetingSyncSettingsTab extends PluginSettingTab {
   plugin: MeetingSyncPlugin;
   
@@ -126,18 +138,20 @@ export class MeetingSyncSettingsTab extends PluginSettingTab {
       );
     
     if (this.plugin.settings.folderWatcherEnabled) {
-      // Watch folder path
+      // Watch folder path - debounced to avoid creating folders on every keystroke
+      const debouncedWatchFolderUpdate = debounce(async (value: string) => {
+        this.plugin.settings.watchFolder = value;
+        await this.plugin.saveSettings();
+        this.plugin.updateFolderWatcher();
+      }, 1000); // Wait 1 second after user stops typing
+      
       new Setting(containerEl)
         .setName('Watch folder')
         .setDesc('Folder path to watch for new transcript files')
         .addText(text => text
           .setPlaceholder('Transcripts/Import')
           .setValue(this.plugin.settings.watchFolder)
-          .onChange(async (value) => {
-            this.plugin.settings.watchFolder = value;
-            await this.plugin.saveSettings();
-            this.plugin.updateFolderWatcher();
-          })
+          .onChange(debouncedWatchFolderUpdate)
         );
     }
   }

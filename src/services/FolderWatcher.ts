@@ -87,13 +87,8 @@ export class FolderWatcher {
       const folder = this.app.vault.getAbstractFileByPath(this.watchFolder);
       
       if (!folder || !(folder instanceof TFolder)) {
-        // Folder doesn't exist in vault - try to create it
-        try {
-          await this.app.vault.createFolder(this.watchFolder);
-          console.log(`MeetingSync: Created watch folder ${this.watchFolder}`);
-        } catch (e) {
-          // Folder might already exist or path is invalid
-        }
+        // Folder doesn't exist yet - silently wait for user to create it
+        // Don't auto-create to avoid creating partial folder names while typing
         return;
       }
       
