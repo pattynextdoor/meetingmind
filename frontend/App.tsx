@@ -53,9 +53,9 @@ const Hero = () => {
             Install from Community Plugins
             <Icons.ArrowRight size={16} />
           </button>
-          <button className="px-8 py-3.5 bg-transparent border border-stone-300 text-stone-900 font-medium rounded-lg hover:bg-stone-50 transition-all hover:border-stone-400">
+          <a href="https://github.com/pattynextdoor/meetingmind" className="px-8 py-3.5 bg-transparent border border-stone-300 text-stone-900 font-medium rounded-lg hover:bg-stone-50 transition-all hover:border-stone-400">
             View on GitHub
-          </button>
+          </a>
         </div>
         
         <p className="mt-4 text-xs text-stone-400 font-sans animate-fade-up" style={{ animationDelay: '400ms' }}>
