@@ -125,6 +125,18 @@ npm run dev
 npm run build
 ```
 
+## Network Usage & Privacy
+
+This plugin connects to the following external services:
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **Gumroad API** | `api.gumroad.com` | Validates Pro license keys |
+| **Anthropic API** | `api.anthropic.com` | AI processing when Claude is selected (Pro) |
+| **OpenAI API** | `api.openai.com` | AI processing when GPT-4 is selected (Pro) |
+
+Your transcript content is sent to AI providers only when AI enrichment is enabled. No data is collected or stored by MeetingMind itself.
+
 ## Requirements
 
 - Obsidian 1.4.0 or later
