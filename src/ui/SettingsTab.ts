@@ -109,6 +109,103 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       text: 'MeetingMind will automatically import and process it!',
       cls: 'setting-item-description meetingmind-otter-tip'
     });
+    
+    // Fireflies.ai Integration
+    containerEl.createEl('h3', { text: '🔥 Fireflies.ai Integration' });
+    
+    new Setting(containerEl)
+      .setName('Enable Fireflies.ai sync')
+      .setDesc('Automatically sync transcripts from your Fireflies.ai account')
+      .addToggle(toggle => toggle
+        .setValue(this.plugin.settings.firefliesEnabled)
+        .onChange(async (value) => {
+          this.plugin.settings.firefliesEnabled = value;
+          await this.plugin.saveSettings();
+          this.display();
+        })
+      );
+    
+    if (this.plugin.settings.firefliesEnabled) {
+      // API Key
+      new Setting(containerEl)
+        .setName('Fireflies API key')
+        .setDesc('Get your API key from app.fireflies.ai → Integrations → Fireflies API')
+        .addText(text => {
+          text
+            .setPlaceholder('Enter your Fireflies API key')
+            .setValue(this.plugin.settings.firefliesApiKey)
+            .onChange(async (value) => {
+              this.plugin.settings.firefliesApiKey = value;
+              await this.plugin.saveSettings();
+              this.plugin.updateFirefliesService();
+            });
+          text.inputEl.type = 'password';
+          text.inputEl.style.width = '300px';
+        });
+      
+      // Test connection button
+      new Setting(containerEl)
+        .setName('Test connection')
+        .setDesc('Verify your Fireflies API key is working')
+        .addButton(button => button
+          .setButtonText('Test Connection')
+          .onClick(async () => {
+            button.setButtonText('Testing...');
+            button.setDisabled(true);
+            
+            const result = await this.plugin.firefliesService.testConnection();
+            
+            if (result.success) {
+              new Notice(`✓ ${result.message}`);
+            } else {
+              new Notice(`✗ ${result.message}`);
+            }
+            
+            button.setButtonText('Test Connection');
+            button.setDisabled(false);
+          })
+        );
+      
+      // Sync interval
+      new Setting(containerEl)
+        .setName('Sync interval')
+        .setDesc('How often to check for new transcripts')
+        .addDropdown(dropdown => dropdown
+          .addOption('5', '5 minutes')
+          .addOption('15', '15 minutes')
+          .addOption('30', '30 minutes')
+          .addOption('60', '60 minutes')
+          .setValue(this.plugin.settings.firefliesSyncInterval.toString())
+          .onChange(async (value) => {
+            this.plugin.settings.firefliesSyncInterval = parseInt(value);
+            await this.plugin.saveSettings();
+            this.plugin.restartFirefliesSync();
+          })
+        );
+      
+      // Sync now button
+      new Setting(containerEl)
+        .setName('Sync now')
+        .setDesc('Manually trigger a sync with Fireflies.ai')
+        .addButton(button => button
+          .setButtonText('Sync Now')
+          .setCta()
+          .onClick(async () => {
+            button.setButtonText('Syncing...');
+            button.setDisabled(true);
+            
+            try {
+              const transcripts = await this.plugin.firefliesService.sync();
+              new Notice(`Synced ${transcripts.length} transcripts from Fireflies.ai`);
+            } catch (error: any) {
+              new Notice(`Sync failed: ${error.message}`);
+            }
+            
+            button.setButtonText('Sync Now');
+            button.setDisabled(false);
+          })
+        );
+    }
   }
   
   /**

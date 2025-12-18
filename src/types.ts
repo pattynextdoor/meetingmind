@@ -75,13 +75,19 @@ export interface SyncStatus {
 export type AIProvider = 'claude' | 'openai' | 'cloud' | 'disabled';
 
 export interface MeetingMindSettings {
-  // Otter.ai settings
+  // Otter.ai settings (legacy - kept for migration)
   otterEnabled: boolean;
   otterAccessToken: string;
   otterRefreshToken: string;
   otterEmail: string;
   syncInterval: number; // minutes
   lastSyncTimestamp: number;
+  
+  // Fireflies.ai settings
+  firefliesEnabled: boolean;
+  firefliesApiKey: string;
+  firefliesSyncInterval: number; // minutes
+  firefliesLastSync: number;
   
   // Folder watcher settings
   folderWatcherEnabled: boolean;
@@ -128,6 +134,11 @@ export const DEFAULT_SETTINGS: MeetingMindSettings = {
   otterEmail: '',
   syncInterval: 15,
   lastSyncTimestamp: 0,
+  
+  firefliesEnabled: false,
+  firefliesApiKey: '',
+  firefliesSyncInterval: 15,
+  firefliesLastSync: 0,
   
   folderWatcherEnabled: false,
   watchFolder: '',

@@ -30,6 +30,7 @@ import { AutoLinker } from './services/AutoLinker';
 import { AIService } from './services/AIService';
 import { FolderWatcher } from './services/FolderWatcher';
 import { OtterService } from './services/OtterService';
+import { FirefliesService } from './services/FirefliesService';
 import { NoteGenerator } from './services/NoteGenerator';
 import { ParticipantService } from './services/ParticipantService';
 import { LicenseService } from './services/LicenseService';
@@ -49,6 +50,7 @@ export default class MeetingMindPlugin extends Plugin {
   aiService: AIService;
   folderWatcher: FolderWatcher;
   otterService: OtterService;
+  firefliesService: FirefliesService;
   noteGenerator: NoteGenerator;
   participantService: ParticipantService;
   licenseService: LicenseService;
@@ -98,6 +100,7 @@ export default class MeetingMindPlugin extends Plugin {
     // Clean up services
     this.folderWatcher?.destroy();
     this.otterService?.destroy();
+    this.firefliesService?.destroy();
   }
   
   /**
@@ -110,6 +113,7 @@ export default class MeetingMindPlugin extends Plugin {
     this.aiService = new AIService();
     this.folderWatcher = new FolderWatcher(this.app);
     this.otterService = new OtterService();
+    this.firefliesService = new FirefliesService();
     this.noteGenerator = new NoteGenerator(this.app);
     this.participantService = new ParticipantService(this.app);
     this.licenseService = new LicenseService();
@@ -132,6 +136,7 @@ export default class MeetingMindPlugin extends Plugin {
     this.updateAIService();
     this.updateFolderWatcher();
     this.updateOtterService();
+    this.updateFirefliesService();
     this.updateNoteGenerator();
     this.updateParticipantService();
   }
@@ -151,6 +156,11 @@ export default class MeetingMindPlugin extends Plugin {
     // Start Otter sync if enabled and connected
     if (this.settings.otterEnabled && this.settings.otterAccessToken) {
       this.otterService.startSync();
+    }
+    
+    // Start Fireflies sync if enabled and configured
+    if (this.settings.firefliesEnabled && this.settings.firefliesApiKey) {
+      this.firefliesService.startSync();
     }
     
     // Collect existing tags for AI suggestions
@@ -248,6 +258,18 @@ export default class MeetingMindPlugin extends Plugin {
         this.settings.otterAccessToken = accessToken;
         this.settings.otterRefreshToken = refreshToken;
         await this.saveSettings();
+      }
+    );
+    
+    // Set up Fireflies service callbacks
+    this.firefliesService.setCallbacks(
+      async (transcripts) => {
+        for (const transcript of transcripts) {
+          await this.processTranscript(transcript);
+        }
+      },
+      (status) => {
+        this.updateStatusBar(status.status as any, status.message);
       }
     );
   }
@@ -805,6 +827,23 @@ export default class MeetingMindPlugin extends Plugin {
       this.settings.syncInterval,
       this.settings.lastSyncTimestamp
     );
+  }
+  
+  updateFirefliesService(): void {
+    this.firefliesService.configure(
+      this.settings.firefliesApiKey,
+      this.settings.firefliesSyncInterval,
+      this.settings.firefliesLastSync
+    );
+  }
+  
+  restartFirefliesSync(): void {
+    this.firefliesService.stopSync();
+    this.updateFirefliesService();
+    
+    if (this.settings.firefliesEnabled && this.settings.firefliesApiKey) {
+      this.firefliesService.startSync();
+    }
   }
   
   updateNoteGenerator(): void {
