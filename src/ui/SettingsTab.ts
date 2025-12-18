@@ -200,13 +200,44 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
   private createAISection(containerEl: HTMLElement): void {
     containerEl.createEl('h2', { text: '🤖 AI Enrichment' });
     
+    // Check license status
+    const hasAILicense = this.plugin.licenseService.hasFeature('aiEnrichment');
+    const licenseStatus = this.plugin.licenseService.getStatusText();
+    
+    // Show upgrade banner if no license
+    if (!hasAILicense) {
+      const banner = containerEl.createDiv({ cls: 'meetingmind-pro-banner' });
+      banner.createEl('div', { 
+        text: '⭐ AI features require MeetingMind Pro', 
+        cls: 'meetingmind-pro-banner-title' 
+      });
+      banner.createEl('div', { 
+        text: 'Get AI-powered summaries, action items, decisions, and smart participant insights.', 
+        cls: 'meetingmind-pro-banner-desc' 
+      });
+      
+      const buttonContainer = banner.createDiv({ cls: 'meetingmind-pro-banner-buttons' });
+      const upgradeBtn = buttonContainer.createEl('button', { 
+        text: 'Upgrade for $25 (lifetime)', 
+        cls: 'mod-cta' 
+      });
+      upgradeBtn.addEventListener('click', () => {
+        window.open('https://meetingmind.app/pricing', '_blank');
+      });
+    }
+    
     // Enable AI toggle
-    new Setting(containerEl)
+    const aiToggleSetting = new Setting(containerEl)
       .setName('Enable AI enrichment')
       .setDesc('Use AI to generate summaries, extract action items, and suggest tags')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.aiEnabled)
         .onChange(async (value) => {
+          if (value && !hasAILicense) {
+            this.plugin.licenseService.showUpgradeNotice('AI Enrichment');
+            toggle.setValue(false);
+            return;
+          }
           this.plugin.settings.aiEnabled = value;
           await this.plugin.saveSettings();
           this.plugin.updateAIService();
@@ -214,7 +245,12 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         })
       );
     
-    if (this.plugin.settings.aiEnabled) {
+    // Visually indicate if locked
+    if (!hasAILicense) {
+      aiToggleSetting.setDesc('Use AI to generate summaries, extract action items, and suggest tags (Pro required)');
+    }
+    
+    if (this.plugin.settings.aiEnabled && hasAILicense) {
       // AI Provider
       new Setting(containerEl)
         .setName('AI provider')
@@ -349,6 +385,16 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
             this.plugin.updateAIService();
           })
         );
+    } else if (!hasAILicense) {
+      // Show what Pro includes when AI is disabled
+      const featuresEl = containerEl.createDiv({ cls: 'meetingmind-pro-features' });
+      featuresEl.createEl('p', { text: 'With AI Enrichment Pro, you get:' });
+      const list = featuresEl.createEl('ul');
+      list.createEl('li', { text: '📝 Automatic 2-4 sentence summaries' });
+      list.createEl('li', { text: '✅ Action item extraction with owners' });
+      list.createEl('li', { text: '🎯 Decision tracking' });
+      list.createEl('li', { text: '🏷️ Smart tag suggestions from your vault' });
+      list.createEl('li', { text: '👤 AI-powered participant insights' });
     }
   }
   
@@ -492,19 +538,25 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
   private createLicenseSection(containerEl: HTMLElement): void {
     containerEl.createEl('h2', { text: '🔑 License' });
     
-    const statusText = this.getLicenseStatusText();
+    const licenseInfo = this.plugin.licenseService.getLicenseInfo();
+    const statusText = this.plugin.licenseService.getStatusText();
     
-    // License status
-    new Setting(containerEl)
+    // License status display
+    const statusSetting = new Setting(containerEl)
       .setName('License status')
       .setDesc(statusText);
+    
+    // Add status indicator
+    if (licenseInfo.status === 'pro' || licenseInfo.status === 'supporter') {
+      statusSetting.descEl.addClass('meetingmind-license-active');
+    }
     
     // License key input
     new Setting(containerEl)
       .setName('License key')
-      .setDesc('Enter your Pro or Cloud license key')
+      .setDesc('Enter your MeetingMind Pro license key (MM-PRO-XXXXX-XXXXX)')
       .addText(text => text
-        .setPlaceholder('XXXXX-XXXXX-XXXXX-XXXXX')
+        .setPlaceholder('MM-PRO-XXXXX-XXXXX')
         .setValue(this.plugin.settings.licenseKey)
         .onChange(async (value) => {
           this.plugin.settings.licenseKey = value;
@@ -512,80 +564,83 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         })
       )
       .addButton(button => button
-        .setButtonText('Validate')
+        .setButtonText('Activate')
         .onClick(async () => {
           button.setButtonText('Validating...');
           button.setDisabled(true);
           
-          // Validate license (placeholder - would call actual validation API)
-          await this.validateLicense();
+          try {
+            const result = await this.plugin.licenseService.setLicenseKey(
+              this.plugin.settings.licenseKey
+            );
+            
+            // Update settings with validation result
+            this.plugin.settings.licenseStatus = result.status;
+            await this.plugin.saveSettings();
+            
+            if (result.status === 'pro' || result.status === 'supporter') {
+              new Notice(`✓ ${result.status === 'supporter' ? 'Supporter' : 'Pro'} license activated!`);
+            } else if (this.plugin.settings.licenseKey) {
+              new Notice('Invalid license key. Please check and try again.');
+            } else {
+              new Notice('License cleared - Free tier active');
+            }
+          } catch (error) {
+            new Notice('License validation failed. Please try again.');
+          }
           
-          button.setButtonText('Validate');
+          button.setButtonText('Activate');
           button.setDisabled(false);
           this.display();
         })
       );
     
-    // Upgrade link
-    if (this.plugin.settings.licenseStatus === 'free') {
-      new Setting(containerEl)
-        .setName('Upgrade to Pro')
-        .setDesc('Unlock AI enrichment, Otter.ai sync, and more')
+    // Show different content based on license status
+    if (!this.plugin.licenseService.isPro()) {
+      // Free tier - show upgrade options
+      const upgradeContainer = containerEl.createDiv({ cls: 'meetingmind-upgrade-section' });
+      
+      upgradeContainer.createEl('h4', { text: 'Upgrade to MeetingMind Pro' });
+      
+      const priceEl = upgradeContainer.createDiv({ cls: 'meetingmind-price' });
+      priceEl.createEl('span', { text: '$25', cls: 'meetingmind-price-amount' });
+      priceEl.createEl('span', { text: ' one-time payment', cls: 'meetingmind-price-label' });
+      
+      const benefitsEl = upgradeContainer.createDiv({ cls: 'meetingmind-upgrade-benefits' });
+      benefitsEl.createEl('p', { text: 'Unlock AI-powered features:' });
+      const list = benefitsEl.createEl('ul');
+      list.createEl('li', { text: '🤖 AI summaries, action items & decisions' });
+      list.createEl('li', { text: '👤 Smart participant insights' });
+      list.createEl('li', { text: '🏷️ Intelligent tag suggestions' });
+      list.createEl('li', { text: '♾️ Lifetime license - pay once, use forever' });
+      list.createEl('li', { text: '🔑 Bring your own API key (Claude or OpenAI)' });
+      
+      const freeEl = benefitsEl.createDiv({ cls: 'meetingmind-free-note' });
+      freeEl.createEl('p', { 
+        text: '✓ Everything else is free: transcript parsing, auto-linking, folder watcher, participant tracking, and Otter.ai sync.'
+      });
+      
+      new Setting(upgradeContainer)
         .addButton(button => button
-          .setButtonText('Learn More')
+          .setButtonText('Get Pro License')
           .setCta()
           .onClick(() => {
             window.open('https://meetingmind.app/pricing', '_blank');
           })
         );
-    }
-  }
-  
-  /**
-   * Get license status display text
-   */
-  private getLicenseStatusText(): string {
-    const status = this.plugin.settings.licenseStatus;
-    const expiry = this.plugin.settings.licenseExpiry;
-    
-    switch (status) {
-      case 'pro':
-        return expiry ? `Pro (valid until ${expiry})` : 'Pro';
-      case 'cloud':
-        return expiry ? `Pro + Cloud (active until ${expiry})` : 'Pro + Cloud';
-      default:
-        return 'Free tier - Some features limited';
-    }
-  }
-  
-  /**
-   * Validate license key (placeholder)
-   */
-  private async validateLicense(): Promise<void> {
-    const key = this.plugin.settings.licenseKey;
-    
-    if (!key) {
-      this.plugin.settings.licenseStatus = 'free';
-      this.plugin.settings.licenseExpiry = '';
-      await this.plugin.saveSettings();
-      new Notice('License cleared - Free tier active');
-      return;
-    }
-    
-    // This would call actual license validation API
-    // For now, accept any key starting with "PRO-" or "CLOUD-"
-    if (key.startsWith('PRO-')) {
-      this.plugin.settings.licenseStatus = 'pro';
-      this.plugin.settings.licenseExpiry = '2099-12-31';
-      await this.plugin.saveSettings();
-      new Notice('✓ Pro license activated!');
-    } else if (key.startsWith('CLOUD-')) {
-      this.plugin.settings.licenseStatus = 'cloud';
-      this.plugin.settings.licenseExpiry = '2099-12-31';
-      await this.plugin.saveSettings();
-      new Notice('✓ Pro + Cloud license activated!');
     } else {
-      new Notice('Invalid license key');
+      // Pro/Supporter - show thank you
+      const thankYou = containerEl.createDiv({ cls: 'meetingmind-license-thanks' });
+      thankYou.createEl('p', { 
+        text: '🎉 Thank you for supporting MeetingMind! All AI features are unlocked.'
+      });
+      
+      if (this.plugin.licenseService.isSupporter()) {
+        thankYou.createEl('p', { 
+          text: '⭐ As a Supporter, you also get priority support and early access to new features.',
+          cls: 'meetingmind-supporter-note'
+        });
+      }
     }
   }
 }

@@ -254,3 +254,142 @@
   color: var(--color-orange);
 }
 
+/* Pro Banner */
+.meetingmind-pro-banner {
+  background: linear-gradient(135deg, 
+    rgba(var(--color-accent-rgb), 0.08) 0%, 
+    rgba(var(--color-purple-rgb), 0.12) 100%);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.meetingmind-pro-banner-title {
+  font-weight: 600;
+  font-size: 1em;
+  margin-bottom: 6px;
+  color: var(--text-normal);
+}
+
+.meetingmind-pro-banner-desc {
+  font-size: 0.9em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.meetingmind-pro-banner-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Pro Features List */
+.meetingmind-pro-features {
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.meetingmind-pro-features p {
+  margin: 0 0 8px 0;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.meetingmind-pro-features ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.meetingmind-pro-features li {
+  padding: 4px 0;
+  font-size: 0.9em;
+}
+
+/* License Section */
+.meetingmind-license-active {
+  color: var(--color-green) !important;
+}
+
+.meetingmind-upgrade-section {
+  background-color: var(--background-secondary);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.meetingmind-upgrade-section h4 {
+  margin: 0 0 12px 0;
+  color: var(--text-normal);
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 1.1em;
+}
+
+.meetingmind-price {
+  margin-bottom: 16px;
+}
+
+.meetingmind-price-amount {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.meetingmind-price-label {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.meetingmind-upgrade-benefits p {
+  margin: 0 0 8px 0;
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.meetingmind-upgrade-benefits ul {
+  margin: 0 0 16px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.meetingmind-upgrade-benefits li {
+  padding: 6px 0;
+  font-size: 0.95em;
+}
+
+.meetingmind-free-note {
+  background-color: var(--background-primary);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.meetingmind-free-note p {
+  margin: 0;
+  color: var(--text-normal);
+  font-size: 0.9em;
+}
+
+.meetingmind-license-thanks {
+  background: linear-gradient(135deg, 
+    rgba(var(--color-green-rgb), 0.08) 0%, 
+    rgba(var(--color-cyan-rgb), 0.08) 100%);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.meetingmind-license-thanks p {
+  margin: 0;
+  font-size: 0.95em;
+}
+
+.meetingmind-supporter-note {
+  margin-top: 8px !important;
+  color: var(--text-muted);
+  font-size: 0.9em !important;
+}
+

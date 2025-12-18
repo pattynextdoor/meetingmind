@@ -30,6 +30,7 @@ import { FolderWatcher } from './services/FolderWatcher';
 import { OtterService } from './services/OtterService';
 import { NoteGenerator } from './services/NoteGenerator';
 import { ParticipantService } from './services/ParticipantService';
+import { LicenseService } from './services/LicenseService';
 import { MeetingMindSettingsTab } from './ui/SettingsTab';
 import { SyncLogModal } from './ui/SyncLogModal';
 
@@ -48,6 +49,7 @@ export default class MeetingMindPlugin extends Plugin {
   otterService: OtterService;
   noteGenerator: NoteGenerator;
   participantService: ParticipantService;
+  licenseService: LicenseService;
   
   // UI Elements
   statusBarItem: HTMLElement;
@@ -63,7 +65,7 @@ export default class MeetingMindPlugin extends Plugin {
     await this.loadSettings();
     
     // Initialize services
-    this.initializeServices();
+    await this.initializeServices();
     
     // Register custom icon
     addIcon('meeting-sync', SYNC_ICON);
@@ -99,7 +101,7 @@ export default class MeetingMindPlugin extends Plugin {
   /**
    * Initialize all services
    */
-  private initializeServices(): void {
+  private async initializeServices(): Promise<void> {
     this.transcriptParser = new TranscriptParser();
     this.vaultIndex = new VaultIndexService(this.app);
     this.autoLinker = new AutoLinker(this.vaultIndex, this.settings.maxMatchesBeforeSkip);
@@ -108,6 +110,12 @@ export default class MeetingMindPlugin extends Plugin {
     this.otterService = new OtterService();
     this.noteGenerator = new NoteGenerator(this.app);
     this.participantService = new ParticipantService(this.app);
+    this.licenseService = new LicenseService();
+    
+    // Initialize license
+    if (this.settings.licenseKey) {
+      await this.licenseService.setLicenseKey(this.settings.licenseKey);
+    }
     
     // Configure services with current settings
     this.updateAllServices();
@@ -291,15 +299,22 @@ export default class MeetingMindPlugin extends Plugin {
         return null;
       }
       
-      // AI enrichment (if enabled)
+      // AI enrichment (if enabled and licensed)
       let enrichment = null;
+      const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+      
       if (this.settings.aiEnabled && this.aiService.isEnabled()) {
-        try {
-          this.updateStatusBar('syncing', 'AI processing...');
-          enrichment = await this.aiService.processTranscript(transcript);
-        } catch (error) {
-          console.error('MeetingMind: AI enrichment failed', error);
-          // Continue without AI enrichment
+        if (!hasAILicense) {
+          console.log('MeetingMind: AI features require Pro license');
+          // Don't show notice for every transcript, just log it
+        } else {
+          try {
+            this.updateStatusBar('syncing', 'AI processing...');
+            enrichment = await this.aiService.processTranscript(transcript);
+          } catch (error) {
+            console.error('MeetingMind: AI enrichment failed', error);
+            // Continue without AI enrichment
+          }
         }
       }
       
@@ -346,8 +361,9 @@ export default class MeetingMindPlugin extends Plugin {
           const meetingPath = file.path;
           const meetingDate = transcript.date;
           
-          // Get participant insights from AI enrichment
-          const participantInsights = enrichment?.participantInsights;
+          // Get participant insights from AI enrichment (only if licensed)
+          const hasInsightsLicense = this.licenseService.hasFeature('participantInsights');
+          const participantInsights = hasInsightsLicense ? enrichment?.participantInsights : undefined;
           
           const result = await this.participantService.processParticipants(
             transcript.participants,
