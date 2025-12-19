@@ -234,6 +234,7 @@ export class NoteGenerator {
     // Remove or replace characters that are invalid in filenames
     return name
       .replace(/[<>:"/\\|?*]/g, '') // Windows invalid chars
+      // eslint-disable-next-line no-control-regex
       .replace(/[\x00-\x1f\x80-\x9f]/g, '') // Control characters
       .replace(/^\.+/, '') // Leading dots
       .replace(/\.+$/, '') // Trailing dots
@@ -322,7 +323,7 @@ export class NoteGenerator {
    * Extract transcript text from note content
    */
   private extractTranscriptText(content: string): string | null {
-    const match = content.match(/## Transcript\n\n[\s\S]*?> \[\!note\][^\n]*\n([\s\S]*?)(?=\n## |$)/);
+    const match = content.match(/## Transcript\n\n[\s\S]*?> \[!note\][^\n]*\n([\s\S]*?)(?=\n## |$)/);
     return match ? match[1] : null;
   }
   

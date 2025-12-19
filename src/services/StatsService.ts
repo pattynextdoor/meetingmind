@@ -102,8 +102,8 @@ export class StatsService {
     if (Array.isArray(raw)) {
       return raw.map(p => {
         // Handle "[[Name]]" format
-        const match = String(p).match(/\[\[([^\]|]+)/);
-        return match ? match[1] : String(p).replace(/["\[\]]/g, '');
+        const match = String(p).match(/\[\[([^\]]+\|?)/);
+        return match ? match[1] : String(p).replace(/["[\]]/g, '');
       }).filter(p => p);
     }
     

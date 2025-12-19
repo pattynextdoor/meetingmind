@@ -64,7 +64,7 @@ export class VaultIndexService {
       
       // Add explicit aliases from frontmatter
       if (metadata?.frontmatter?.aliases) {
-        const aliases = Array.isArray(metadata.frontmatter.aliases) 
+        const aliases: unknown[] = Array.isArray(metadata.frontmatter.aliases) 
           ? metadata.frontmatter.aliases 
           : [metadata.frontmatter.aliases];
         
@@ -89,20 +89,20 @@ export class VaultIndexService {
     
     // Process collected aliases into exact and ambiguous matches
     for (const [alias, data] of aliasToPathsMap) {
-      const paths = Array.from(data.paths);
+      const paths: string[] = Array.from(data.paths);
       
       if (paths.length === 1) {
         // Single match - exact
-        this.index.exactMatches.set(alias, paths[0]);
+        this.index.exactMatches.set(alias, paths[0] as string);
       } else if (paths.length > 1) {
         // Multiple matches
         if (data.isExplicit) {
           // If it's an explicit alias that matches multiple notes, still try to use it
           // but mark as ambiguous for manual resolution
-          this.index.ambiguousMatches.set(alias, paths);
+          this.index.ambiguousMatches.set(alias, paths as string[]);
         } else {
           // Implicit aliases that match multiple notes go to ambiguous
-          this.index.ambiguousMatches.set(alias, paths);
+          this.index.ambiguousMatches.set(alias, paths as string[]);
         }
       }
     }

@@ -23,11 +23,12 @@ export class TranscriptParser {
       case 'srt':
         segments = this.parseSRT(content);
         break;
-      case 'json':
+      case 'json': {
         const jsonResult = this.parseJSON(content);
         segments = jsonResult.segments;
         participants = jsonResult.participants;
         break;
+      }
       case 'txt':
       default:
         segments = this.parseTXT(content);
