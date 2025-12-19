@@ -158,12 +158,13 @@ export class OtterService {
           return;
         }
         this.updateStatus('error', 'Otter.ai connection expired. Please re-authenticate.');
-      } else if (error.status === 429) {
+      } else if (errorWithStatus.status === 429) {
         // Rate limited
         this.updateStatus('error', `Rate limited. Retrying in ${Math.round(this.retryDelay / 60000)} minutes.`);
         this.scheduleRetry();
       } else {
-        this.updateStatus('error', `Sync failed: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : 'Sync failed';
+        this.updateStatus('error', `Sync failed: ${errorMessage}`);
       }
     }
   }
@@ -177,13 +178,28 @@ export class OtterService {
     // If no timestamp, get transcripts from last 7 days
     const since = timestamp || Date.now() - (7 * 24 * 60 * 60 * 1000);
     
-    const response = await this.apiRequest(`/speeches?created_after=${since}`);
+    const response = await this.apiRequest(`/speeches?created_after=${since}`) as {
+      speeches?: Array<{
+        id?: string;
+        title?: string;
+        created_at?: string;
+        duration?: number;
+        share_url?: string;
+        transcripts?: Array<{
+          speaker?: string;
+          start_time?: number;
+          end_time?: number;
+          text?: string;
+        }>;
+      }>;
+    };
     
     if (!response.speeches || !Array.isArray(response.speeches)) {
       return transcripts;
     }
     
     for (const speech of response.speeches) {
+      if (!speech.id) continue;
       try {
         const fullTranscript = await this.fetchTranscript(speech.id);
         if (fullTranscript) {
@@ -208,12 +224,20 @@ export class OtterService {
         return null;
       }
       
-      const responseData = response as { transcripts?: Array<{
-        speaker?: string;
-        start_time?: number;
-        end_time?: number;
-        text?: string;
-      }> };
+      const responseData = response as {
+        id?: string;
+        title?: string;
+        created_at?: string;
+        duration?: number;
+        share_url?: string;
+        transcripts?: Array<{
+          speaker?: string;
+          start_time?: number;
+          end_time?: number;
+          text?: string;
+        }>;
+      };
+      
       const segments: TranscriptSegment[] = (responseData.transcripts || []).map((t) => ({
         speaker: t.speaker || 'Unknown',
         timestamp: t.start_time || 0,
@@ -226,16 +250,17 @@ export class OtterService {
       
       // Generate content hash for deduplication
       const contentForHash = segments.map(s => s.text).join('');
-      const hash = this.parser.generateHash(contentForHash + response.id);
+      const hashId = responseData.id || id;
+      const hash = this.parser.generateHash(contentForHash + hashId);
       
       return {
         source: 'otter',
-        title: response.title || 'Untitled Meeting',
-        date: new Date(response.created_at || Date.now()),
-        duration: Math.ceil((response.duration || 0) / 60),
+        title: responseData.title || 'Untitled Meeting',
+        date: new Date(responseData.created_at || Date.now()),
+        duration: Math.ceil((responseData.duration || 0) / 60),
         participants,
         segments,
-        sourceUrl: response.share_url || `https://otter.ai/u/${id}`,
+        sourceUrl: responseData.share_url || `https://otter.ai/u/${id}`,
         hash,
       };
     } catch (error) {

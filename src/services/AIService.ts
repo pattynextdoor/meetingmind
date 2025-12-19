@@ -302,16 +302,24 @@ ${transcriptText}`;
       const parseEntity = (item: Record<string, unknown>, type: 'issue' | 'update' | 'topic'): Entity => {
         const entity: Entity = {
           type,
-          name: item.name || '',
+          name: typeof item.name === 'string' ? item.name : '',
         };
         
-        if (item.description) entity.description = item.description;
-        if (item.mentionedBy) entity.mentionedBy = item.mentionedBy;
-        if (item.status && ['in-progress', 'completed', 'blocked'].includes(item.status)) {
-          entity.status = item.status;
+        if (typeof item.description === 'string') {
+          entity.description = item.description;
         }
-        if (item.relatedTo) entity.relatedTo = item.relatedTo;
-        if (item.category) entity.category = item.category;
+        if (typeof item.mentionedBy === 'string') {
+          entity.mentionedBy = item.mentionedBy;
+        }
+        if (typeof item.status === 'string' && ['in-progress', 'completed', 'blocked'].includes(item.status)) {
+          entity.status = item.status as 'in-progress' | 'completed' | 'blocked';
+        }
+        if (typeof item.relatedTo === 'string') {
+          entity.relatedTo = item.relatedTo;
+        }
+        if (typeof item.category === 'string') {
+          entity.category = item.category;
+        }
         
         return entity;
       };
@@ -734,12 +742,29 @@ ${transcriptText}`;
         return [];
       }
       
-      return data.statusUpdates.map((update) => ({
-        entityName: update.entityName || '',
-        entityType: update.entityType || 'issue',
-        newStatus: update.newStatus,
-        reason: update.reason,
-      })).filter((update: EntityStatusUpdate) => update.entityName && update.newStatus);
+      const validStatuses = ['in-progress', 'completed', 'blocked', 'resolved', 'stale'] as const;
+      
+      const updates: EntityStatusUpdate[] = [];
+      
+      for (const update of data.statusUpdates) {
+        const entityName = update.entityName || '';
+        if (!entityName) continue;
+        
+        const newStatus = update.newStatus && typeof update.newStatus === 'string' && validStatuses.includes(update.newStatus as typeof validStatuses[number])
+          ? (update.newStatus as typeof validStatuses[number])
+          : undefined;
+        
+        if (!newStatus) continue;
+        
+        updates.push({
+          entityName,
+          entityType: (update.entityType || 'issue') as 'issue' | 'update' | 'topic',
+          newStatus,
+          reason: update.reason,
+        });
+      }
+      
+      return updates;
     } catch (error) {
       console.error('MeetingMind: Failed to parse entity status updates', error);
       return [];

@@ -153,13 +153,28 @@ export class FirefliesService {
     }
     
     try {
-      const result = await this.graphqlRequest(USER_QUERY);
+      const result = await this.graphqlRequest(USER_QUERY) as {
+        data?: {
+          user?: {
+            user_id?: string;
+            name?: string;
+            email?: string;
+            integrations?: string[];
+          };
+        };
+      };
       
       if (result.data?.user) {
+        const user = result.data.user;
         return {
           success: true,
-          message: `Connected as ${result.data.user.name || result.data.user.email}`,
-          user: result.data.user,
+          message: `Connected as ${user.name || user.email || 'user'}`,
+          user: {
+            user_id: user.user_id || '',
+            name: user.name || '',
+            email: user.email || '',
+            integrations: Array.isArray(user.integrations) ? user.integrations : [],
+          },
         };
       }
       
@@ -247,7 +262,11 @@ export class FirefliesService {
       const listResult = await this.graphqlRequest(TRANSCRIPTS_QUERY, {
         limit: 50,
         skip: 0,
-      });
+      }) as {
+        data?: {
+          transcripts?: FirefliesTranscript[];
+        };
+      };
       
       if (!listResult.data?.transcripts) {
         console.debug('MeetingMind: No transcripts returned from Fireflies');
@@ -287,7 +306,11 @@ export class FirefliesService {
    */
   private async fetchTranscriptDetail(id: string): Promise<RawTranscript | null> {
     try {
-      const result = await this.graphqlRequest(TRANSCRIPT_DETAIL_QUERY, { id });
+      const result = await this.graphqlRequest(TRANSCRIPT_DETAIL_QUERY, { id }) as {
+        data?: {
+          transcript?: FirefliesTranscript;
+        };
+      };
       
       if (!result.data?.transcript) {
         return null;
