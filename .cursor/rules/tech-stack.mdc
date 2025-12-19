@@ -1,0 +1,364 @@
+---
+description: Technology stack, dependency versions, and best practices for MeetingMind
+globs: **/*
+alwaysApply: true
+---
+
+# Technology Stack & Dependencies
+
+MeetingMind is an Obsidian plugin with a React-based frontend landing page. This document outlines the complete technology stack, versions, and best practices.
+
+## Architecture Overview
+
+- **Main Application**: Obsidian plugin (TypeScript + esbuild)
+- **Frontend Landing**: React + Vite application
+- **Runtime**: Node.js (via Obsidian/Electron)
+- **Target Platform**: Desktop only (macOS, Windows, Linux)
+
+## Core Dependencies
+
+### TypeScript
+
+**Main Plugin:**
+- `typescript: ^5.3.2`
+- Target: `ES2015` (for Obsidian compatibility)
+- Module: `ESNext`
+
+**Frontend:**
+- `typescript: ~5.8.2`
+- Target: `ES2022`
+- Module: `ESNext`
+
+**Best Practices:**
+- Use strict mode (`strictNullChecks: true`) in main plugin
+- Frontend uses `moduleResolution: "bundler"` for Vite compatibility
+- Main plugin uses `moduleResolution: "node"` for Obsidian compatibility
+- Always enable `isolatedModules: true` for better build performance
+- Use `noImplicitAny: true` to catch type errors early
+
+**Version Notes:**
+- TypeScript 5.3.2 is stable and well-tested with Obsidian plugins
+- TypeScript 5.8.2 in frontend provides latest features for React development
+- Avoid mixing TypeScript versions between main and frontend
+
+### Build Tools
+
+#### esbuild (Main Plugin)
+
+**Version:** `esbuild: ^0.19.8`
+
+**Configuration:**
+- Format: `cjs` (CommonJS for Obsidian)
+- Target: `es2018`
+- Bundle: `true` (single file output)
+- Tree shaking: `enabled`
+
+**Best Practices:**
+- External dependencies: `obsidian`, `electron`, CodeMirror packages, Node built-ins
+- Use `esbuild.context()` for watch mode in development
+- Inline source maps for development, disable for production
+- Always bundle to single `main.js` file for Obsidian plugin distribution
+
+**Version Notes:**
+- esbuild 0.19.x is the latest stable version with excellent performance
+- Watch mode provides fast rebuilds during development
+- Tree shaking reduces bundle size significantly
+
+#### Vite (Frontend)
+
+**Version:** `vite: ^6.2.0`
+
+**Configuration:**
+- Plugin: `@vitejs/plugin-react: ^5.0.0`
+- Server: Port 3000, host 0.0.0.0
+- Module: ESM (`type: "module"`)
+
+**Best Practices:**
+- Use `loadEnv()` for environment variable management
+- Define API keys via `define` for build-time injection
+- Use path aliases (`@/*`) for cleaner imports
+- Enable React Fast Refresh for hot module replacement
+
+**Version Notes:**
+- Vite 6.x is the latest major version with improved performance
+- React plugin 5.x supports React 19
+- Use ESM for modern module system benefits
+
+### Testing
+
+#### Jest
+
+**Version:** `jest: ^29.7.0`
+**Preset:** `ts-jest: ^29.1.1`
+
+**Configuration:**
+- Test environment: `node`
+- Transform: TypeScript via ts-jest
+- Mock: Obsidian API (`tests/__mocks__/obsidian.ts`)
+
+**Best Practices:**
+- Mock Obsidian dependencies in `tests/__mocks__/obsidian.ts`
+- Use `collectCoverageFrom` to exclude test files and entry points
+- Test files should match pattern: `**/*.test.ts` or `**/*.spec.ts`
+- Keep test files in `tests/` directory, separate from source
+
+**Version Notes:**
+- Jest 29.x is the latest stable version
+- ts-jest 29.x provides full TypeScript 5.x support
+- Consider upgrading to Jest 30+ when stable for better ESM support
+
+### Linting
+
+#### ESLint
+
+**Version:** `eslint: ^9.39.2`
+**TypeScript ESLint:** `typescript-eslint: ^8.50.0`
+
+**Configuration:**
+- Flat config format (ESLint 9.x)
+- TypeScript parser with project-aware linting
+- Recommended rules from `@eslint/js` and `typescript-eslint`
+
+**Best Practices:**
+- Use flat config format (`eslint.config.mjs`)
+- Enable project-aware linting via `parserOptions.project`
+- Warn on `@typescript-eslint/no-explicit-any` (allow with justification)
+- Ignore `node_modules`, `frontend`, `dist`, and build outputs
+- Allow `no-console` for Obsidian plugin development
+
+**Version Notes:**
+- ESLint 9.x uses flat config (breaking change from 8.x)
+- typescript-eslint 8.x supports TypeScript 5.x and ESLint 9.x
+- Flat config provides better performance and flexibility
+
+### Frontend Framework
+
+#### React
+
+**Version:** `react: ^19.2.3` and `react-dom: ^19.2.3`
+
+**Best Practices:**
+- Use React 19 features (useFormStatus, useOptimistic, etc.)
+- Leverage React Server Components concepts where applicable
+- Use functional components with hooks
+- Avoid class components (legacy pattern)
+
+**Version Notes:**
+- React 19 is the latest major version with significant improvements
+- Better performance and smaller bundle sizes
+- Improved TypeScript support
+- Breaking changes from React 18: review migration guide if upgrading
+
+#### UI Libraries
+
+**lucide-react:** `^0.561.0`
+
+**Best Practices:**
+- Use tree-shakeable icon imports: `import { IconName } from 'lucide-react'`
+- Icons are SVG-based and highly customizable
+- Prefer lucide-react over other icon libraries for consistency
+
+**Version Notes:**
+- lucide-react 0.561.x provides comprehensive icon set
+- Regular updates add new icons and improvements
+
+### Type Definitions
+
+**@types/node:**
+- Main plugin: `^20.10.0`
+- Frontend: `^22.14.0`
+
+**@types/jest:** `^29.5.11`
+
+**Best Practices:**
+- Keep Node types aligned with your Node.js version
+- Frontend uses Node 22 types for latest features
+- Main plugin uses Node 20 types for Obsidian compatibility
+- Always include type definitions for better IDE support
+
+## External Services & APIs
+
+### AI Providers
+
+**Anthropic (Claude):**
+- API URL: `https://api.anthropic.com/v1/messages`
+- API Key format: `sk-ant-...`
+- Pricing: ~$0.003 per 1K tokens
+- Recommended for meeting summaries
+
+**OpenAI (GPT-4):**
+- API URL: `https://api.openai.com/v1/chat/completions`
+- API Key format: `sk-...`
+- Pricing: ~$0.005 per 1K tokens
+- Alternative AI provider option
+
+**Best Practices:**
+- Never commit API keys to version control
+- Store API keys in Obsidian plugin settings (encrypted)
+- Use user's own API keys (privacy-first approach)
+- Implement rate limiting and retry logic
+- Chunk large transcripts (max ~30K tokens per chunk)
+
+### Transcript Services
+
+**Fireflies.ai:**
+- API URL: `https://api.fireflies.ai/graphql`
+- GraphQL API for fetching transcripts
+- Requires API key authentication
+
+**Otter.ai:**
+- API URL: `https://otter.ai/forward/api/v1`
+- OAuth-based authentication
+- Requires access token and refresh token
+
+**Best Practices:**
+- Implement OAuth flow for services requiring it
+- Store tokens securely in plugin settings
+- Handle token refresh automatically
+- Implement sync intervals (default: 15 minutes)
+- Add rate limiting and exponential backoff
+
+### License Validation
+
+**Gumroad:**
+- API URL: `api.gumroad.com`
+- Validates Pro license keys
+- Used for license verification only
+
+**Best Practices:**
+- Cache license validation results
+- Handle network failures gracefully
+- Never expose license keys in logs
+
+## Runtime Environment
+
+### Obsidian
+
+**Minimum Version:** `1.4.0` (per manifest.json)
+
+**Best Practices:**
+- Use Obsidian's `requestUrl` for HTTP requests (not fetch)
+- Leverage Obsidian's built-in UI components
+- Follow Obsidian plugin API patterns
+- Test on multiple Obsidian versions (1.4.0+)
+
+**Version Notes:**
+- Obsidian plugins run in Electron environment
+- Use CommonJS format for plugin distribution
+- External dependencies must be bundled or marked external
+
+### Node.js
+
+**Implicit Version:** Node 20+ (via Obsidian/Electron)
+
+**Best Practices:**
+- Use Node.js built-in modules when available
+- Mark Node built-ins as external in esbuild config
+- Use `builtin-modules` package to list all built-ins
+- Avoid Node.js version-specific features
+
+## Development Workflow
+
+### Scripts
+
+**Main Plugin:**
+- `npm run dev`: Watch mode build (esbuild)
+- `npm run build`: Production build with type checking
+- `npm test`: Run Jest tests
+- `npm run lint`: ESLint check
+
+**Frontend:**
+- `npm run dev`: Vite dev server (port 3000)
+- `npm run build`: Production build
+- `npm run preview`: Preview production build
+
+**Best Practices:**
+- Always run `npm run build` before committing (includes type check)
+- Use `npm run dev` for active development
+- Run tests before pushing: `npm test`
+- Fix linting issues: `npm run lint:fix`
+
+## Version Management
+
+### Dependency Updates
+
+**When to Update:**
+- Security patches: Update immediately
+- Major versions: Review changelog and test thoroughly
+- Minor versions: Update monthly or quarterly
+- Patch versions: Update as needed
+
+**Update Strategy:**
+- Test in development environment first
+- Check for breaking changes in changelogs
+- Update one major dependency at a time
+- Keep main plugin and frontend dependencies separate
+
+### Version Pinning
+
+**Current Strategy:**
+- Use `^` (caret) for most dependencies (allows minor updates)
+- Use `~` (tilde) for frontend TypeScript (patch updates only)
+- Pin exact versions only when necessary for stability
+
+**Best Practices:**
+- Review `package-lock.json` changes in PRs
+- Use `npm audit` to check for vulnerabilities
+- Consider using `npm ci` in CI/CD for reproducible builds
+
+## Build Output
+
+### Main Plugin
+
+**Output:** `main.js` (single bundled file)
+
+**Characteristics:**
+- CommonJS format
+- Bundled dependencies (except externals)
+- Inline source maps (dev) or none (prod)
+- Banner comment indicating generated file
+
+### Frontend
+
+**Output:** `frontend/dist/` directory
+
+**Characteristics:**
+- ESM format
+- Code splitting enabled
+- Optimized assets
+- Source maps for debugging
+
+## Code Organization
+
+### Directory Structure
+
+```
+meetingmind/
+├── src/              # Main plugin source (TypeScript)
+├── frontend/         # React frontend (separate package)
+├── tests/            # Jest test files
+├── docs/             # Documentation
+└── .cursor/rules/    # Cursor AI rules
+```
+
+**Best Practices:**
+- Keep main plugin and frontend completely separate
+- Use TypeScript for all source files
+- Co-locate tests with source (or in `tests/` directory)
+- Document complex logic and API integrations
+
+## Security Considerations
+
+1. **API Keys**: Never commit API keys, use environment variables or plugin settings
+2. **Dependencies**: Regularly audit dependencies for vulnerabilities
+3. **External Requests**: Validate and sanitize all external API responses
+4. **User Data**: Store sensitive data in Obsidian's secure storage
+5. **Network**: Use HTTPS for all external API calls
+
+## Performance Considerations
+
+1. **Bundle Size**: Keep main plugin bundle small (tree shaking enabled)
+2. **Chunking**: Chunk large transcripts for AI processing (30K token limit)
+3. **Caching**: Cache license validation and API responses where appropriate
+4. **Lazy Loading**: Consider lazy loading for heavy features
+5. **Source Maps**: Disable in production builds for smaller file size
