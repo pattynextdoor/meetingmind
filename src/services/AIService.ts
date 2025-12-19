@@ -4,7 +4,7 @@
  */
 
 import { requestUrl, RequestUrlResponse } from 'obsidian';
-import { AIEnrichment, AIProvider, RawTranscript, TranscriptSegment, ParticipantInsight } from '../types';
+import { AIEnrichment, AIProvider, RawTranscript, TranscriptSegment, ParticipantInsight, EntityExtraction, Entity } from '../types';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
@@ -198,6 +198,122 @@ ${transcriptText}`;
     } catch (error) {
       console.error('MeetingMind: Failed to parse participant insights', error);
       return [];
+    }
+  }
+  
+  /**
+   * Extract entities (issues, updates, topics) from transcript
+   */
+  async extractEntities(transcript: RawTranscript): Promise<EntityExtraction | null> {
+    if (!this.isEnabled()) {
+      return null;
+    }
+    
+    const transcriptText = this.formatTranscriptForAI(transcript);
+    
+    const prompt = `Analyze this meeting transcript and extract the following entities:
+
+ISSUES: Technical problems, blockers, bugs, or challenges mentioned. These should be specific, actionable problems that need resolution.
+Format: { "name": "Issue name", "description": "Brief context", "mentionedBy": "Person who mentioned it" }
+
+UPDATES: Progress updates, milestones, status changes, completion announcements. These should be substantive updates about work progress.
+Format: { "name": "Update name", "description": "What changed", "status": "in-progress|completed|blocked", "relatedTo": "Project or topic" }
+
+TOPICS: Important concepts, systems, initiatives, or recurring themes discussed. These should be significant topics that are worth documenting.
+Format: { "name": "Topic name", "description": "What it is", "category": "technical|process|product" }
+
+Return as JSON:
+{
+  "issues": [
+    {
+      "name": "Issue name",
+      "description": "Brief description",
+      "mentionedBy": "Person name or null"
+    }
+  ],
+  "updates": [
+    {
+      "name": "Update name",
+      "description": "What changed",
+      "status": "in-progress|completed|blocked",
+      "relatedTo": "Project name or null"
+    }
+  ],
+  "topics": [
+    {
+      "name": "Topic name",
+      "description": "What it is",
+      "category": "technical|process|product"
+    }
+  ]
+}
+
+Only extract clear, substantive mentions. Return empty arrays if none found. Return valid JSON only.
+
+TRANSCRIPT:
+${transcriptText}`;
+
+    try {
+      let response: string;
+      
+      if (this.provider === 'claude') {
+        response = await this.callClaude(prompt);
+      } else if (this.provider === 'openai') {
+        response = await this.callOpenAI(prompt);
+      } else if (this.provider === 'cloud') {
+        response = await this.callClaude(prompt);
+      } else {
+        return null;
+      }
+      
+      return this.parseEntityExtraction(response);
+    } catch (error) {
+      console.error('MeetingMind: Failed to extract entities', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Parse entity extraction from AI response
+   */
+  private parseEntityExtraction(response: string): EntityExtraction {
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in response');
+      }
+      
+      const data = JSON.parse(jsonMatch[0]);
+      
+      const parseEntity = (item: any, type: 'issue' | 'update' | 'topic'): Entity => {
+        const entity: Entity = {
+          type,
+          name: item.name || '',
+        };
+        
+        if (item.description) entity.description = item.description;
+        if (item.mentionedBy) entity.mentionedBy = item.mentionedBy;
+        if (item.status && ['in-progress', 'completed', 'blocked'].includes(item.status)) {
+          entity.status = item.status;
+        }
+        if (item.relatedTo) entity.relatedTo = item.relatedTo;
+        if (item.category) entity.category = item.category;
+        
+        return entity;
+      };
+      
+      return {
+        issues: (data.issues || []).map((item: any) => parseEntity(item, 'issue')),
+        updates: (data.updates || []).map((item: any) => parseEntity(item, 'update')),
+        topics: (data.topics || []).map((item: any) => parseEntity(item, 'topic')),
+      };
+    } catch (error) {
+      console.error('MeetingMind: Failed to parse entity extraction', error);
+      return {
+        issues: [],
+        updates: [],
+        topics: [],
+      };
     }
   }
   

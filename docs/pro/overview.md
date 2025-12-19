@@ -11,6 +11,7 @@ MeetingMind Pro unlocks AI-powered features that transform your meeting transcri
 | **Decisions** | Key decisions made during the meeting |
 | **Tag Suggestions** | Smart tags based on your vault's existing tags |
 | **Participant Insights** | AI-generated insights per participant |
+| **Entity Extraction** | Auto-create notes for issues, updates, and topics |
 
 ## Pricing
 

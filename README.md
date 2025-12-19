@@ -19,6 +19,7 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 - **Decision Extraction**: Capture key decisions made during meetings
 - **Tag Suggestions**: AI-recommended tags based on your existing vault tags
 - **Participant Insights**: AI-generated insights per participant
+- **Entity Extraction**: Auto-create notes for issues, updates, and topics mentioned
 - **BYOK**: Bring your own Claude or OpenAI API key
 
 ### 🔗 Auto-Linking
@@ -112,7 +113,7 @@ Team decided to maintain backward compatibility through Q1.
 | Tier | Price | Features |
 |------|-------|----------|
 | **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, meeting dashboard, Dataview-ready output |
-| **Pro** | $25 one-time | + AI summaries, action items, decisions, tag suggestions, participant insights (BYOK) |
+| **Pro** | $25 one-time | + AI summaries, action items, decisions, tag suggestions, participant insights, entity extraction (BYOK) |
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
 

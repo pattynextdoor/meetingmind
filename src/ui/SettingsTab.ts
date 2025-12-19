@@ -51,6 +51,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // Participants Section
     this.createParticipantsSection(containerEl);
     
+    // Entity Extraction Section
+    this.createEntitySection(containerEl);
+    
     // License Section
     this.createLicenseSection(containerEl);
   }
@@ -578,6 +581,124 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
         );
+    }
+  }
+  
+  /**
+   * Create Entity Extraction section (Pro)
+   */
+  private createEntitySection(containerEl: HTMLElement): void {
+    containerEl.createEl('h2', { text: '📊 Entity Extraction (Pro)' });
+    
+    const isPro = this.plugin.licenseService.isPro();
+    
+    if (!isPro) {
+      const upgradeNote = containerEl.createDiv({ cls: 'meetingmind-pro-note' });
+      upgradeNote.createEl('p', { 
+        text: 'Entity extraction requires MeetingMind Pro. Upgrade to automatically create notes for issues, updates, and topics mentioned in meetings.'
+      });
+      return;
+    }
+    
+    // Master toggle
+    new Setting(containerEl)
+      .setName('Auto-extract entities')
+      .setDesc('Automatically create notes for issues, updates, and topics mentioned in meetings')
+      .addToggle(toggle => toggle
+        .setValue(this.plugin.settings.autoExtractEntities)
+        .onChange(async (value) => {
+          this.plugin.settings.autoExtractEntities = value;
+          await this.plugin.saveSettings();
+          this.plugin.updateEntityService();
+          this.display();
+        })
+      );
+    
+    if (this.plugin.settings.autoExtractEntities) {
+      // Entity type toggles
+      new Setting(containerEl)
+        .setName('Extract issues')
+        .setDesc('Create notes for blockers, problems, and bugs mentioned')
+        .addToggle(toggle => toggle
+          .setValue(this.plugin.settings.enableIssueExtraction)
+          .onChange(async (value) => {
+            this.plugin.settings.enableIssueExtraction = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateEntityService();
+          })
+        );
+      
+      new Setting(containerEl)
+        .setName('Extract updates')
+        .setDesc('Create notes for progress updates, milestones, and status changes')
+        .addToggle(toggle => toggle
+          .setValue(this.plugin.settings.enableUpdateExtraction)
+          .onChange(async (value) => {
+            this.plugin.settings.enableUpdateExtraction = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateEntityService();
+          })
+        );
+      
+      new Setting(containerEl)
+        .setName('Extract topics')
+        .setDesc('Create notes for important concepts, systems, and recurring themes')
+        .addToggle(toggle => toggle
+          .setValue(this.plugin.settings.enableTopicExtraction)
+          .onChange(async (value) => {
+            this.plugin.settings.enableTopicExtraction = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateEntityService();
+          })
+        );
+      
+      // Folder paths - debounced
+      const debouncedFolderUpdate = debounce(async () => {
+        await this.plugin.saveSettings();
+        this.plugin.updateEntityService();
+      }, 1000);
+      
+      new Setting(containerEl)
+        .setName('Issues folder')
+        .setDesc('Folder where issue notes are created')
+        .addText(text => text
+          .setPlaceholder('Issues')
+          .setValue(this.plugin.settings.entityIssuesFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.entityIssuesFolder = value || 'Issues';
+            debouncedFolderUpdate();
+          })
+        );
+      
+      new Setting(containerEl)
+        .setName('Updates folder')
+        .setDesc('Folder where update notes are created')
+        .addText(text => text
+          .setPlaceholder('Updates')
+          .setValue(this.plugin.settings.entityUpdatesFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.entityUpdatesFolder = value || 'Updates';
+            debouncedFolderUpdate();
+          })
+        );
+      
+      new Setting(containerEl)
+        .setName('Topics folder')
+        .setDesc('Folder where topic notes are created')
+        .addText(text => text
+          .setPlaceholder('Topics')
+          .setValue(this.plugin.settings.entityTopicsFolder)
+          .onChange(async (value) => {
+            this.plugin.settings.entityTopicsFolder = value || 'Topics';
+            debouncedFolderUpdate();
+          })
+        );
+      
+      // Info box
+      const infoBox = containerEl.createDiv({ cls: 'meetingmind-info-box' });
+      infoBox.createEl('p', {
+        text: 'Entity notes are automatically created when mentioned in meetings and linked back to the meeting notes.'
+      });
     }
   }
   

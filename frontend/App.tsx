@@ -252,6 +252,57 @@ const Features = () => {
           </div>
         </div>
 
+        {/* Feature 5: Entity Extraction */}
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="order-2 md:order-1">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-purple-100/50 rounded-xl rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
+              <div className="relative bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden p-6">
+                <div className="text-stone-300 text-xs font-mono mb-3">---<br/>type: issue<br/>---</div>
+                <div className="text-xl font-serif text-stone-900 mb-4"># OAuth Integration Blocker</div>
+                <div className="space-y-3 text-sm">
+                  <div className="text-stone-500">## Description</div>
+                  <div className="pl-4 text-stone-600">Refresh token handling issue with Google API</div>
+                  <div className="text-stone-500 mt-4">## Status</div>
+                  <div className="pl-4 text-stone-600">blocked</div>
+                  <div className="text-stone-500 mt-4">## Related Meetings</div>
+                  <div className="pl-4 space-y-1 text-stone-600">
+                    <div>• [[2025-01-15 Cadence App Launch Planning]]</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="order-1 md:order-2 space-y-6">
+            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 mb-4">
+              <Icons.Network size={24} />
+            </div>
+            <h2 className="font-serif text-4xl text-stone-900">Build your knowledge graph automatically</h2>
+            <p className="font-sans text-lg text-stone-600 leading-relaxed">
+              MeetingMind doesn't just link to existing notes—it creates new ones. 
+              Issues, progress updates, and topics mentioned in meetings automatically 
+              become part of your vault.
+            </p>
+            <ul className="space-y-3 text-stone-600 font-sans text-sm">
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Auto-create notes for blockers and issues</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Track progress updates automatically</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Document topics and concepts as they're discussed</span>
+              </li>
+            </ul>
+            <div className="inline-block px-2 py-1 bg-amber-50 text-amber-700 text-xs font-medium rounded">
+              ⭐ Pro License Required
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -376,6 +427,7 @@ const Pricing = () => {
         "Decision tracking",
         "Smart tag suggestions",
         "AI-powered participant insights",
+        "Entity extraction (issues, updates, topics)",
         "Bring your own API key (Claude/OpenAI)"
       ],
       cta: "Get Pro License",
@@ -393,8 +445,8 @@ const Pricing = () => {
         </div>
         
         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto items-center">
-          {tiers.map((tier, i) => (
-            <PricingCard key={i} tier={tier} />
+          {tiers.map((tier) => (
+            <PricingCard tier={tier} />
           ))}
         </div>
 

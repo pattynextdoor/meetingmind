@@ -33,6 +33,7 @@ import { OtterService } from './services/OtterService';
 import { FirefliesService } from './services/FirefliesService';
 import { NoteGenerator } from './services/NoteGenerator';
 import { ParticipantService } from './services/ParticipantService';
+import { EntityService } from './services/EntityService';
 import { LicenseService } from './services/LicenseService';
 import { StatsService } from './services/StatsService';
 import { MeetingMindSettingsTab } from './ui/SettingsTab';
@@ -54,6 +55,7 @@ export default class MeetingMindPlugin extends Plugin {
   firefliesService: FirefliesService;
   noteGenerator: NoteGenerator;
   participantService: ParticipantService;
+  entityService: EntityService;
   licenseService: LicenseService;
   statsService: StatsService;
   
@@ -118,6 +120,7 @@ export default class MeetingMindPlugin extends Plugin {
     this.firefliesService = new FirefliesService();
     this.noteGenerator = new NoteGenerator(this.app);
     this.participantService = new ParticipantService(this.app);
+    this.entityService = new EntityService(this.app);
     this.licenseService = new LicenseService();
     this.statsService = new StatsService(this.app);
     
@@ -142,6 +145,7 @@ export default class MeetingMindPlugin extends Plugin {
     this.updateFirefliesService();
     this.updateNoteGenerator();
     this.updateParticipantService();
+    this.updateEntityService();
   }
   
   /**
@@ -420,6 +424,45 @@ export default class MeetingMindPlugin extends Plugin {
           }
         } catch (error) {
           console.error('MeetingMind: Failed to process participant notes', error);
+          // Continue - don't block meeting note creation
+        }
+      }
+      
+      // Auto-extract entities (if enabled and licensed)
+      if (this.settings.autoExtractEntities && hasAILicense && enrichment) {
+        try {
+          // Extract entities from transcript
+          const entities = await this.aiService.extractEntities(transcript);
+          
+          if (entities && (entities.issues.length > 0 || entities.updates.length > 0 || entities.topics.length > 0)) {
+            // Store entities in enrichment for potential use in note generation
+            enrichment.entities = entities;
+            
+            const meetingTitle = transcript.title;
+            const meetingPath = file.path;
+            const meetingDate = transcript.date;
+            
+            const entityResult = await this.entityService.processEntities(
+              entities,
+              meetingTitle,
+              meetingPath,
+              meetingDate
+            );
+            
+            if (entityResult.created.length > 0) {
+              console.log(`MeetingMind: Created entity notes for: ${entityResult.created.join(', ')}`);
+              new Notice(`Created notes for: ${entityResult.created.join(', ')}`);
+              
+              // Rebuild vault index to include new entity notes
+              this.vaultIndex.scheduleIncrementalUpdate();
+            }
+            
+            if (entityResult.updated.length > 0) {
+              console.log(`MeetingMind: Updated entity notes for: ${entityResult.updated.join(', ')}`);
+            }
+          }
+        } catch (error) {
+          console.error('MeetingMind: Failed to process entities', error);
           // Continue - don't block meeting note creation
         }
       }
@@ -891,6 +934,17 @@ export default class MeetingMindPlugin extends Plugin {
   updateParticipantService(): void {
     this.participantService.configure(
       this.settings.peopleFolder
+    );
+  }
+  
+  updateEntityService(): void {
+    this.entityService.configure(
+      this.settings.entityIssuesFolder,
+      this.settings.entityUpdatesFolder,
+      this.settings.entityTopicsFolder,
+      this.settings.enableIssueExtraction,
+      this.settings.enableUpdateExtraction,
+      this.settings.enableTopicExtraction
     );
   }
   

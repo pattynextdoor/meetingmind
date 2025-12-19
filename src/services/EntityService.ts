@@ -1,0 +1,353 @@
+/**
+ * EntityService - Auto-create and update notes for issues, updates, and topics
+ */
+
+import { App, TFile, normalizePath } from 'obsidian';
+import { Entity, EntityExtraction } from '../types';
+
+export interface EntityInfo {
+  entity: Entity;
+  noteExists: boolean;
+  notePath: string | null;
+}
+
+export class EntityService {
+  private app: App;
+  private issuesFolder: string;
+  private updatesFolder: string;
+  private topicsFolder: string;
+  private enableIssues: boolean;
+  private enableUpdates: boolean;
+  private enableTopics: boolean;
+  
+  constructor(app: App) {
+    this.app = app;
+    this.issuesFolder = 'Issues';
+    this.updatesFolder = 'Updates';
+    this.topicsFolder = 'Topics';
+    this.enableIssues = true;
+    this.enableUpdates = true;
+    this.enableTopics = true;
+  }
+  
+  /**
+   * Configure entity extraction settings
+   */
+  configure(
+    issuesFolder: string,
+    updatesFolder: string,
+    topicsFolder: string,
+    enableIssues: boolean,
+    enableUpdates: boolean,
+    enableTopics: boolean
+  ): void {
+    this.issuesFolder = issuesFolder;
+    this.updatesFolder = updatesFolder;
+    this.topicsFolder = topicsFolder;
+    this.enableIssues = enableIssues;
+    this.enableUpdates = enableUpdates;
+    this.enableTopics = enableTopics;
+  }
+  
+  /**
+   * Process entities and create/update notes
+   */
+  async processEntities(
+    entities: EntityExtraction,
+    meetingTitle: string,
+    meetingPath: string,
+    meetingDate: Date
+  ): Promise<{ created: string[]; updated: string[] }> {
+    const created: string[] = [];
+    const updated: string[] = [];
+    
+    // Process issues
+    if (this.enableIssues && entities.issues.length > 0) {
+      await this.ensureFolder(this.issuesFolder);
+      for (const issue of entities.issues) {
+        const existingPath = this.findEntityNote(issue);
+        if (existingPath) {
+          await this.updateEntityNote(existingPath, issue, meetingTitle, meetingPath, meetingDate);
+          updated.push(issue.name);
+        } else {
+          const newPath = await this.createEntityNote(issue, this.issuesFolder, meetingTitle, meetingPath, meetingDate);
+          if (newPath) {
+            created.push(issue.name);
+          }
+        }
+      }
+    }
+    
+    // Process updates
+    if (this.enableUpdates && entities.updates.length > 0) {
+      await this.ensureFolder(this.updatesFolder);
+      for (const update of entities.updates) {
+        const existingPath = this.findEntityNote(update);
+        if (existingPath) {
+          await this.updateEntityNote(existingPath, update, meetingTitle, meetingPath, meetingDate);
+          updated.push(update.name);
+        } else {
+          const newPath = await this.createEntityNote(update, this.updatesFolder, meetingTitle, meetingPath, meetingDate);
+          if (newPath) {
+            created.push(update.name);
+          }
+        }
+      }
+    }
+    
+    // Process topics
+    if (this.enableTopics && entities.topics.length > 0) {
+      await this.ensureFolder(this.topicsFolder);
+      for (const topic of entities.topics) {
+        const existingPath = this.findEntityNote(topic);
+        if (existingPath) {
+          await this.updateEntityNote(existingPath, topic, meetingTitle, meetingPath, meetingDate);
+          updated.push(topic.name);
+        } else {
+          const newPath = await this.createEntityNote(topic, this.topicsFolder, meetingTitle, meetingPath, meetingDate);
+          if (newPath) {
+            created.push(topic.name);
+          }
+        }
+      }
+    }
+    
+    return { created, updated };
+  }
+  
+  /**
+   * Find an existing note for an entity
+   */
+  private findEntityNote(entity: Entity): string | null {
+    const folder = this.getFolderForType(entity.type);
+    const possiblePaths = [
+      `${folder}/${entity.name}.md`,
+      `${entity.name}.md`,
+    ];
+    
+    for (const path of possiblePaths) {
+      const normalizedPath = normalizePath(path);
+      const file = this.app.vault.getAbstractFileByPath(normalizedPath);
+      if (file instanceof TFile) {
+        // Verify it's the right type by checking frontmatter
+        const cache = this.app.metadataCache.getFileCache(file);
+        if (cache?.frontmatter?.type === entity.type) {
+          return normalizedPath;
+        }
+      }
+    }
+    
+    // Search by name and type
+    const files = this.app.vault.getMarkdownFiles();
+    for (const file of files) {
+      const cache = this.app.metadataCache.getFileCache(file);
+      if (cache?.frontmatter?.type === entity.type && 
+          file.basename.toLowerCase() === entity.name.toLowerCase()) {
+        return file.path;
+      }
+    }
+    
+    return null;
+  }
+  
+  /**
+   * Get folder path for entity type
+   */
+  private getFolderForType(type: 'issue' | 'update' | 'topic'): string {
+    switch (type) {
+      case 'issue':
+        return this.issuesFolder;
+      case 'update':
+        return this.updatesFolder;
+      case 'topic':
+        return this.topicsFolder;
+    }
+  }
+  
+  /**
+   * Create a new entity note
+   */
+  private async createEntityNote(
+    entity: Entity,
+    folder: string,
+    meetingTitle: string,
+    meetingPath: string,
+    meetingDate: Date
+  ): Promise<string | null> {
+    const fileName = `${entity.name}.md`;
+    const filePath = normalizePath(`${folder}/${fileName}`);
+    
+    if (this.app.vault.getAbstractFileByPath(filePath)) {
+      return null;
+    }
+    
+    const content = this.generateEntityNote(entity, meetingTitle, meetingPath, meetingDate);
+    
+    try {
+      await this.app.vault.create(filePath, content);
+      console.log(`MeetingMind: Created ${entity.type} note for ${entity.name}`);
+      return filePath;
+    } catch (error) {
+      console.error(`MeetingMind: Failed to create note for ${entity.name}`, error);
+      return null;
+    }
+  }
+  
+  /**
+   * Generate content for a new entity note
+   */
+  private generateEntityNote(
+    entity: Entity,
+    meetingTitle: string,
+    meetingPath: string,
+    meetingDate: Date
+  ): string {
+    const date = new Date().toISOString().split('T')[0];
+    const meetingLink = meetingPath.replace(/\.md$/, '');
+    const meetingDateStr = meetingDate.toISOString().split('T')[0];
+    
+    let content = `---
+type: ${entity.type}
+created: ${date}
+---
+
+# ${entity.name}
+
+`;
+
+    // Add description if available
+    if (entity.description) {
+      content += `## Description\n\n${entity.description}\n\n`;
+    }
+    
+    // Add status for updates
+    if (entity.type === 'update' && entity.status) {
+      content += `## Status\n\n${entity.status}\n\n`;
+    }
+    
+    // Add status for issues (if blocked)
+    if (entity.type === 'issue' && entity.status) {
+      content += `## Status\n\n${entity.status}\n\n`;
+    }
+    
+    // Add related to
+    if (entity.relatedTo) {
+      content += `## Related To\n\n[[${entity.relatedTo}]]\n\n`;
+    }
+    
+    // Add category for topics
+    if (entity.type === 'topic' && entity.category) {
+      content += `## Category\n\n${entity.category}\n\n`;
+    }
+    
+    // Add mentioned by
+    if (entity.mentionedBy) {
+      content += `**Mentioned by**: ${entity.mentionedBy}\n\n`;
+    }
+    
+    // Related meetings
+    content += `## Related Meetings\n\n`;
+    content += `- [[${meetingLink}|${meetingTitle}]] (${meetingDateStr})\n\n`;
+    
+    // Notes section
+    content += `## Notes\n\n`;
+    
+    return content;
+  }
+  
+  /**
+   * Update an existing entity note with new meeting info
+   */
+  private async updateEntityNote(
+    notePath: string,
+    entity: Entity,
+    meetingTitle: string,
+    meetingPath: string,
+    meetingDate: Date
+  ): Promise<void> {
+    const file = this.app.vault.getAbstractFileByPath(notePath);
+    if (!(file instanceof TFile)) return;
+    
+    try {
+      let content = await this.app.vault.read(file);
+      const meetingLink = meetingPath.replace(/\.md$/, '');
+      const meetingDateStr = meetingDate.toISOString().split('T')[0];
+      
+      // Check if this meeting is already referenced
+      if (content.includes(meetingLink)) {
+        console.log(`MeetingMind: Meeting already referenced in ${notePath}`);
+        return;
+      }
+      
+      // Update status if provided and different
+      if (entity.status) {
+        const statusRegex = /^## Status\s*$/m;
+        if (statusRegex.test(content)) {
+          // Update existing status section
+          content = content.replace(
+            /^## Status\s*$\n\n.*?\n\n/m,
+            `## Status\n\n${entity.status}\n\n`
+          );
+        } else {
+          // Add status section after description
+          const descIndex = content.indexOf('## Description');
+          if (descIndex !== -1) {
+            const descEnd = content.indexOf('\n\n', descIndex + 15);
+            if (descEnd !== -1) {
+              content = content.slice(0, descEnd + 2) + 
+                `## Status\n\n${entity.status}\n\n` + 
+                content.slice(descEnd + 2);
+            }
+          }
+        }
+      }
+      
+      // Add meeting to Related Meetings section
+      const meetingsHeaderRegex = /^## Related Meetings\s*$/m;
+      const meetingEntry = `- [[${meetingLink}|${meetingTitle}]] (${meetingDateStr})\n`;
+      
+      if (meetingsHeaderRegex.test(content)) {
+        // Add to existing section
+        content = content.replace(
+          meetingsHeaderRegex,
+          `## Related Meetings\n\n${meetingEntry}`
+        );
+      } else {
+        // Create new section before Notes
+        const notesIndex = content.indexOf('## Notes');
+        if (notesIndex !== -1) {
+          content = content.slice(0, notesIndex) + 
+            `## Related Meetings\n\n${meetingEntry}\n` + 
+            content.slice(notesIndex);
+        } else {
+          content = content.trimEnd() + `\n\n## Related Meetings\n\n${meetingEntry}\n`;
+        }
+      }
+      
+      await this.app.vault.modify(file, content);
+      console.log(`MeetingMind: Updated ${entity.type} note ${notePath}`);
+      
+    } catch (error) {
+      console.error(`MeetingMind: Failed to update ${notePath}`, error);
+    }
+  }
+  
+  /**
+   * Ensure a folder exists
+   */
+  private async ensureFolder(folderPath: string): Promise<void> {
+    const normalizedPath = normalizePath(folderPath);
+    const folder = this.app.vault.getAbstractFileByPath(normalizedPath);
+    
+    if (!folder) {
+      try {
+        await this.app.vault.createFolder(normalizedPath);
+        console.log(`MeetingMind: Created folder ${normalizedPath}`);
+      } catch (e) {
+        // Folder might already exist
+        console.log(`MeetingMind: Folder ${normalizedPath} may already exist`);
+      }
+    }
+  }
+}
+

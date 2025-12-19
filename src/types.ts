@@ -38,6 +38,7 @@ export interface AIEnrichment {
   decisions: string[];
   suggestedTags: string[];
   participantInsights?: ParticipantInsight[];
+  entities?: EntityExtraction;
 }
 
 export interface ParticipantInsight {
@@ -46,6 +47,22 @@ export interface ParticipantInsight {
   keyPoints: string[];
   actionItems: ActionItem[];
   sentiment?: string;
+}
+
+export interface Entity {
+  type: 'issue' | 'update' | 'topic';
+  name: string;
+  description?: string;
+  mentionedBy?: string;
+  status?: 'in-progress' | 'completed' | 'blocked';
+  relatedTo?: string;
+  category?: string;
+}
+
+export interface EntityExtraction {
+  issues: Entity[];
+  updates: Entity[];
+  topics: Entity[];
 }
 
 export interface ActionItem {
@@ -118,6 +135,15 @@ export interface MeetingMindSettings {
   peopleFolder: string;
   updateExistingParticipants: boolean;
   
+  // Entity extraction settings (Pro)
+  autoExtractEntities: boolean;
+  entityIssuesFolder: string;
+  entityUpdatesFolder: string;
+  entityTopicsFolder: string;
+  enableIssueExtraction: boolean;
+  enableUpdateExtraction: boolean;
+  enableTopicExtraction: boolean;
+  
   // License settings
   licenseKey: string;
   licenseStatus: 'free' | 'pro' | 'supporter';
@@ -161,8 +187,16 @@ export const DEFAULT_SETTINGS: MeetingMindSettings = {
   excludedFolders: 'templates,archive',
   
   autoCreateParticipants: true,
-  peopleFolder: '',
+  peopleFolder: 'People',
   updateExistingParticipants: true,
+  
+  autoExtractEntities: false,
+  entityIssuesFolder: 'Issues',
+  entityUpdatesFolder: 'Updates',
+  entityTopicsFolder: 'Topics',
+  enableIssueExtraction: true,
+  enableUpdateExtraction: true,
+  enableTopicExtraction: true,
   
   licenseKey: '',
   licenseStatus: 'free',

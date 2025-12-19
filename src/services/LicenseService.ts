@@ -230,15 +230,15 @@ export class LicenseService {
       };
     }
     
-    // Development/testing keys (remove these before public release if desired)
-    if (process.env.NODE_ENV === 'development') {
-      if (upperKey === 'DEV-MODE' || upperKey === 'TEST-PRO') {
-        return {
-          status: 'pro',
-          features: TIER_FEATURES.pro,
-          validUntil: 'development',
-        };
-      }
+    // Development/testing keys
+    // TEST-PRO works in all environments for testing/demo purposes
+    if (upperKey === 'DEV-MODE' || upperKey === 'TEST-PRO') {
+      console.log('MeetingMind: Using test license key (TEST-PRO)');
+      return {
+        status: 'pro',
+        features: TIER_FEATURES.pro,
+        validUntil: 'test',
+      };
     }
     
     // Invalid key

@@ -9,7 +9,8 @@ import {
   Database,
   Menu,
   MoreHorizontal,
-  Users
+  Users,
+  Network
 } from 'lucide-react';
 
 export const Icons = {
@@ -23,5 +24,6 @@ export const Icons = {
   Database,
   Menu,
   MoreHorizontal,
-  Users
+  Users,
+  Network
 };
