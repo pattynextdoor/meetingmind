@@ -4,7 +4,7 @@
  */
 
 import { requestUrl, RequestUrlResponse } from 'obsidian';
-import { AIEnrichment, AIProvider, RawTranscript, TranscriptSegment, ParticipantInsight, EntityExtraction, Entity } from '../types';
+import { AIEnrichment, AIProvider, RawTranscript, TranscriptSegment, ParticipantInsight, EntityExtraction, Entity, EntityStatusUpdate } from '../types';
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
@@ -131,7 +131,8 @@ For each participant, extract:
 1. Their likely role or expertise (inferred from what they discuss)
 2. Key points they made or contributed
 3. Action items specifically assigned to them
-4. Their overall engagement/sentiment (brief)
+4. Wins/achievements: Things they completed, accomplished, or succeeded at (e.g., "Finished the API migration", "Launched feature X", "Resolved bug Y")
+5. Their overall engagement/sentiment (brief)
 
 Return as JSON:
 {
@@ -141,12 +142,13 @@ Return as JSON:
       "role": "Their likely role (e.g., 'Frontend Engineer', 'Project Manager')",
       "keyPoints": ["Point 1", "Point 2"],
       "actionItems": [{"task": "Task description", "dueDate": "date if mentioned"}],
+      "wins": ["Achievement 1", "Achievement 2"],
       "sentiment": "Brief description of their engagement"
     }
   ]
 }
 
-Only include participants who actually spoke in the transcript. Return valid JSON only.
+Only include participants who actually spoke in the transcript. Return valid JSON only. Wins should be specific accomplishments mentioned in the meeting.
 
 TRANSCRIPT:
 ${transcriptText}`;
@@ -193,6 +195,7 @@ ${transcriptText}`;
           assignee: p.name,
           dueDate: item.dueDate || item.due_date || undefined,
         })),
+        wins: p.wins || [],
         sentiment: p.sentiment || undefined,
       }));
     } catch (error) {
@@ -623,6 +626,98 @@ ${transcriptText}`;
       return { success: true, message: 'Connection successful!' };
     } catch (error: any) {
       return { success: false, message: error.message || 'Connection failed' };
+    }
+  }
+  
+  /**
+   * Analyze meeting context to detect status changes for existing entities
+   * Checks if issues are resolved, updates are completed/stale, etc.
+   */
+  async analyzeEntityStatusChanges(
+    transcript: RawTranscript,
+    existingEntities: Array<{ name: string; type: 'issue' | 'update' | 'topic'; currentStatus?: string }>
+  ): Promise<EntityStatusUpdate[]> {
+    if (!this.isEnabled() || existingEntities.length === 0) {
+      return [];
+    }
+    
+    const transcriptText = this.formatTranscriptForAI(transcript);
+    const entitiesList = existingEntities.map(e => `- ${e.name} (${e.type}, current: ${e.currentStatus || 'none'})`).join('\n');
+    
+    const prompt = `Analyze this meeting transcript and determine if any of these existing entities have status changes.
+
+EXISTING ENTITIES:
+${entitiesList}
+
+For each entity mentioned in the meeting, determine:
+- If an ISSUE was resolved, fixed, or closed → status: "resolved"
+- If an UPDATE was completed or finished → status: "completed"  
+- If an UPDATE or ISSUE hasn't been mentioned in a while and seems outdated → status: "stale"
+- If an ISSUE is still being worked on → status: "in-progress"
+- If an ISSUE is blocked → status: "blocked"
+
+Return as JSON:
+{
+  "statusUpdates": [
+    {
+      "entityName": "Exact name from list above",
+      "entityType": "issue|update|topic",
+      "newStatus": "resolved|completed|stale|in-progress|blocked",
+      "reason": "Brief explanation of why status changed"
+    }
+  ]
+}
+
+Only include entities that have clear status changes mentioned in the meeting. Return empty array if none. Return valid JSON only.
+
+TRANSCRIPT:
+${transcriptText}`;
+
+    try {
+      let response: string;
+      
+      if (this.provider === 'claude') {
+        response = await this.callClaude(prompt);
+      } else if (this.provider === 'openai') {
+        response = await this.callOpenAI(prompt);
+      } else if (this.provider === 'cloud') {
+        response = await this.callClaude(prompt);
+      } else {
+        return [];
+      }
+      
+      return this.parseEntityStatusUpdates(response);
+    } catch (error) {
+      console.error('MeetingMind: Failed to analyze entity status changes', error);
+      return [];
+    }
+  }
+  
+  /**
+   * Parse entity status updates from AI response
+   */
+  private parseEntityStatusUpdates(response: string): EntityStatusUpdate[] {
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        return [];
+      }
+      
+      const data = JSON.parse(jsonMatch[0]);
+      
+      if (!data.statusUpdates || !Array.isArray(data.statusUpdates)) {
+        return [];
+      }
+      
+      return data.statusUpdates.map((update: any) => ({
+        entityName: update.entityName || '',
+        entityType: update.entityType || 'issue',
+        newStatus: update.newStatus,
+        reason: update.reason,
+      })).filter((update: EntityStatusUpdate) => update.entityName && update.newStatus);
+    } catch (error) {
+      console.error('MeetingMind: Failed to parse entity status updates', error);
+      return [];
     }
   }
 }

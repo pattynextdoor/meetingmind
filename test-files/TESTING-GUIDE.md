@@ -116,8 +116,18 @@ Click the icon to open the sync log.
 ├── sample-otter-export.json   # Otter.ai JSON format
 ├── sample-meeting.vtt         # WebVTT format  
 ├── simple-meeting.txt         # Plain text format
-└── TESTING-GUIDE.md           # This file
+├── test-wins-and-status.json  # Test wins extraction
+├── test-status-changes.json   # Test entity status updates
+├── QUICK-TEST-CHECKLIST.md    # Quick testing checklist
+├── TESTING-GUIDE.md           # This file (basic features)
+└── TESTING-GUIDE-NEW-FEATURES.md  # New features testing guide
 ```
+
+## Testing New Features
+
+For testing wins extraction, entity status updates, Top of Mind/Archive, and refresh command, see:
+- **`TESTING-GUIDE-NEW-FEATURES.md`** - Comprehensive guide
+- **`QUICK-TEST-CHECKLIST.md`** - Quick verification checklist
 
 ## Troubleshooting
 

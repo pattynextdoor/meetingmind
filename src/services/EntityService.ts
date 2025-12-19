@@ -50,6 +50,130 @@ export class EntityService {
   }
   
   /**
+   * Get all existing entities from the vault
+   * Returns a list of entities with their current status
+   */
+  async getExistingEntities(): Promise<Array<{ name: string; type: 'issue' | 'update' | 'topic'; currentStatus?: string; path: string }>> {
+    const entities: Array<{ name: string; type: 'issue' | 'update' | 'topic'; currentStatus?: string; path: string }> = [];
+    const folders = [];
+    if (this.enableIssues && this.issuesFolder) folders.push({ path: this.issuesFolder, type: 'issue' as const });
+    if (this.enableUpdates && this.updatesFolder) folders.push({ path: this.updatesFolder, type: 'update' as const });
+    if (this.enableTopics && this.topicsFolder) folders.push({ path: this.topicsFolder, type: 'topic' as const });
+    
+    for (const folder of folders) {
+      try {
+        const folderFile = this.app.vault.getAbstractFileByPath(folder.path);
+        if (!folderFile) continue;
+        
+        const files = this.app.vault.getMarkdownFiles().filter(file => 
+          file.path.startsWith(folder.path + '/')
+        );
+        
+        for (const file of files) {
+          try {
+            const content = await this.app.vault.read(file);
+            const cache = this.app.metadataCache.getFileCache(file);
+            const frontmatter = cache?.frontmatter;
+            
+            // Extract status from frontmatter or content
+            let status: string | undefined;
+            if (frontmatter?.status) {
+              status = frontmatter.status;
+            } else {
+              // Try to parse from content
+              const statusMatch = content.match(/^## Status\s*$\n\n(.+?)(?=\n## |$)/m);
+              if (statusMatch) {
+                status = statusMatch[1].trim();
+              }
+            }
+            
+            entities.push({
+              name: file.basename,
+              type: folder.type,
+              currentStatus: status,
+              path: file.path,
+            });
+          } catch (error) {
+            console.error(`MeetingMind: Failed to read entity file ${file.path}`, error);
+          }
+        }
+      } catch (error) {
+        console.error(`MeetingMind: Failed to read entity folder ${folder.path}`, error);
+      }
+    }
+    
+    return entities;
+  }
+  
+  /**
+   * Update entity status based on status change analysis
+   */
+  async updateEntityStatus(
+    entityPath: string,
+    newStatus: 'resolved' | 'completed' | 'stale' | 'in-progress' | 'blocked',
+    reason?: string
+  ): Promise<void> {
+    const file = this.app.vault.getAbstractFileByPath(entityPath);
+    if (!(file instanceof TFile)) return;
+    
+    try {
+      let content = await this.app.vault.read(file);
+      
+      // Update status in frontmatter if it exists
+      const cache = this.app.metadataCache.getFileCache(file);
+      const frontmatter = cache?.frontmatter;
+      
+      if (frontmatter) {
+        // Update frontmatter status
+        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/m;
+        const frontmatterMatch = content.match(frontmatterRegex);
+        if (frontmatterMatch) {
+          let frontmatterContent = frontmatterMatch[1];
+          
+          // Update or add status field
+          if (frontmatterContent.includes('status:')) {
+            frontmatterContent = frontmatterContent.replace(/status:\s*.+/, `status: ${newStatus}`);
+          } else {
+            frontmatterContent += `\nstatus: ${newStatus}`;
+          }
+          
+          content = content.replace(frontmatterRegex, `---\n${frontmatterContent}\n---\n\n`);
+        }
+      }
+      
+      // Update status section in content
+      const statusSectionRegex = /^## Status\s*$\n\n(.+?)(?=\n## |$)/m;
+      if (statusSectionRegex.test(content)) {
+        let statusText = newStatus;
+        if (reason) {
+          statusText += ` — ${reason}`;
+        }
+        content = content.replace(statusSectionRegex, `## Status\n\n${statusText}\n`);
+      } else {
+        // Add status section after description
+        const descIndex = content.indexOf('## Description');
+        if (descIndex !== -1) {
+          const descEnd = content.indexOf('\n\n', descIndex + 15);
+          if (descEnd !== -1) {
+            let statusText = newStatus;
+            if (reason) {
+              statusText += ` — ${reason}`;
+            }
+            content = content.slice(0, descEnd + 2) + 
+              `## Status\n\n${statusText}\n\n` + 
+              content.slice(descEnd + 2);
+          }
+        }
+      }
+      
+      await this.app.vault.modify(file, content);
+      console.log(`MeetingMind: Updated entity status for ${entityPath} to ${newStatus}`);
+    } catch (error) {
+      console.error(`MeetingMind: Failed to update entity status for ${entityPath}`, error);
+    }
+  }
+  
+  /**
    * Process entities and create/update notes
    */
   async processEntities(

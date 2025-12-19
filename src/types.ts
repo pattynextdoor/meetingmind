@@ -47,6 +47,7 @@ export interface ParticipantInsight {
   keyPoints: string[];
   actionItems: ActionItem[];
   sentiment?: string;
+  wins?: string[]; // Achievements, completions, successes mentioned
 }
 
 export interface Entity {
@@ -54,9 +55,16 @@ export interface Entity {
   name: string;
   description?: string;
   mentionedBy?: string;
-  status?: 'in-progress' | 'completed' | 'blocked';
+  status?: 'in-progress' | 'completed' | 'blocked' | 'resolved' | 'stale';
   relatedTo?: string;
   category?: string;
+}
+
+export interface EntityStatusUpdate {
+  entityName: string;
+  entityType: 'issue' | 'update' | 'topic';
+  newStatus?: 'resolved' | 'completed' | 'stale' | 'in-progress' | 'blocked';
+  reason?: string; // Why the status changed
 }
 
 export interface EntityExtraction {

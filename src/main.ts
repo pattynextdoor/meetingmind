@@ -21,7 +21,8 @@ import {
   SyncLogEntry,
   SyncStatus,
   TranscriptSegment,
-  AIEnrichment
+  AIEnrichment,
+  EntityStatusUpdate
 } from './types';
 
 import { TranscriptParser } from './services/TranscriptParser';
@@ -438,6 +439,43 @@ export default class MeetingMindPlugin extends Plugin {
       // Auto-extract entities (if enabled and licensed)
       if (this.settings.autoExtractEntities && hasAILicense && enrichment) {
         try {
+          // Get existing entities for status analysis
+          const existingEntities = await this.entityService.getExistingEntities();
+          
+          // Analyze status changes for existing entities mentioned in this meeting
+          let statusUpdates: EntityStatusUpdate[] = [];
+          if (existingEntities.length > 0) {
+            try {
+              statusUpdates = await this.aiService.analyzeEntityStatusChanges(
+                transcript,
+                existingEntities.map(e => ({ name: e.name, type: e.type, currentStatus: e.currentStatus }))
+              );
+              
+              // Apply status updates
+              for (const update of statusUpdates) {
+                // Find matching entity (case-insensitive name match)
+                const entity = existingEntities.find(e => 
+                  e.name.toLowerCase() === update.entityName.toLowerCase() && 
+                  e.type === update.entityType
+                );
+                if (entity && update.newStatus) {
+                  await this.entityService.updateEntityStatus(
+                    entity.path,
+                    update.newStatus,
+                    update.reason
+                  );
+                }
+              }
+              
+              if (statusUpdates.length > 0) {
+                console.log(`MeetingMind: Updated status for ${statusUpdates.length} entity(ies)`);
+              }
+            } catch (error) {
+              console.error('MeetingMind: Failed to analyze entity status changes', error);
+              // Continue - don't block entity extraction
+            }
+          }
+          
           // Extract entities from transcript
           const entities = await this.aiService.extractEntities(transcript);
           
