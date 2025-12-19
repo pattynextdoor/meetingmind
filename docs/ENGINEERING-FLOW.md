@@ -15,7 +15,7 @@ flowchart TB
     StartServices --> FirefliesSync[Fireflies Service<br/>Sync on interval]
     
     FolderWatcher -->|New File Detected| ProcessFile[Process Local File]
-    OtterSync -->|New Transcripts| ProcessTranscript[Process Transcript]
+    OtterSync -->|New Transcripts| ProcessTranscript[processTranscript]
     FirefliesSync -->|New Transcripts| ProcessTranscript
     ManualImport[Manual Import Command] --> ProcessTranscript
     
@@ -24,56 +24,36 @@ flowchart TB
     
     Parse --> CheckDup{Duplicate<br/>Check}
     CheckDup -->|Duplicate| Skip[Skip Processing]
-    CheckDup -->|New| AIEnrich{AI Enabled<br/>& Licensed?}
+    CheckDup -->|New| Step1[Step 1: runAIEnrichment]
     
-    AIEnrich -->|Yes| AIService[AI Service<br/>Claude/OpenAI]
-    AIEnrich -->|No| AutoLink[Auto-Linking]
+    Step1 --> Step2[Step 2: applyAutoLinking]
+    Step2 --> Step3[Step 3: Generate Note]
+    Step3 --> Step4[Step 4: handleParticipants]
+    Step4 --> Step5[Step 5: handleEntities]
     
-    AIService --> ExtractSummary[Extract Summary]
-    AIService --> ExtractActions[Extract Action Items]
-    AIService --> ExtractDecisions[Extract Decisions]
-    AIService --> ExtractTags[Extract Tags]
-    AIService --> ExtractInsights[Extract Participant Insights]
-    AIService --> ExtractEntities[Extract Entities<br/>Issues/Updates/Topics]
-    
-    ExtractSummary --> AutoLink
-    ExtractActions --> AutoLink
-    ExtractDecisions --> AutoLink
-    ExtractTags --> AutoLink
-    ExtractInsights --> AutoLink
-    ExtractEntities --> AutoLink
-    
-    AutoLink --> VaultIndex[Vault Index Lookup]
-    VaultIndex -->|Exact Match| CreateLink[Create Wiki Link]
-    VaultIndex -->|Ambiguous| SuggestLink[Suggest Link]
-    VaultIndex -->|No Match| NoLink[No Link]
-    
-    CreateLink --> GenerateNote
-    SuggestLink --> GenerateNote
-    NoLink --> GenerateNote
-    
-    GenerateNote[Generate Note<br/>Markdown + Frontmatter] --> SaveNote[Save to Vault]
-    
-    SaveNote --> ProcessParticipants{Auto-Create<br/>Participants?}
-    ProcessParticipants -->|Yes| ParticipantService[Participant Service<br/>Create/Update Notes]
-    ProcessParticipants -->|No| ProcessEntities
-    
-    ParticipantService --> ProcessEntities{Extract<br/>Entities?}
-    ProcessEntities -->|Yes| EntityService[Entity Service<br/>Create/Update Notes]
-    ProcessEntities -->|No| UpdateIndex
-    
-    EntityService --> UpdateIndex[Update Vault Index]
-    UpdateIndex --> MarkProcessed[Mark as Processed]
+    Step5 --> MarkProcessed[Mark as Processed]
     MarkProcessed --> End([Complete])
     
     Skip --> End
     
     style Start fill:#e1f5ff
     style End fill:#d4edda
-    style AIService fill:#fff3cd
-    style AutoLink fill:#d1ecf1
-    style GenerateNote fill:#f8d7da
+    style Step1 fill:#fff3cd
+    style Step2 fill:#d1ecf1
+    style Step3 fill:#f8d7da
+    style Step4 fill:#e1f5ff
+    style Step5 fill:#d4edda
 ```
+
+### Processing Steps Overview
+
+| Step | Method | Description |
+|------|--------|-------------|
+| 1 | `runAIEnrichment()` | Check license, call Claude/OpenAI for summaries, action items, decisions |
+| 2 | `applyAutoLinking()` | Link transcript text to existing vault notes |
+| 3 | `noteGenerator.generateNote()` | Create markdown note with frontmatter |
+| 4 | `handleParticipants()` | Create/update participant notes with AI insights |
+| 5 | `handleEntities()` | Update existing entity statuses, extract and create new entities |
 
 ## Detailed Component Flow
 
@@ -102,6 +82,43 @@ flowchart LR
 ```
 
 ### 2. Transcript Processing Pipeline
+
+The main `processTranscript` method orchestrates five discrete steps, each handled by a dedicated helper method:
+
+```mermaid
+flowchart TD
+    Input[Transcript Input] --> DupCheck{Duplicate Check}
+    DupCheck -->|Duplicate| Skip[Skip Processing]
+    DupCheck -->|New| Step1[Step 1: runAIEnrichment]
+    
+    Step1 --> Step2[Step 2: applyAutoLinking]
+    Step2 --> Step3[Step 3: Generate Note<br/>NoteGenerator.generateNote]
+    Step3 --> Step4[Step 4: handleParticipants]
+    Step4 --> Step5[Step 5: handleEntities]
+    Step5 --> Mark[markProcessed]
+    Mark --> Complete[Return TFile]
+    
+    Skip --> End([End])
+    Complete --> End
+    
+    style Step1 fill:#fff3cd
+    style Step2 fill:#d1ecf1
+    style Step3 fill:#f8d7da
+    style Step4 fill:#e1f5ff
+    style Step5 fill:#d4edda
+```
+
+#### Processing Steps Detail
+
+| Step | Method | Responsibility |
+|------|--------|----------------|
+| 1 | `runAIEnrichment()` | Check license, call AI service for summaries/actions/decisions |
+| 2 | `applyAutoLinking()` | Process segments with vault index, collect suggestions |
+| 3 | `noteGenerator.generateNote()` | Create markdown note with frontmatter |
+| 4 | `handleParticipants()` | Create/update participant notes with insights |
+| 5 | `handleEntities()` | Update entity statuses, extract and create new entities |
+
+#### Transcript Parsing
 
 ```mermaid
 flowchart TD
@@ -404,20 +421,49 @@ graph TD
 
 ## Key Processing Steps
 
+The `processTranscript` method in `main.ts` orchestrates processing through five focused helper methods:
+
 1. **Input Acquisition**: Multiple sources (folder watcher, Otter sync, Fireflies sync, manual import)
 2. **Parsing**: Convert various formats (VTT, SRT, TXT, JSON) into standardized `RawTranscript`
 3. **Deduplication**: Hash-based duplicate detection to prevent reprocessing
-4. **AI Enrichment**: Optional Pro feature for summaries, action items, decisions, tags, insights
-5. **Auto-Linking**: Intelligent linking to existing vault notes using vault index
+4. **AI Enrichment** (`runAIEnrichment`): Optional Pro feature for summaries, action items, decisions, tags, insights
+5. **Auto-Linking** (`applyAutoLinking`): Intelligent linking to existing vault notes using vault index
 6. **Note Generation**: Create formatted Markdown notes with frontmatter
-7. **Entity Processing**: Auto-create/update participant and entity notes
-8. **Index Maintenance**: Keep vault index updated for accurate linking
+7. **Participant Processing** (`handleParticipants`): Auto-create/update participant notes with AI insights
+8. **Entity Processing** (`handleEntities`): 
+   - `updateExistingEntityStatuses`: Analyze and update status of known entities
+   - `extractAndCreateEntities`: Extract new issues/updates/topics and create notes
+9. **Index Maintenance**: Keep vault index updated for accurate linking
+
+## Code Organization
+
+The main plugin file (`src/main.ts`) is organized into logical sections:
+
+```
+MeetingMindPlugin
+├── Lifecycle (onload, onunload)
+├── Service Configuration (initializeServices, updateAllServices)
+├── Event Handlers (registerEventHandlers)
+├── Transcript Processing Steps
+│   ├── processTranscript() — main orchestrator
+│   ├── runAIEnrichment() — AI processing
+│   ├── applyAutoLinking() — vault linking
+│   ├── handleParticipants() — participant notes
+│   ├── handleEntities() — entity extraction
+│   ├── updateExistingEntityStatuses() — status updates
+│   └── extractAndCreateEntities() — new entity creation
+├── Command Implementations
+├── Service Update Methods
+├── UI Methods
+└── Settings
+```
 
 ## Error Handling
 
 - All services handle errors gracefully and continue processing
-- Failed AI enrichment doesn't block note creation
+- Failed AI enrichment doesn't block note creation (returns `null`, processing continues)
 - Duplicate transcripts are skipped with logging
 - Invalid transcripts are logged but don't crash the plugin
 - Network errors in sync services use exponential backoff retry
+- Each processing step has isolated error handling — failures in one step don't block subsequent steps
 

@@ -18,8 +18,7 @@ import {
   ProcessedMeeting,
   SyncLogEntry,
   TranscriptSegment,
-  AIEnrichment,
-  EntityStatusUpdate
+  AIEnrichment
 } from './types';
 
 import { TranscriptParser } from './services/TranscriptParser';
@@ -346,175 +345,29 @@ export default class MeetingMindPlugin extends Plugin {
         return null;
       }
       
-      // AI enrichment (if enabled and licensed)
-      let enrichment = null;
-      const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+      // Step 1: AI enrichment
+      const enrichment = await this.runAIEnrichment(transcript);
       
-      if (this.settings.aiEnabled && this.aiService.isEnabled()) {
-        if (!hasAILicense) {
-          console.debug('MeetingMind: AI features require Pro license');
-          // Don't show notice for every transcript, just log it
-        } else {
-        try {
-          this.updateStatusBar('syncing', 'AI processing...');
-          enrichment = await this.aiService.processTranscript(transcript);
-        } catch (error) {
-          console.error('MeetingMind: AI enrichment failed', error);
-          // Continue without AI enrichment
-          }
-        }
-      }
+      // Step 2: Auto-linking
+      const suggestedLinks = this.applyAutoLinking(transcript, enrichment);
       
-      // Auto-linking (if enabled)
-      let autoLinks = new Map<string, string>();
-      let suggestedLinks: { term: string; candidates: string[] }[] = [];
-      
-      if (this.settings.autoLinkingEnabled) {
-        // Apply auto-linking to transcript segments
-        for (const segment of transcript.segments) {
-          const linkResult = this.autoLinker.processText(segment.text);
-          segment.text = linkResult.linkedText;
-          
-          // Collect suggested links (deduplicated)
-          for (const suggestion of linkResult.suggestedLinks) {
-            if (!suggestedLinks.find(s => s.term.toLowerCase() === suggestion.term.toLowerCase())) {
-              suggestedLinks.push(suggestion);
-            }
-          }
-        }
-        
-        // Also apply to AI enrichment if available
-        if (enrichment?.summary) {
-          const summaryResult = this.autoLinker.processText(enrichment.summary);
-          enrichment.summary = summaryResult.linkedText;
-        }
-      }
-      
-      // Create processed meeting object
+      // Step 3: Generate meeting note
       const processedMeeting: ProcessedMeeting = {
         transcript,
         enrichment: enrichment || undefined,
-        autoLinks,
+        autoLinks: new Map<string, string>(),
         suggestedLinks,
       };
-      
-      // Generate note
       const file = await this.noteGenerator.generateNote(processedMeeting);
       
-      // Auto-create/update participant notes (if enabled)
-      if (this.settings.autoCreateParticipants && transcript.participants.length > 0) {
-        try {
-          const meetingTitle = transcript.title;
-          const meetingPath = file.path;
-          const meetingDate = transcript.date;
-          
-          // Get participant insights from AI enrichment (only if licensed)
-          const hasInsightsLicense = this.licenseService.hasFeature('participantInsights');
-          const participantInsights = hasInsightsLicense ? enrichment?.participantInsights : undefined;
-          
-          const result = await this.participantService.processParticipants(
-            transcript.participants,
-            meetingTitle,
-            meetingPath,
-            meetingDate,
-            participantInsights
-          );
-          
-          if (result.created.length > 0) {
-            console.debug(`MeetingMind: Created participant notes for: ${result.created.join(', ')}`);
-            new Notice(`Created notes for: ${result.created.join(', ')}`);
-            
-            // Rebuild vault index to include new participant notes
-            this.vaultIndex.scheduleIncrementalUpdate();
-          }
-          
-          if (result.updated.length > 0) {
-            console.debug(`MeetingMind: Updated participant notes for: ${result.updated.join(', ')}`);
-          }
-        } catch (error) {
-          console.error('MeetingMind: Failed to process participant notes', error);
-          // Continue - don't block meeting note creation
-        }
-      }
+      // Step 4: Process participants
+      await this.handleParticipants(transcript, file, enrichment);
       
-      // Auto-extract entities (if enabled and licensed)
-      if (this.settings.autoExtractEntities && hasAILicense && enrichment) {
-        try {
-          // Get existing entities for status analysis
-          const existingEntities = await this.entityService.getExistingEntities();
-          
-          // Analyze status changes for existing entities mentioned in this meeting
-          let statusUpdates: EntityStatusUpdate[] = [];
-          if (existingEntities.length > 0) {
-            try {
-              statusUpdates = await this.aiService.analyzeEntityStatusChanges(
-                transcript,
-                existingEntities.map(e => ({ name: e.name, type: e.type, currentStatus: e.currentStatus }))
-              );
-              
-              // Apply status updates
-              for (const update of statusUpdates) {
-                // Find matching entity (case-insensitive name match)
-                const entity = existingEntities.find(e => 
-                  e.name.toLowerCase() === update.entityName.toLowerCase() && 
-                  e.type === update.entityType
-                );
-                if (entity && update.newStatus) {
-                  await this.entityService.updateEntityStatus(
-                    entity.path,
-                    update.newStatus,
-                    update.reason
-                  );
-                }
-              }
-              
-              if (statusUpdates.length > 0) {
-                console.debug(`MeetingMind: Updated status for ${statusUpdates.length} entity(ies)`);
-              }
-            } catch (error) {
-              console.error('MeetingMind: Failed to analyze entity status changes', error);
-              // Continue - don't block entity extraction
-            }
-          }
-          
-          // Extract entities from transcript
-          const entities = await this.aiService.extractEntities(transcript);
-          
-          if (entities && (entities.issues.length > 0 || entities.updates.length > 0 || entities.topics.length > 0)) {
-            // Store entities in enrichment for potential use in note generation
-            enrichment.entities = entities;
-            
-            const meetingTitle = transcript.title;
-            const meetingPath = file.path;
-            const meetingDate = transcript.date;
-            
-            const entityResult = await this.entityService.processEntities(
-              entities,
-              meetingTitle,
-              meetingPath,
-              meetingDate
-            );
-            
-            if (entityResult.created.length > 0) {
-              console.debug(`MeetingMind: Created entity notes for: ${entityResult.created.join(', ')}`);
-              new Notice(`Created notes for: ${entityResult.created.join(', ')}`);
-              
-              // Rebuild vault index to include new entity notes
-              this.vaultIndex.scheduleIncrementalUpdate();
-            }
-            
-            if (entityResult.updated.length > 0) {
-              console.debug(`MeetingMind: Updated entity notes for: ${entityResult.updated.join(', ')}`);
-            }
-          }
-        } catch (error) {
-          console.error('MeetingMind: Failed to process entities', error);
-          // Continue - don't block meeting note creation
-        }
-      }
+      // Step 5: Process entities
+      await this.handleEntities(transcript, file, enrichment);
       
       // Mark as processed
-      this.markProcessed(transcript.hash);
+      await this.markProcessed(transcript.hash);
       
       this.updateStatusBar('idle');
       return file;
@@ -526,29 +379,216 @@ export default class MeetingMindPlugin extends Plugin {
     }
   }
   
+  // ==================== Transcript Processing Steps ====================
+  
   /**
-   * Get combined text for auto-linking
+   * Run AI enrichment on the transcript if enabled and licensed
    */
-  private getTextForAutoLinking(transcript: RawTranscript, enrichment: AIEnrichment | null): string {
-    const parts: string[] = [];
+  private async runAIEnrichment(transcript: RawTranscript): Promise<AIEnrichment | null> {
+    if (!this.settings.aiEnabled || !this.aiService.isEnabled()) {
+      return null;
+    }
     
-    // Add transcript segments
-    parts.push(transcript.segments.map(s => s.text).join(' '));
+    const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+    if (!hasAILicense) {
+      console.debug('MeetingMind: AI features require Pro license');
+      return null;
+    }
     
-    // Add enrichment text if available
-    if (enrichment) {
-      if (enrichment.summary) {
-        parts.push(enrichment.summary);
-      }
-      if (enrichment.actionItems) {
-        parts.push(enrichment.actionItems.map((a) => a.task).join(' '));
-      }
-      if (enrichment.decisions) {
-        parts.push(enrichment.decisions.join(' '));
+    try {
+      this.updateStatusBar('syncing', 'AI processing...');
+      return await this.aiService.processTranscript(transcript);
+    } catch (error) {
+      console.error('MeetingMind: AI enrichment failed', error);
+      return null; // Continue without AI enrichment
+    }
+  }
+  
+  /**
+   * Apply auto-linking to transcript segments and enrichment
+   * Returns the list of suggested (ambiguous) links
+   */
+  private applyAutoLinking(
+    transcript: RawTranscript, 
+    enrichment: AIEnrichment | null
+  ): { term: string; candidates: string[] }[] {
+    if (!this.settings.autoLinkingEnabled) {
+      return [];
+    }
+    
+    const suggestedLinks: { term: string; candidates: string[] }[] = [];
+    
+    // Apply to transcript segments
+    for (const segment of transcript.segments) {
+      const linkResult = this.autoLinker.processText(segment.text);
+      segment.text = linkResult.linkedText;
+      
+      // Collect suggested links (deduplicated)
+      for (const suggestion of linkResult.suggestedLinks) {
+        const alreadyExists = suggestedLinks.some(
+          s => s.term.toLowerCase() === suggestion.term.toLowerCase()
+        );
+        if (!alreadyExists) {
+          suggestedLinks.push(suggestion);
+        }
       }
     }
     
-    return parts.join('\n');
+    // Apply to AI enrichment summary if available
+    if (enrichment?.summary) {
+      const summaryResult = this.autoLinker.processText(enrichment.summary);
+      enrichment.summary = summaryResult.linkedText;
+    }
+    
+    return suggestedLinks;
+  }
+  
+  /**
+   * Create or update participant notes based on meeting attendees
+   */
+  private async handleParticipants(
+    transcript: RawTranscript,
+    file: TFile,
+    enrichment: AIEnrichment | null
+  ): Promise<void> {
+    if (!this.settings.autoCreateParticipants || transcript.participants.length === 0) {
+      return;
+    }
+    
+    try {
+      const hasInsightsLicense = this.licenseService.hasFeature('participantInsights');
+      const participantInsights = hasInsightsLicense ? enrichment?.participantInsights : undefined;
+      
+      const result = await this.participantService.processParticipants(
+        transcript.participants,
+        transcript.title,
+        file.path,
+        transcript.date,
+        participantInsights
+      );
+      
+      if (result.created.length > 0) {
+        console.debug(`MeetingMind: Created participant notes for: ${result.created.join(', ')}`);
+        new Notice(`Created notes for: ${result.created.join(', ')}`);
+        this.vaultIndex.scheduleIncrementalUpdate();
+      }
+      
+      if (result.updated.length > 0) {
+        console.debug(`MeetingMind: Updated participant notes for: ${result.updated.join(', ')}`);
+      }
+    } catch (error) {
+      console.error('MeetingMind: Failed to process participant notes', error);
+      // Continue - don't block meeting note creation
+    }
+  }
+  
+  /**
+   * Extract and process entities (issues, updates, topics) from the transcript
+   */
+  private async handleEntities(
+    transcript: RawTranscript,
+    file: TFile,
+    enrichment: AIEnrichment | null
+  ): Promise<void> {
+    const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+    
+    if (!this.settings.autoExtractEntities || !hasAILicense || !enrichment) {
+      return;
+    }
+    
+    try {
+      // Analyze and update status of existing entities
+      await this.updateExistingEntityStatuses(transcript);
+      
+      // Extract and create new entities
+      await this.extractAndCreateEntities(transcript, file, enrichment);
+    } catch (error) {
+      console.error('MeetingMind: Failed to process entities', error);
+      // Continue - don't block meeting note creation
+    }
+  }
+  
+  /**
+   * Analyze meeting content to update status of existing entities
+   */
+  private async updateExistingEntityStatuses(transcript: RawTranscript): Promise<void> {
+    const existingEntities = await this.entityService.getExistingEntities();
+    
+    if (existingEntities.length === 0) {
+      return;
+    }
+    
+    try {
+      const statusUpdates = await this.aiService.analyzeEntityStatusChanges(
+        transcript,
+        existingEntities.map(e => ({ name: e.name, type: e.type, currentStatus: e.currentStatus }))
+      );
+      
+      for (const update of statusUpdates) {
+        const entity = existingEntities.find(e => 
+          e.name.toLowerCase() === update.entityName.toLowerCase() && 
+          e.type === update.entityType
+        );
+        
+        if (entity && update.newStatus) {
+          await this.entityService.updateEntityStatus(
+            entity.path,
+            update.newStatus,
+            update.reason
+          );
+        }
+      }
+      
+      if (statusUpdates.length > 0) {
+        console.debug(`MeetingMind: Updated status for ${statusUpdates.length} entity(ies)`);
+      }
+    } catch (error) {
+      console.error('MeetingMind: Failed to analyze entity status changes', error);
+      // Continue - don't block entity extraction
+    }
+  }
+  
+  /**
+   * Extract new entities from transcript and create notes for them
+   */
+  private async extractAndCreateEntities(
+    transcript: RawTranscript,
+    file: TFile,
+    enrichment: AIEnrichment
+  ): Promise<void> {
+    const entities = await this.aiService.extractEntities(transcript);
+    
+    if (!entities) {
+      return;
+    }
+    
+    const hasEntities = entities.issues.length > 0 || 
+                        entities.updates.length > 0 || 
+                        entities.topics.length > 0;
+    
+    if (!hasEntities) {
+      return;
+    }
+    
+    // Store entities in enrichment for potential use in note generation
+    enrichment.entities = entities;
+    
+    const entityResult = await this.entityService.processEntities(
+      entities,
+      transcript.title,
+      file.path,
+      transcript.date
+    );
+    
+    if (entityResult.created.length > 0) {
+      console.debug(`MeetingMind: Created entity notes for: ${entityResult.created.join(', ')}`);
+      new Notice(`Created notes for: ${entityResult.created.join(', ')}`);
+      this.vaultIndex.scheduleIncrementalUpdate();
+    }
+    
+    if (entityResult.updated.length > 0) {
+      console.debug(`MeetingMind: Updated entity notes for: ${entityResult.updated.join(', ')}`);
+    }
   }
   
   /**
