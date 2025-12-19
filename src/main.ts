@@ -18,6 +18,7 @@ import {
   ProcessedMeeting,
   SyncLogEntry,
   TranscriptSegment,
+  EntityExtraction,
   AIEnrichment
 } from './types';
 
@@ -167,6 +168,19 @@ export default class MeetingMindPlugin extends Plugin {
       this.firefliesService.startSync();
     }
     
+    // Archive resolved issues (run silently in background)
+    if (this.settings.autoExtractEntities && this.settings.enableIssueExtraction) {
+      this.entityService.archiveResolvedIssues(this.settings.issueArchiveDays)
+        .then(result => {
+          if (result.archived > 0) {
+            console.debug(`MeetingMind: Auto-archived ${result.archived} resolved issue(s)`);
+          }
+        })
+        .catch(error => {
+          console.error('MeetingMind: Auto-archive failed', error);
+        });
+    }
+    
     // Collect existing tags for AI suggestions
     this.collectExistingTags();
   }
@@ -224,6 +238,13 @@ export default class MeetingMindPlugin extends Plugin {
       id: 'cleanup-orphaned-references',
       name: 'Cleanup orphaned references',
       callback: () => this.cleanupOrphanedReferences(),
+    });
+    
+    // Archive resolved issues
+    this.addCommand({
+      id: 'archive-resolved-issues',
+      name: 'Archive resolved issues',
+      callback: () => this.archiveResolvedIssues(),
     });
     
     // Generate meeting dashboard
@@ -351,7 +372,26 @@ export default class MeetingMindPlugin extends Plugin {
       // Step 2: Auto-linking
       const suggestedLinks = this.applyAutoLinking(transcript, enrichment);
       
-      // Step 3: Generate meeting note
+      // Step 3: Extract entities (needed before participant processing)
+      let entities: EntityExtraction | null = null;
+      const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+      if (this.settings.autoExtractEntities && hasAILicense && enrichment) {
+        entities = await this.aiService.extractEntities(transcript);
+        if (entities) {
+          enrichment.entities = entities;
+          
+          // Enrich participant insights with entity information
+          if (enrichment.participantInsights && enrichment.participantInsights.length > 0) {
+            enrichment.participantInsights = this.aiService.enrichParticipantInsightsWithEntities(
+              enrichment.participantInsights,
+              entities,
+              transcript.date
+            );
+          }
+        }
+      }
+      
+      // Step 4: Generate meeting note
       const processedMeeting: ProcessedMeeting = {
         transcript,
         enrichment: enrichment || undefined,
@@ -360,11 +400,13 @@ export default class MeetingMindPlugin extends Plugin {
       };
       const file = await this.noteGenerator.generateNote(processedMeeting);
       
-      // Step 4: Process participants
+      // Step 5: Process participants (now with enriched insights)
       await this.handleParticipants(transcript, file, enrichment);
       
-      // Step 5: Process entities
-      await this.handleEntities(transcript, file, enrichment);
+      // Step 6: Process entities (create/update entity notes)
+      if (entities) {
+        await this.handleEntities(transcript, file, enrichment, entities);
+      }
       
       // Mark as processed
       await this.markProcessed(transcript.hash);
@@ -488,11 +530,10 @@ export default class MeetingMindPlugin extends Plugin {
   private async handleEntities(
     transcript: RawTranscript,
     file: TFile,
-    enrichment: AIEnrichment | null
+    enrichment: AIEnrichment | null,
+    entities: EntityExtraction
   ): Promise<void> {
-    const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
-    
-    if (!this.settings.autoExtractEntities || !hasAILicense || !enrichment) {
+    if (!this.settings.autoExtractEntities || !enrichment) {
       return;
     }
     
@@ -500,8 +541,8 @@ export default class MeetingMindPlugin extends Plugin {
       // Analyze and update status of existing entities
       await this.updateExistingEntityStatuses(transcript);
       
-      // Extract and create new entities
-      await this.extractAndCreateEntities(transcript, file, enrichment);
+      // Create/update entity notes
+      await this.createEntityNotes(transcript, file, entities);
     } catch (error) {
       console.error('MeetingMind: Failed to process entities', error);
       // Continue - don't block meeting note creation
@@ -549,19 +590,13 @@ export default class MeetingMindPlugin extends Plugin {
   }
   
   /**
-   * Extract new entities from transcript and create notes for them
+   * Create entity notes from extracted entities
    */
-  private async extractAndCreateEntities(
+  private async createEntityNotes(
     transcript: RawTranscript,
     file: TFile,
-    enrichment: AIEnrichment
+    entities: EntityExtraction
   ): Promise<void> {
-    const entities = await this.aiService.extractEntities(transcript);
-    
-    if (!entities) {
-      return;
-    }
-    
     const hasEntities = entities.issues.length > 0 || 
                         entities.updates.length > 0 || 
                         entities.topics.length > 0;
@@ -569,9 +604,6 @@ export default class MeetingMindPlugin extends Plugin {
     if (!hasEntities) {
       return;
     }
-    
-    // Store entities in enrichment for potential use in note generation
-    enrichment.entities = entities;
     
     const entityResult = await this.entityService.processEntities(
       entities,
@@ -745,6 +777,42 @@ export default class MeetingMindPlugin extends Plugin {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('MeetingMind: Cleanup failed', error);
       new Notice(`Cleanup failed: ${errorMessage}`);
+      this.updateStatusBar('error', errorMessage);
+    }
+  }
+  
+  /**
+   * Archive resolved issues that have been resolved for more than the configured days
+   */
+  async archiveResolvedIssues(): Promise<void> {
+    try {
+      new Notice('Archiving resolved issues...');
+      this.updateStatusBar('syncing', 'Archiving...');
+      
+      const result = await this.entityService.archiveResolvedIssues(this.settings.issueArchiveDays);
+      
+      this.updateStatusBar('idle');
+      
+      if (result.archived > 0) {
+        let message = `Archived ${result.archived} resolved issue(s)`;
+        if (result.errors.length > 0) {
+          message += ` (${result.errors.length} error(s))`;
+        }
+        new Notice(message);
+        
+        if (result.errors.length > 0) {
+          console.error('MeetingMind: Archive errors:', result.errors);
+        }
+        
+        // Rebuild vault index after archiving
+        this.vaultIndex.scheduleIncrementalUpdate();
+      } else {
+        new Notice('No issues ready for archiving');
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('MeetingMind: Archive failed', error);
+      new Notice(`Archive failed: ${errorMessage}`);
       this.updateStatusBar('error', errorMessage);
     }
   }

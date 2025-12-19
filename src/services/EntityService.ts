@@ -175,6 +175,7 @@ export class EntityService {
   
   /**
    * Process entities and create/update notes
+   * Note: Updates are no longer created as separate notes, only used for People note enrichment
    */
   async processEntities(
     entities: EntityExtraction,
@@ -202,22 +203,8 @@ export class EntityService {
       }
     }
     
-    // Process updates
-    if (this.enableUpdates && entities.updates.length > 0) {
-      await this.ensureFolder(this.updatesFolder);
-      for (const update of entities.updates) {
-        const existingPath = this.findEntityNote(update);
-        if (existingPath) {
-          await this.updateEntityNote(existingPath, update, meetingTitle, meetingPath, meetingDate);
-          updated.push(update.name);
-        } else {
-          const newPath = await this.createEntityNote(update, this.updatesFolder, meetingTitle, meetingPath, meetingDate);
-          if (newPath) {
-            created.push(update.name);
-          }
-        }
-      }
-    }
+    // Updates are no longer created as separate notes
+    // They are only used to enrich People notes
     
     // Process topics
     if (this.enableTopics && entities.topics.length > 0) {
@@ -330,43 +317,51 @@ export class EntityService {
     const meetingLink = meetingPath.replace(/\.md$/, '');
     const meetingDateStr = meetingDate.toISOString().split('T')[0];
     
-    let content = `---
+    // Build frontmatter
+    let frontmatter = `---
 type: ${entity.type}
-created: ${date}
----
-
-# ${entity.name}
-
-`;
+created: ${date}`;
+    
+    if (entity.status) {
+      frontmatter += `\nstatus: ${entity.status}`;
+    }
+    
+    if (entity.type === 'issue' && entity.status === 'resolved' && entity.resolvedDate) {
+      frontmatter += `\nresolved_date: ${entity.resolvedDate}`;
+    }
+    
+    if (entity.category) {
+      frontmatter += `\ncategory: ${entity.category}`;
+    }
+    
+    frontmatter += `\n---\n\n`;
+    
+    let content = frontmatter;
+    content += `# ${entity.name}\n\n`;
 
     // Add description if available
     if (entity.description) {
       content += `## Description\n\n${entity.description}\n\n`;
     }
     
-    // Add status for updates
-    if (entity.type === 'update' && entity.status) {
-      content += `## Status\n\n${entity.status}\n\n`;
+    // Add "Raised by" for issues with wiki-link
+    if (entity.type === 'issue' && entity.mentionedBy) {
+      content += `**Raised by**: [[${entity.mentionedBy}]]\n\n`;
     }
     
-    // Add status for issues (if blocked)
-    if (entity.type === 'issue' && entity.status) {
+    // Add "Owner" for topics with wiki-link
+    if (entity.type === 'topic' && entity.mentionedBy) {
+      content += `**Owner**: [[${entity.mentionedBy}]]\n\n`;
+    }
+    
+    // Add status section
+    if (entity.status) {
       content += `## Status\n\n${entity.status}\n\n`;
     }
     
     // Add related to
     if (entity.relatedTo) {
       content += `## Related To\n\n[[${entity.relatedTo}]]\n\n`;
-    }
-    
-    // Add category for topics
-    if (entity.type === 'topic' && entity.category) {
-      content += `## Category\n\n${entity.category}\n\n`;
-    }
-    
-    // Add mentioned by
-    if (entity.mentionedBy) {
-      content += `**Mentioned by**: ${entity.mentionedBy}\n\n`;
     }
     
     // Related meetings
@@ -405,6 +400,36 @@ created: ${date}
       
       // Update status if provided and different
       if (entity.status) {
+        const cache = this.app.metadataCache.getFileCache(file);
+        const currentStatus = cache?.frontmatter?.status;
+        
+        // Update frontmatter status
+        const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/m;
+        const frontmatterMatch = content.match(frontmatterRegex);
+        if (frontmatterMatch) {
+          let frontmatterContent = frontmatterMatch[1];
+          
+          // Update or add status field
+          if (frontmatterContent.includes('status:')) {
+            frontmatterContent = frontmatterContent.replace(/status:\s*.+/, `status: ${entity.status}`);
+          } else {
+            frontmatterContent += `\nstatus: ${entity.status}`;
+          }
+          
+          // Add resolved_date if status changed to resolved
+          if (entity.type === 'issue' && entity.status === 'resolved' && currentStatus !== 'resolved') {
+            const resolvedDate = new Date().toISOString().split('T')[0];
+            if (frontmatterContent.includes('resolved_date:')) {
+              frontmatterContent = frontmatterContent.replace(/resolved_date:\s*.+/, `resolved_date: ${resolvedDate}`);
+            } else {
+              frontmatterContent += `\nresolved_date: ${resolvedDate}`;
+            }
+          }
+          
+          content = content.replace(frontmatterRegex, `---\n${frontmatterContent}\n---\n\n`);
+        }
+        
+        // Update status section in content
         const statusRegex = /^## Status\s*$/m;
         if (statusRegex.test(content)) {
           // Update existing status section
@@ -413,15 +438,23 @@ created: ${date}
             `## Status\n\n${entity.status}\n\n`
           );
         } else {
-          // Add status section after description
+          // Add status section after description or Raised by/Owner
           const descIndex = content.indexOf('## Description');
+          const raisedByIndex = content.indexOf('**Raised by**:');
+          const ownerIndex = content.indexOf('**Owner**:');
+          
+          let insertIndex = -1;
           if (descIndex !== -1) {
-            const descEnd = content.indexOf('\n\n', descIndex + 15);
-            if (descEnd !== -1) {
-              content = content.slice(0, descEnd + 2) + 
-                `## Status\n\n${entity.status}\n\n` + 
-                content.slice(descEnd + 2);
-            }
+            insertIndex = content.indexOf('\n\n', descIndex + 15);
+          } else if (raisedByIndex !== -1 || ownerIndex !== -1) {
+            const startIndex = Math.max(raisedByIndex, ownerIndex);
+            insertIndex = content.indexOf('\n\n', startIndex);
+          }
+          
+          if (insertIndex !== -1) {
+            content = content.slice(0, insertIndex + 2) + 
+              `## Status\n\n${entity.status}\n\n` + 
+              content.slice(insertIndex + 2);
           }
         }
       }
@@ -471,6 +504,107 @@ created: ${date}
         // Folder might already exist
         console.debug(`MeetingMind: Folder ${normalizedPath} may already exist`);
       }
+    }
+  }
+  
+  /**
+   * Archive resolved issues that have been resolved for more than the specified days
+   */
+  async archiveResolvedIssues(archiveDays: number): Promise<{ archived: number; errors: string[] }> {
+    let archived = 0;
+    const errors: string[] = [];
+    
+    if (!this.enableIssues || !this.issuesFolder) {
+      return { archived, errors };
+    }
+    
+    try {
+      const folder = this.app.vault.getAbstractFileByPath(this.issuesFolder);
+      if (!folder) {
+        return { archived, errors };
+      }
+      
+      // Get all markdown files in the issues folder (not in Archive subfolder)
+      const files = this.app.vault.getMarkdownFiles().filter(file => 
+        file.path.startsWith(this.issuesFolder + '/') && 
+        !file.path.includes('/Archive/')
+      );
+      
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - archiveDays);
+      
+      for (const file of files) {
+        try {
+          const cache = this.app.metadataCache.getFileCache(file);
+          const frontmatter = cache?.frontmatter;
+          
+          // Check if issue is resolved and has been resolved long enough
+          if (frontmatter?.status === 'resolved' && frontmatter?.resolved_date) {
+            const resolvedDate = new Date(frontmatter.resolved_date);
+            
+            if (resolvedDate < cutoffDate) {
+              // Archive this issue
+              const yearMonth = resolvedDate.toISOString().slice(0, 7); // YYYY-MM
+              const archivePath = `${this.issuesFolder}/Archive/${yearMonth}`;
+              
+              // Ensure archive folder exists
+              await this.ensureFolder(archivePath);
+              
+              // Move the file
+              const newPath = `${archivePath}/${file.name}`;
+              await this.app.vault.rename(file, newPath);
+              
+              console.debug(`MeetingMind: Archived ${file.path} to ${newPath}`);
+              archived++;
+              
+              // Update links in People notes
+              await this.updateLinksAfterArchive(file.path, newPath, file.basename);
+            }
+          }
+        } catch (error) {
+          const errorMsg = `Failed to archive ${file.path}: ${error}`;
+          console.error(`MeetingMind: ${errorMsg}`);
+          errors.push(errorMsg);
+        }
+      }
+      
+      return { archived, errors };
+    } catch (error) {
+      const errorMsg = `Failed to archive issues: ${error}`;
+      console.error(`MeetingMind: ${errorMsg}`);
+      errors.push(errorMsg);
+      return { archived, errors };
+    }
+  }
+  
+  /**
+   * Update links in People notes after archiving an issue
+   */
+  private async updateLinksAfterArchive(oldPath: string, newPath: string, basename: string): Promise<void> {
+    if (!this.app.workspace) return;
+    
+    try {
+      // Get all markdown files (focus on People folder if configured)
+      const files = this.app.vault.getMarkdownFiles();
+      
+      for (const file of files) {
+        try {
+          let content = await this.app.vault.read(file);
+          const oldLink = `[[${basename}]]`;
+          const newLink = `[[${newPath.replace(/\.md$/, '')}|${basename}]]`;
+          
+          // Only update if the old link exists
+          if (content.includes(oldLink)) {
+            content = content.replace(new RegExp(`\\[\\[${basename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]\\]`, 'g'), newLink);
+            await this.app.vault.modify(file, content);
+            console.debug(`MeetingMind: Updated links in ${file.path}`);
+          }
+        } catch (error) {
+          console.error(`MeetingMind: Failed to update links in ${file.path}`, error);
+        }
+      }
+    } catch (error) {
+      console.error('MeetingMind: Failed to update links after archive', error);
     }
   }
   

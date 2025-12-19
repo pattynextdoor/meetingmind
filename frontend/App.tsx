@@ -259,7 +259,7 @@ const Features = () => {
             <h2 className="font-serif text-4xl text-stone-900">Auto-create participant notes</h2>
             <p className="font-sans text-lg text-stone-600 leading-relaxed">
               MeetingMind automatically creates notes for people mentioned in your meetings. 
-              Track meeting history, contributions, and action items per person.
+              Track meeting history, contributions, action items, and what they own—all in one place.
             </p>
             <ul className="space-y-3 text-stone-600 font-sans text-sm">
               <li className="flex items-center gap-3">
@@ -268,11 +268,15 @@ const Features = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Links meetings to participant notes</span>
+                <span>Links meetings, topics, and issues to participant notes</span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>AI insights per participant (Pro)</span>
+                <span>Track what each person owns and what issues they've raised (Pro)</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>AI insights per participant with automatic entity linking (Pro)</span>
               </li>
             </ul>
             <div className="inline-block px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded">
@@ -285,15 +289,20 @@ const Features = () => {
               <div className="text-stone-300 text-xs font-mono mb-3">---<br/>type: person<br/>---</div>
               <div className="text-xl font-serif text-stone-900 mb-4"># Sarah Chen</div>
               <div className="space-y-3 text-sm">
-                <div className="text-stone-500">## Meeting History</div>
+                <div className="text-stone-500">## Top of Mind</div>
+                <div className="text-stone-500 text-xs mt-2">### Owns</div>
+                <div className="pl-4 space-y-1 text-stone-600">
+                  <div>• [[Payment flow]] — <em>active topic</em></div>
+                  <div>• 🔄 OAuth integration — <em>in-progress 2024-12-15</em></div>
+                </div>
+                <div className="text-stone-500 mt-4">## Raised Issues</div>
+                <div className="pl-4 text-stone-600">
+                  <div>• [[Database timeout issue]]</div>
+                </div>
+                <div className="text-stone-500 mt-4">## Meetings</div>
                 <div className="pl-4 space-y-1 text-stone-600">
                   <div>• [[2024-12-15 Project Phoenix Kickoff]]</div>
                   <div>• [[2024-12-18 Weekly Sync]]</div>
-                </div>
-                <div className="text-stone-500 mt-4">## Key Contributions</div>
-                <div className="pl-4 text-stone-600">
-                  <div>• Led API architecture discussion</div>
-                  <div>• Proposed timeline adjustments</div>
                 </div>
               </div>
             </div>
@@ -350,22 +359,26 @@ const Features = () => {
             </div>
             <h2 className="font-serif text-4xl text-stone-900">Grow your knowledge graph</h2>
             <p className="font-sans text-lg text-stone-600 leading-relaxed">
-              MeetingMind doesn't just link to existing notes—it creates new ones. 
-              Issues, progress updates, and topics mentioned in meetings automatically 
-              become part of your vault.
+              MeetingMind doesn't just link to existing notes—it creates new ones and connects them to people. 
+              Issues and topics mentioned in meetings automatically become part of your vault, 
+              linked to who raised them and who owns them.
             </p>
             <ul className="space-y-3 text-stone-600 font-sans text-sm">
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Auto-create notes for blockers and issues</span>
+                <span>Auto-create notes for blockers and issues, linked to who raised them</span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Track progress updates automatically</span>
+                <span>Document topics with ownership tracking</span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Document topics and concepts as they're discussed</span>
+                <span>Track progress updates on participant notes</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Auto-archive resolved issues after 30 days (configurable)</span>
               </li>
             </ul>
             <div className="inline-block px-2 py-1 bg-amber-50 text-amber-700 text-xs font-medium rounded">
@@ -375,11 +388,12 @@ const Features = () => {
           <div className="relative group">
             <div className="absolute -inset-4 bg-purple-100/50 rounded-xl -rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
             <div className="relative bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden p-6">
-              <div className="text-stone-300 text-xs font-mono mb-3">---<br/>type: issue<br/>---</div>
+              <div className="text-stone-300 text-xs font-mono mb-3">---<br/>type: issue<br/>status: blocked<br/>---</div>
               <div className="text-xl font-serif text-stone-900 mb-4"># OAuth Integration Blocker</div>
               <div className="space-y-3 text-sm">
                 <div className="text-stone-500">## Description</div>
                 <div className="pl-4 text-stone-600">Refresh token handling issue with Google API</div>
+                <div className="pl-4 text-stone-600 mt-2"><strong>Raised by</strong>: [[Chris Park]]</div>
                 <div className="text-stone-500 mt-4">## Status</div>
                 <div className="pl-4 text-stone-600">blocked</div>
                 <div className="text-stone-500 mt-4">## Related Meetings</div>

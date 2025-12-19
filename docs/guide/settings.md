@@ -32,6 +32,12 @@ Manage participant note creation:
 - People folder
 - Update existing notes
 
+### 🏷️ Entity Extraction (Pro)
+Configure automatic entity extraction:
+- Issues, topics, and updates
+- Folder locations
+- Auto-archive settings
+
 ### 🔑 License
 Manage your Pro license:
 - Enter license key
@@ -47,4 +53,28 @@ Manage your Pro license:
 | AI Provider | AI Enrichment | Claude |
 | Auto-linking | Auto-Linking | On |
 | People folder | Participants | People |
+| Extract entities | Entity Extraction | Off |
+| Issues folder | Entity Extraction | Issues |
+| Topics folder | Entity Extraction | Topics |
+| Issue archive days | Entity Extraction | 30 |
+
+## Detailed Settings
+
+### Entity Extraction (Pro)
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Auto-extract entities | Master toggle for entity extraction | Off |
+| Extract issues | Create notes for blockers and problems | On |
+| Extract updates | Extract updates for participant notes | On |
+| Extract topics | Create notes for concepts and themes | On |
+| Issues folder | Where issue notes are created | `Issues` |
+| Topics folder | Where topic notes are created | `Topics` |
+| Issue archive days | Days before archiving resolved issues | 30 |
+
+**Notes:**
+- Requires Pro license and AI enrichment enabled
+- Updates are tracked on participant notes (no separate notes created)
+- Resolved issues are automatically archived after the configured days
+- Use command `MeetingMind: Archive resolved issues` to manually trigger archiving
 

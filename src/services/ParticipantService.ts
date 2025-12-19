@@ -191,27 +191,31 @@ tags: [person]
     
     content += `## About\n\n\n`;
     
-    // Meetings section
-    content += `## Meetings\n\n`;
-    content += `### [[${meetingLink}|${meetingTitle}]] (${meetingDateStr})\n\n`;
-    
-    // Add key points from this meeting
-    if (insight?.keyPoints && insight.keyPoints.length > 0) {
-      content += `**Key Contributions:**\n`;
-      for (const point of insight.keyPoints) {
-        content += `- ${point}\n`;
-      }
-      content += `\n`;
-    }
-    
-    // Add sentiment if available
-    if (insight?.sentiment) {
-      content += `*${insight.sentiment}*\n\n`;
-    }
-    
     // Top of Mind section (recent active items)
     content += `## Top of Mind\n\n`;
     content += `*Recent active items and current focus*\n\n`;
+    
+    // Owns section (topics and updates)
+    if ((insight?.ownedTopics && insight.ownedTopics.length > 0) || (insight?.updates && insight.updates.length > 0)) {
+      content += `### Owns\n`;
+      
+      // Add owned topics
+      if (insight?.ownedTopics && insight.ownedTopics.length > 0) {
+        for (const topic of insight.ownedTopics) {
+          content += `- [[${topic}]] — *active topic*\n`;
+        }
+      }
+      
+      // Add updates as plain text with status and date
+      if (insight?.updates && insight.updates.length > 0) {
+        for (const update of insight.updates) {
+          const statusEmoji = update.status === 'completed' ? '✅' : update.status === 'blocked' ? '🚫' : '🔄';
+          content += `- ${statusEmoji} ${update.name} — *${update.status} ${update.date}* (from [[${meetingLink}|${meetingTitle}]])\n`;
+        }
+      }
+      
+      content += `\n`;
+    }
     
     // Action items section (active)
     if (insight?.actionItems && insight.actionItems.length > 0) {
@@ -234,6 +238,33 @@ tags: [person]
         content += `- ✅ ${win} — from [[${meetingLink}|${meetingTitle}]]\n`;
       }
       content += `\n`;
+    }
+    
+    // Raised Issues section
+    if (insight?.raisedIssues && insight.raisedIssues.length > 0) {
+      content += `## Raised Issues\n\n`;
+      for (const issue of insight.raisedIssues) {
+        content += `- [[${issue}]]\n`;
+      }
+      content += `\n`;
+    }
+    
+    // Meetings section
+    content += `## Meetings\n\n`;
+    content += `### [[${meetingLink}|${meetingTitle}]] (${meetingDateStr})\n\n`;
+    
+    // Add key points from this meeting
+    if (insight?.keyPoints && insight.keyPoints.length > 0) {
+      content += `**Key Contributions:**\n`;
+      for (const point of insight.keyPoints) {
+        content += `- ${point}\n`;
+      }
+      content += `\n`;
+    }
+    
+    // Add sentiment if available
+    if (insight?.sentiment) {
+      content += `*${insight.sentiment}*\n\n`;
     }
     
     // Archive section (empty initially)
@@ -322,6 +353,100 @@ tags: [person]
             content.slice(notesIndex);
         } else {
           content = content.trimEnd() + `\n\n## Archive\n\n*Completed items and older meetings*\n\n`;
+        }
+      }
+      
+      // Add owned topics and updates to Top of Mind section
+      if ((insight?.ownedTopics && insight.ownedTopics.length > 0) || (insight?.updates && insight.updates.length > 0)) {
+        // Check if Owns subsection exists
+        if (content.includes('### Owns')) {
+          // Add to existing Owns section
+          let ownsContent = '';
+          
+          if (insight?.ownedTopics && insight.ownedTopics.length > 0) {
+            for (const topic of insight.ownedTopics) {
+              ownsContent += `- [[${topic}]] — *active topic*\n`;
+            }
+          }
+          
+          if (insight?.updates && insight.updates.length > 0) {
+            for (const update of insight.updates) {
+              const statusEmoji = update.status === 'completed' ? '✅' : update.status === 'blocked' ? '🚫' : '🔄';
+              ownsContent += `- ${statusEmoji} ${update.name} — *${update.status} ${update.date}* (from [[${meetingLink}|${meetingTitle}]])\n`;
+            }
+          }
+          
+          content = content.replace(
+            /(### Owns\n)/,
+            `$1${ownsContent}`
+          );
+        } else {
+          // Create new Owns subsection at start of Top of Mind
+          let ownsSection = `### Owns\n`;
+          
+          if (insight?.ownedTopics && insight.ownedTopics.length > 0) {
+            for (const topic of insight.ownedTopics) {
+              ownsSection += `- [[${topic}]] — *active topic*\n`;
+            }
+          }
+          
+          if (insight?.updates && insight.updates.length > 0) {
+            for (const update of insight.updates) {
+              const statusEmoji = update.status === 'completed' ? '✅' : update.status === 'blocked' ? '🚫' : '🔄';
+              ownsSection += `- ${statusEmoji} ${update.name} — *${update.status} ${update.date}* (from [[${meetingLink}|${meetingTitle}]])\n`;
+            }
+          }
+          
+          ownsSection += `\n`;
+          
+          content = content.replace(
+            /(## Top of Mind\s*\n\*[^\n]*\*\s*\n\n)/,
+            `$1${ownsSection}`
+          );
+        }
+      }
+      
+      // Add raised issues
+      if (insight?.raisedIssues && insight.raisedIssues.length > 0) {
+        // Check if Raised Issues section exists
+        if (content.includes('## Raised Issues')) {
+          // Add to existing section
+          let issuesContent = '';
+          for (const issue of insight.raisedIssues) {
+            // Check if this issue is already listed
+            if (!content.includes(`[[${issue}]]`)) {
+              issuesContent += `- [[${issue}]]\n`;
+            }
+          }
+          
+          if (issuesContent) {
+            content = content.replace(
+              /(## Raised Issues\n\n)/,
+              `$1${issuesContent}`
+            );
+          }
+        } else {
+          // Create new Raised Issues section before Meetings
+          let issuesSection = `## Raised Issues\n\n`;
+          for (const issue of insight.raisedIssues) {
+            issuesSection += `- [[${issue}]]\n`;
+          }
+          issuesSection += `\n`;
+          
+          const meetingsIndex = content.indexOf('## Meetings');
+          if (meetingsIndex !== -1) {
+            content = content.slice(0, meetingsIndex) + 
+              issuesSection + 
+              content.slice(meetingsIndex);
+          } else {
+            // Fallback: add before Archive
+            const archiveIndex = content.indexOf('## Archive');
+            if (archiveIndex !== -1) {
+              content = content.slice(0, archiveIndex) + 
+                issuesSection + 
+                content.slice(archiveIndex);
+            }
+          }
         }
       }
       

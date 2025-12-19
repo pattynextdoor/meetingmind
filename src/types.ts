@@ -48,16 +48,20 @@ export interface ParticipantInsight {
   actionItems: ActionItem[];
   sentiment?: string;
   wins?: string[]; // Achievements, completions, successes mentioned
+  updates?: Array<{ name: string; status: 'in-progress' | 'completed' | 'blocked' | 'resolved' | 'stale'; date: string }>; // Updates owned by this person (not separate notes)
+  ownedTopics?: string[]; // Topics this person owns
+  raisedIssues?: string[]; // Issues this person raised
 }
 
 export interface Entity {
   type: 'issue' | 'update' | 'topic';
   name: string;
   description?: string;
-  mentionedBy?: string;
+  mentionedBy?: string; // For issues: who raised it; for topics: who owns it
   status?: 'in-progress' | 'completed' | 'blocked' | 'resolved' | 'stale';
   relatedTo?: string;
   category?: string;
+  resolvedDate?: string; // ISO date when status changed to resolved
 }
 
 export interface EntityStatusUpdate {
@@ -146,11 +150,12 @@ export interface MeetingMindSettings {
   // Entity extraction settings (Pro)
   autoExtractEntities: boolean;
   entityIssuesFolder: string;
-  entityUpdatesFolder: string;
+  entityUpdatesFolder: string; // Deprecated but kept for migration
   entityTopicsFolder: string;
   enableIssueExtraction: boolean;
-  enableUpdateExtraction: boolean;
+  enableUpdateExtraction: boolean; // Now only enriches People notes, doesn't create separate notes
   enableTopicExtraction: boolean;
+  issueArchiveDays: number; // Days before archiving resolved issues
   
   // License settings
   licenseKey: string;
@@ -200,11 +205,12 @@ export const DEFAULT_SETTINGS: MeetingMindSettings = {
   
   autoExtractEntities: false,
   entityIssuesFolder: 'Issues',
-  entityUpdatesFolder: 'Updates',
+  entityUpdatesFolder: 'Updates', // Deprecated
   entityTopicsFolder: 'Topics',
   enableIssueExtraction: true,
-  enableUpdateExtraction: true,
+  enableUpdateExtraction: true, // For People note enrichment only
   enableTopicExtraction: true,
+  issueArchiveDays: 30,
   
   licenseKey: '',
   licenseStatus: 'free',

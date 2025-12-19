@@ -30,25 +30,89 @@ created: 2024-12-18
 
 # Sarah Chen
 
-## Meeting History
-- [[2024-12-18 Project Kickoff]]
+**Role**: Technical Lead
+
+## About
+
+
+## Top of Mind
+
+*Recent active items and current focus*
+
+### Active Action Items
+- [ ] Draft technical spec — from [[2024-12-18 Project Kickoff]]
+
+### Recent Wins
+- ✅ Completed API architecture proposal — from [[2024-12-18 Project Kickoff]]
+
+## Meetings
+
+### [[2024-12-18 Project Kickoff]] (2024-12-18)
+
+**Key Contributions:**
+- Led API architecture discussion
+- Proposed project timeline
+
+## Archive
+
+*Completed items and older meetings*
 
 ## Notes
-<!-- Add your notes about this person -->
+
 ```
 
 ## AI Participant Insights (Pro)
 
-With Pro, participant notes also include AI-generated insights:
+With Pro, participant notes include rich AI-generated insights and automatic linking to related work:
 
 ```markdown
-## From Recent Meetings
+## Top of Mind
 
-### 2024-12-18 Project Kickoff
-- **Role**: Technical Lead
-- **Key Contributions**: Led API architecture discussion, proposed timeline
-- **Action Items**: Draft technical spec, review dependencies
+*Recent active items and current focus*
+
+### Owns
+- [[Payment flow]] — *active topic*
+- 🔄 OAuth integration — *in-progress 2024-12-15* (from [[Monday Standup]])
+
+### Active Action Items
+- [ ] Review API dependencies (due: 2024-12-20) — from [[Project Kickoff]]
+
+### Recent Wins
+- ✅ Completed architecture proposal — from [[Project Kickoff]]
+
+## Raised Issues
+- [[Stripe webhook issue]]
+- [[Database connection timeout]]
+
+## Meetings
+
+### [[2024-12-18 Project Kickoff]] (2024-12-18)
+
+**Key Contributions:**
+- Led API architecture discussion
+- Proposed project timeline
+
+*Engaged and collaborative*
 ```
+
+### What Gets Linked
+
+**Owns Section:**
+- **Topics**: Wiki-links to topic notes the person leads (e.g., `[[Payment flow]]`)
+- **Updates**: Plain text with status emoji and date (not separate notes)
+  - 🔄 = in-progress
+  - ✅ = completed
+  - 🚫 = blocked
+
+**Raised Issues Section:**
+- Wiki-links to issue notes the person raised
+- Issues automatically link back using `**Raised by**: [[Person Name]]`
+
+**Benefits:**
+- See what someone owns at a glance
+- Track issues they've raised across meetings
+- Obsidian's backlinks panel shows all mentions automatically
+- Completed items stay visible (never auto-archived)
 
 ## Tips
 

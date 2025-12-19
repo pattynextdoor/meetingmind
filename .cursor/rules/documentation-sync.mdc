@@ -1,0 +1,230 @@
+---
+description: Keep documentation in sync with functional changes
+globs:
+alwaysApply: true
+---
+# Documentation Sync Rule
+
+**CRITICAL**: Every time you make a functional change to the plugin, you MUST update the relevant documentation.
+
+## What Counts as a Functional Change?
+
+- New features or capabilities added
+- Existing features modified or removed
+- New settings or configuration options
+- Changes to user-facing behavior
+- New commands or UI elements
+- Changes to data structures that affect user experience
+- Performance improvements that users should know about
+- Breaking changes or migrations
+
+## Documentation That Must Be Updated
+
+### 1. Feature Documentation (`docs/features/`)
+
+**When to update**: Adding/modifying features
+
+**Files to check**:
+- `docs/features/participants.md` - Participant note features
+- `docs/features/entity-extraction.md` - Entity extraction (Pro)
+- `docs/features/auto-linking.md` - Auto-linking behavior
+- `docs/features/import.md` - Import functionality
+- `docs/features/otter-sync.md` - Otter.ai integration
+- `docs/features/fireflies.md` - Fireflies.ai integration
+- `docs/features/folder-watcher.md` - Folder watching
+- `docs/features/dashboard.md` - Dashboard features
+
+**What to update**:
+- Feature descriptions
+- How it works sections
+- Configuration options
+- Examples and screenshots
+- Limitations or caveats
+
+### 2. User Guide (`docs/guide/`)
+
+**When to update**: Changes affecting user workflows
+
+**Files to check**:
+- `docs/guide/getting-started.md` - First-time user experience
+- `docs/guide/quick-start.md` - Quick setup guide
+- `docs/guide/settings.md` - Settings documentation
+- `docs/guide/output.md` - Output format and structure
+- `docs/guide/sources.md` - Transcript sources
+
+**What to update**:
+- Step-by-step instructions
+- Settings descriptions and defaults
+- Output examples
+- Workflow changes
+
+### 3. Pro Features (`docs/pro/`)
+
+**When to update**: Changes to Pro-only features
+
+**Files to check**:
+- `docs/pro/overview.md` - Pro feature list
+- `docs/pro/participant-insights.md` - Participant insights
+- `docs/pro/entity-extraction.md` - Entity extraction
+- `docs/pro/action-items.md` - Action items
+- `docs/pro/decisions.md` - Decision tracking
+- `docs/pro/summaries.md` - AI summaries
+- `docs/pro/tags.md` - Tag suggestions
+
+**What to update**:
+- Feature availability
+- Examples and use cases
+- Benefits and value propositions
+
+### 4. Landing Page (`frontend/`)
+
+**When to update**: Major feature additions or changes to core value proposition
+
+**Files to check**:
+- `frontend/App.tsx` - Main landing page content
+- `frontend/metadata.json` - Site metadata and description
+
+**What to update**:
+- Feature highlights
+- Screenshots or demos
+- Value propositions
+- Call-to-action text
+
+**Example sections in App.tsx**:
+```typescript
+// Features section
+const features = [
+  { title: "Feature Name", description: "..." },
+  // Add new features here
+];
+
+// Hero section
+<h1>Main headline</h1>
+<p>Value proposition</p>
+```
+
+### 5. Demo Scripts (`docs/demos/`)
+
+**When to update**: Changes that affect demo workflows
+
+**Files to check**:
+- `docs/demos/DEMO-SCRIPT.md` - Main demo script
+- `docs/demos/DEMO-SCRIPT-MARKETING-REVIEW.md` - Marketing demo
+
+**What to update**:
+- Demo steps
+- Expected outputs
+- Feature showcases
+
+### 6. Main Documentation Index (`docs/index.md`)
+
+**When to update**: Major feature additions
+
+**What to update**:
+- Feature list
+- Quick links
+- Overview content
+
+## Update Checklist
+
+When making a functional change, go through this checklist:
+
+- [ ] **Identify affected features** - What user-facing functionality changed?
+- [ ] **Update feature docs** - Does `docs/features/` need updates?
+- [ ] **Update user guide** - Do workflows or settings change?
+- [ ] **Update Pro docs** - Is this a Pro feature?
+- [ ] **Update landing page** - Is this a major feature worth highlighting?
+- [ ] **Update demo scripts** - Should this be shown in demos?
+- [ ] **Update examples** - Do code examples need updating?
+- [ ] **Check for screenshots** - Do any screenshots need updating?
+
+## Examples
+
+### Example 1: Adding a New Feature
+
+**Change**: Added auto-archive for resolved issues
+
+**Documentation updates needed**:
+1. ✅ `docs/pro/entity-extraction.md` - Add section on auto-archiving
+2. ✅ `docs/guide/settings.md` - Document `issueArchiveDays` setting
+3. ✅ `docs/features/entity-extraction.md` - Explain archive behavior
+4. ✅ `frontend/App.tsx` - Add to features list if major selling point
+
+### Example 2: Modifying Existing Feature
+
+**Change**: Changed participant note structure (added "Owns" and "Raised Issues" sections)
+
+**Documentation updates needed**:
+1. ✅ `docs/features/participants.md` - Update note structure examples
+2. ✅ `docs/pro/participant-insights.md` - Explain new sections
+3. ✅ `docs/guide/output.md` - Update output format examples
+4. ✅ `docs/demos/DEMO-SCRIPT.md` - Update demo expectations
+
+### Example 3: Changing Settings
+
+**Change**: Deprecated `entityUpdatesFolder` setting
+
+**Documentation updates needed**:
+1. ✅ `docs/guide/settings.md` - Mark as deprecated, explain migration
+2. ✅ `docs/pro/entity-extraction.md` - Explain why updates aren't separate notes
+3. ✅ Update any examples that reference this setting
+
+## Documentation Style Guidelines
+
+### Be Specific
+❌ Bad: "The plugin creates notes for people"
+✅ Good: "MeetingMind automatically creates notes in your People folder for each participant mentioned in a meeting transcript"
+
+### Show Examples
+Always include:
+- Code examples for technical features
+- Markdown examples for note structures
+- Screenshots for UI features (when possible)
+
+### Keep It Current
+- Remove outdated information immediately
+- Don't leave "Coming soon" sections for shipped features
+- Update version numbers if mentioned
+
+### Link Between Docs
+- Cross-reference related features
+- Link to settings documentation
+- Link to Pro features from free feature docs
+
+## When NOT to Update Documentation
+
+You can skip documentation updates for:
+- Internal refactoring with no user-facing changes
+- Bug fixes that restore intended behavior (unless the bug was documented)
+- Performance improvements that are transparent to users
+- Code style or linting changes
+- Test additions or modifications
+- Build system changes
+
+## Enforcement
+
+**Before marking a feature complete**:
+1. Review the checklist above
+2. Update all relevant documentation
+3. Verify examples still work
+4. Check for broken links
+
+**During code review**:
+- Documentation updates should be in the same PR/commit as the feature
+- Reviewers should verify documentation completeness
+
+## Quick Reference
+
+| Change Type | Primary Docs to Update |
+|-------------|------------------------|
+| New feature | `docs/features/`, `docs/guide/`, landing page |
+| Settings change | `docs/guide/settings.md` |
+| Pro feature | `docs/pro/`, `docs/features/` |
+| Output format | `docs/guide/output.md`, feature docs |
+| UI/Commands | User guide, feature docs |
+| Integration | `docs/features/[integration].md` |
+| Breaking change | ALL affected docs + migration guide |
+
+## Remember
+
+**Documentation is part of the feature.** A feature isn't complete until users can understand and use it through documentation.

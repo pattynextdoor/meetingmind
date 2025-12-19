@@ -174,6 +174,42 @@ ${transcriptText}`;
   }
   
   /**
+   * Enrich participant insights with entity information (updates, topics, issues)
+   */
+  enrichParticipantInsightsWithEntities(
+    insights: ParticipantInsight[],
+    entities: EntityExtraction,
+    meetingDate: Date
+  ): ParticipantInsight[] {
+    const meetingDateStr = meetingDate.toISOString().split('T')[0];
+    
+    return insights.map(insight => {
+      const enriched = { ...insight };
+      
+      // Add updates owned by this participant
+      enriched.updates = entities.updates
+        .filter(update => update.mentionedBy?.toLowerCase() === insight.name.toLowerCase())
+        .map(update => ({
+          name: update.name,
+          status: update.status || 'in-progress',
+          date: meetingDateStr
+        }));
+      
+      // Add topics owned by this participant
+      enriched.ownedTopics = entities.topics
+        .filter(topic => topic.mentionedBy?.toLowerCase() === insight.name.toLowerCase())
+        .map(topic => topic.name);
+      
+      // Add issues raised by this participant
+      enriched.raisedIssues = entities.issues
+        .filter(issue => issue.mentionedBy?.toLowerCase() === insight.name.toLowerCase())
+        .map(issue => issue.name);
+      
+      return enriched;
+    });
+  }
+  
+  /**
    * Parse participant insights from AI response
    */
   private parseParticipantInsights(response: string): ParticipantInsight[] {
@@ -224,13 +260,13 @@ ${transcriptText}`;
     const prompt = `Analyze this meeting transcript and extract the following entities:
 
 ISSUES: Technical problems, blockers, bugs, or challenges mentioned. These should be specific, actionable problems that need resolution.
-Format: { "name": "Issue name", "description": "Brief context", "mentionedBy": "Person who mentioned it" }
+Format: { "name": "Issue name", "description": "Brief context", "mentionedBy": "Person who raised it", "status": "in-progress|blocked|resolved" }
 
 UPDATES: Progress updates, milestones, status changes, completion announcements. These should be substantive updates about work progress.
-Format: { "name": "Update name", "description": "What changed", "status": "in-progress|completed|blocked", "relatedTo": "Project or topic" }
+Format: { "name": "Update name", "description": "What changed", "status": "in-progress|completed|blocked", "mentionedBy": "Person who owns this work" }
 
 TOPICS: Important concepts, systems, initiatives, or recurring themes discussed. These should be significant topics that are worth documenting.
-Format: { "name": "Topic name", "description": "What it is", "category": "technical|process|product" }
+Format: { "name": "Topic name", "description": "What it is", "category": "technical|process|product", "mentionedBy": "Person who owns or leads this topic" }
 
 Return as JSON:
 {
@@ -238,7 +274,8 @@ Return as JSON:
     {
       "name": "Issue name",
       "description": "Brief description",
-      "mentionedBy": "Person name or null"
+      "mentionedBy": "Person name or null",
+      "status": "in-progress|blocked|resolved"
     }
   ],
   "updates": [
@@ -246,14 +283,15 @@ Return as JSON:
       "name": "Update name",
       "description": "What changed",
       "status": "in-progress|completed|blocked",
-      "relatedTo": "Project name or null"
+      "mentionedBy": "Person name or null"
     }
   ],
   "topics": [
     {
       "name": "Topic name",
       "description": "What it is",
-      "category": "technical|process|product"
+      "category": "technical|process|product",
+      "mentionedBy": "Person name or null"
     }
   ]
 }
