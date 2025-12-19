@@ -6,9 +6,17 @@
 ## Overview
 **Target length:** 60-90 seconds (optimized for social media sharing)  
 **Actual length:** 70-80 seconds (after editing out wait times)  
-**Format:** Screen recording with your voiceover  
+**Format:** Two-step process: Record actions first, add voiceover in post-production  
 **Vibe:** Casual, like showing a friend—not a sales pitch  
-**Tools needed:** Screen recorder (OBS, QuickTime, or Loom), Obsidian, MeetingMind installed
+**Tools needed:** Screen recorder (OBS, QuickTime, or Loom), Obsidian, MeetingMind installed, video editor (DaVinci Resolve, Final Cut, Premiere, or CapCut)
+
+## Recording Workflow
+
+**Step 1: Record Actions (No Voice)**  
+Record all screen actions first—no voiceover needed. Focus on smooth, deliberate movements. Take your time; you can speed up in post-production.
+
+**Step 2: Add Voiceover (Post-Production)**  
+After recording, add the voiceover script in your video editor. Match voiceover timing to the recorded actions.
 
 **Note:** AI processing takes 10-30 seconds per meeting. **Edit out processing time in post-production** (recommended - speed up or cut the import sequence entirely). The demo should feel fast and effortless.
 
@@ -66,266 +74,324 @@ Before recording, configure these settings:
 
 ---
 
-## Demo Script
+## Part 1: Action Recording Script
+
+Record these actions first—**no voiceover needed**. Focus on smooth, deliberate movements. Take your time; you can speed up or trim in post-production.
 
 ### Scene 1: The Hook - Problem Statement (5-7 seconds)
 
-**Show:** Obsidian vault with existing notes visible in file explorer (quick pan):
-- `Cadence.md` (project note)
-- `People/` folder with participant notes
+**Actions to Record:**
+1. Show Obsidian vault with existing notes visible in file explorer (quick pan):
+   - `Cadence.md` (project note)
+   - `People/` folder with participant notes
+2. Quick visual - show sparse graph view (Cmd+G) for 1-2 seconds, then return to file explorer
+3. Pause briefly (you'll add voiceover here)
 
-**Voiceover:**
-> "Your meetings are full of insights. But they're stuck in Otter or Fireflies, disconnected from your notes."
-
-**Action:** Quick visual - show sparse graph view (Cmd+G) for 1-2 seconds, then return to file explorer
-
-**Voiceover (continues):**
-> "MeetingMind fixes that—automatically."
-
-**Text overlay:** `Stop copy-pasting transcripts`
+**Text overlay to add in post:** `Stop copy-pasting transcripts`
 
 ---
 
 ### Scene 2: The Import - One Click (6-8 seconds)
 
-**Show:** Command palette
-
-**Action:** Cmd+P → "MeetingMind: Import file" → select `01-monday-standup.json`
-
-**Voiceover:**
-> "One click, and MeetingMind brings them into your vault."
-
-**Action:** **CUT TO** - File explorer showing the first meeting note created (edit out processing time entirely)
-
-**Text overlay:** `📥 Import from Otter, Fireflies, Zoom...`
+**Actions to Record:**
+1. Show command palette (Cmd+P)
+2. Type "MeetingMind: Import file" and select it
+3. Select `01-monday-standup.json` from file picker
+4. **Wait for processing to complete** (you'll cut this out in post)
+5. Show file explorer with the first meeting note created
 
 **Note:** In post-production, **cut out all processing time**. Jump directly from file selection to the result. The demo should feel instant and effortless.
+
+**Text overlay to add in post:** `📥 Import from Otter, Fireflies, Zoom...`
 
 ---
 
 ### Scene 2b: Building the Series (5-7 seconds)
 
-**Show:** File explorer showing the first meeting note created
+**Actions to Record:**
+1. Show file explorer with the first meeting note created
+2. Import `02-feature-discussion.json` (wait for processing - you'll speed this up in post)
+3. Import `03-wednesday-standup.json` (wait for processing - you'll speed this up in post)
+4. Import `04-launch-retrospective.json` (wait for processing - you'll speed this up in post)
+5. Show meetings folder filling up with notes
 
-**Voiceover:**
-> "Let me import a few more meetings..."
-
-**Action:** **Time-lapse effect** - Quickly show 2-3 more imports happening (speed up significantly in post):
-- `02-feature-discussion.json` (feature discussion)
-- `03-wednesday-standup.json` (standup with different attendees)
-- `04-launch-retrospective.json` (retrospective)
-
-**Voiceover (while importing):**
-> "Different meeting types, different lengths, different people..."
-
-**Action:** Show meetings folder filling up with notes (fast-forward effect)
-
-**Note:** This entire sequence should feel fast—use time-lapse or quick cuts. Total time: 5-7 seconds max.
+**Note:** Record at normal speed. In post-production, speed up these imports significantly (time-lapse effect). Total time should be 5-7 seconds max after editing.
 
 ---
 
 ### Scene 3: The Connection - Auto-Linking (12-15 seconds)
 
-**Show:** Open one of the meeting notes (maybe the feature discussion)
+**Actions to Record:**
+1. Open one of the meeting notes (maybe the feature discussion)
+2. Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links
+3. Click `[[Maya Rodriguez]]` → participant note opens
+4. Scroll to show the "Related Meetings" section in Maya's note
+5. Click back (or use Obsidian back button), open another meeting note (maybe the retrospective)
+6. Show participants section again, click `[[Derek Nguyen]]`
+7. Show Derek's participant note briefly
 
-**Voiceover:**
-> "Now watch this."
-
-**Action:** Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links
-
-**Voiceover:**
-> "Watch—it automatically links to participant notes."
-
-**Text overlay:** `🔗 Auto-linked to your vault`
-
-**Action:** Click `[[Maya Rodriguez]]` → participant note opens
-
-**Show:** Participant note showing multiple meetings linked
-
-**Voiceover:**
-> "Maya's note shows all her meetings—Monday standup, feature discussion, Wednesday standup..."
-
-**Action:** Scroll to show the "Related Meetings" section in Maya's note
-
-**Voiceover:**
-> "Your people notes track their entire meeting history automatically."
-
-**Action:** Click back, open another meeting note (maybe the retrospective)
-
-**Action:** Show participants section again, click `[[Derek Nguyen]]` 
-
-**Voiceover:**
-> "Different meetings, different people—but everyone's connected. Your knowledge graph builds itself."
+**Text overlay to add in post:** `🔗 Auto-linked to your vault`
 
 ---
 
 ### Scene 4: The AI Value - Pro Features (8-10 seconds)
 
-**Scroll through one of the meeting notes (maybe the retrospective):**
+**Actions to Record:**
+1. Scroll through one of the meeting notes (maybe the retrospective)
+2. Show summary section
+3. Show action items section
+4. Show decisions section
+5. Open a different meeting note (standup) - show it's shorter but still has AI extraction
+6. Open the feature discussion - show more detailed extraction
 
-**Voiceover:**
-> "You get summaries, action items, decisions—"
-
-**Action:** Show summary section, action items section, decisions section
-
-**Text overlay:** `🤖 AI-powered summaries (Pro)`
-
-**Voiceover:**
-> "—all extracted automatically."
-
-**Action:** Open a different meeting note (standup) - show it's shorter but still has AI extraction
-
-**Voiceover:**
-> "Quick standups get quick summaries—"
-
-**Action:** Open the feature discussion - show more detailed extraction
-
-**Text overlay:** `✅ Action items with owners`
-
-**Voiceover:**
-> "—and deep dives get detailed analysis. The AI adapts to the meeting type."
+**Text overlays to add in post:**
+- `🤖 AI-powered summaries (Pro)` (when showing AI features)
+- `✅ Action items with owners` (when showing action items)
 
 ---
 
 ### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
 
-**Show:** File explorer, scroll to show entity folders (`Issues/`, `Updates/`, `Topics/`)
+**Actions to Record:**
+1. Show file explorer, scroll to show entity folders (`Issues/`, `Updates/`, `Topics/`)
+2. Expand `Issues/` folder to show notes inside
+3. Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
+4. Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
+5. Go back to file explorer
+6. Open `Topics/` folder, click on a topic note (e.g., "Search Feature")
+7. Show topic note with related meetings
 
-**Voiceover:**
-> "But here's the magic—MeetingMind doesn't just link to existing notes. It creates new ones."
-
-**Text overlay:** `📊 Entity extraction (Pro)`
-
-**Action:** Expand `Issues/` folder to show notes inside
-
-**Text overlay:** `Issues • Updates • Topics`
-
-**Action:** Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
-
-**Voiceover:**
-> "Issues mentioned across different meetings—"
-
-**Action:** Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
-
-**Voiceover:**
-> "—get tracked automatically. Same issue, different meetings, all connected."
-
-**Action:** Open `Topics/` folder, click on a topic note (e.g., "Search Feature")
-
-**Action:** Show topic note with related meetings
-
-**Voiceover:**
-> "Topics evolve across meetings. Your knowledge graph builds itself automatically."
+**Text overlays to add in post:**
+- `📊 Entity extraction (Pro)` (when showing entity folders)
+- `Issues • Updates • Topics` (when expanding folders)
 
 ---
 
 ### Scene 5b: The Graph View - Visual Climax (12-15 seconds)
 
-**Show:** Switch to Obsidian's Graph View (Cmd+G or click graph icon)
+**Actions to Record:**
+1. Switch to Obsidian's Graph View (Cmd+G or click graph icon)
+2. **PAUSE for 2 seconds** - Let the graph view sit and make visual impact
+3. Pan/zoom slowly to show the network of connections:
+   - Meeting notes connected to participant notes
+   - Participants connected to each other through meetings
+   - Entity notes (issues, topics) connected to meetings
+   - The project note (Cadence) connected to meetings
+4. Zoom out to show the full graph structure
+5. Hover over a node to show it highlights connections
 
-**Voiceover:**
-> "But here's the best part—"
-
-**Action:** **PAUSE for 2 seconds** - Let the graph view sit and make visual impact
-
-**Text overlay:** `🕸️ Watch your graph grow`
-
-**Voiceover:**
-> "Watch your graph grow."
-
-**Action:** Pan/zoom slowly to show the network of connections:
-- Meeting notes connected to participant notes
-- Participants connected to each other through meetings
-- Entity notes (issues, topics) connected to meetings
-- The project note (Cadence) connected to meetings
-
-**Voiceover:**
-> "Every meeting adds new nodes. Every participant becomes a hub. Every issue, every topic—"
-
-**Action:** Zoom out to show the full graph structure
-
-**Text overlay:** `Every meeting adds connections`
-
-**Voiceover:**
-> "—all connected. Your knowledge graph builds itself, visually."
-
-**Action:** Hover over a node to show it highlights connections
-
-**Voiceover:**
-> "Your meetings aren't isolated—they're part of a living network."
+**Text overlays to add in post:**
+- `🕸️ Watch your graph grow` (when graph appears)
+- `Every meeting adds connections` (during zoom out)
 
 ---
 
 ### Scene 6: The Big Picture - Call to Action (5-7 seconds)
 
-**Show:** Pull back to show vault structure - meetings folder, people folder, entity folders
+**Actions to Record:**
+1. Pull back to show vault structure - meetings folder, people folder, entity folders
+2. Show file explorer with all the generated notes (quick pan)
 
-**Voiceover:**
-> "Four meetings. One click each. A complete knowledge graph."
-
-**Action:** Show file explorer with all the generated notes (quick pan)
-
-**Voiceover:**
-> "That's MeetingMind."
-
-**Text overlay:** 
+**Text overlay to add in post:**
 ```
 MeetingMind for Obsidian
 Free core features • $39 Pro (one-time)
 Try it free in Obsidian Community Plugins
 ```
 
-**Voiceover (optional, if time allows):**
+---
+
+## Part 2: Voiceover Script (Add in Post-Production)
+
+Match these voiceover lines to the recorded actions. Read naturally—don't rush. Pauses are your friend.
+
+### Scene 1: The Hook - Problem Statement (5-7 seconds)
+
+**Voiceover:**
+> "Your meetings are full of insights. But they're stuck in Otter or Fireflies, disconnected from your notes."
+
+[Pause while showing graph view]
+
+> "MeetingMind fixes that—automatically."
+
+### Scene 2: The Import - One Click (6-8 seconds)
+
+**Voiceover:**
+> "One click, and MeetingMind brings them into your vault."
+
+### Scene 2b: Building the Series (5-7 seconds)
+
+**Voiceover:**
+> "Let me import a few more meetings..."
+
+[While showing imports]
+
+> "Different meeting types, different lengths, different people..."
+
+### Scene 3: The Connection - Auto-Linking (12-15 seconds)
+
+**Voiceover:**
+> "Now watch this."
+
+[When showing participant links]
+
+> "Watch—it automatically links to participant notes."
+
+[When showing Maya's note]
+
+> "Maya's note shows all her meetings—Monday standup, feature discussion, Wednesday standup..."
+
+[When scrolling through meetings]
+
+> "Your people notes track their entire meeting history automatically."
+
+[When showing Derek's note]
+
+> "Different meetings, different people—but everyone's connected. Your knowledge graph builds itself."
+
+### Scene 4: The AI Value - Pro Features (8-10 seconds)
+
+**Voiceover:**
+> "You get summaries, action items, decisions—"
+
+[When showing AI sections]
+
+> "—all extracted automatically."
+
+[When showing standup]
+
+> "Quick standups get quick summaries—"
+
+[When showing feature discussion]
+
+> "—and deep dives get detailed analysis. The AI adapts to the meeting type."
+
+### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
+
+**Voiceover:**
+> "But here's the magic—MeetingMind doesn't just link to existing notes. It creates new ones."
+
+[When showing entity folders]
+
+> "Issues mentioned across different meetings—"
+
+[When showing issue note with related meetings]
+
+> "—get tracked automatically. Same issue, different meetings, all connected."
+
+[When showing topic note]
+
+> "Topics evolve across meetings. Your knowledge graph builds itself automatically."
+
+### Scene 5b: The Graph View - Visual Climax (12-15 seconds)
+
+**Voiceover:**
+> "But here's the best part—"
+
+[PAUSE for 2 seconds - let graph view sit]
+
+> "Watch your graph grow."
+
+[While panning/zooming]
+
+> "Every meeting adds new nodes. Every participant becomes a hub. Every issue, every topic—"
+
+[When zooming out]
+
+> "—all connected. Your knowledge graph builds itself, visually."
+
+[When hovering over nodes]
+
+> "Your meetings aren't isolated—they're part of a living network."
+
+### Scene 6: The Big Picture - Call to Action (5-7 seconds)
+
+**Voiceover:**
+> "Four meetings. One click each. A complete knowledge graph."
+
+[When showing vault structure]
+
+> "That's MeetingMind."
+
+[Optional, if time allows]
+
 > "Get MeetingMind free in Obsidian Community Plugins. Upgrade to Pro for AI features—$39 one-time."
 
 ---
 
 ## Recording Tips
 
-### Do's ✓
-- **Move slowly** - viewers need time to read
-- **Pause on key moments** - let the AI sections sink in
+### Action Recording Tips ✓
+- **Move slowly and deliberately** - viewers need time to read
+- **Pause on key moments** - let important sections sit for 1-2 seconds
 - **Use smooth scrolling** - not jerky mouse movements
 - **Record at 60fps** if possible for smooth playback
-- **Add subtle zoom** in post to highlight sections
+- **Take your time** - you can speed up or trim in post-production
+- **Record processing time** - you'll cut it out later, but record it so you have options
 
 ### Don'ts ✗
-- Don't show loading spinners for too long (edit them shorter)
-- Don't include mistakes/retakes (obviously)
-- Don't speed up so fast that text is unreadable
+- Don't rush through actions - record at comfortable pace
+- Don't worry about timing - you'll sync voiceover in post
+- Don't include mistakes/retakes - do multiple takes if needed
 - Don't use a cluttered vault with distracting notes
 
 ### Important Notes ⚠️
-- **Processing time**: **MUST edit out in post-production** - AI takes 10-30 seconds. Cut or speed up all import sequences. The demo should feel instant and effortless.
-- **Target length**: Aim for 60-90 seconds total. Shorter = better for social media sharing.
-- **Hook is critical**: First 3 seconds determine if viewers keep watching. Lead with the problem, not Obsidian context.
+- **Processing time**: Record it, but **MUST edit out in post-production** - AI takes 10-30 seconds. Cut or speed up all import sequences. The demo should feel instant and effortless.
+- **Target length**: Aim for 60-90 seconds total after editing. Shorter = better for social media sharing.
 - **Navigation**: Use Obsidian's back button or click the meeting note tab to return. Don't use browser-style navigation
 - **Entity filenames**: Check actual filenames after import - AI might name them slightly differently than expected
 - **Practice Scene 5**: Entity extraction is the "wow" moment - practice opening entity notes smoothly
 - **Graph View**: Practice navigating the graph view smoothly - pan, zoom, and hover to show connections. This is the visual climax—let it breathe.
-- **Text overlays**: Add in post-production. They're essential for marketing effectiveness.
 
 ---
 
-## Post-Production
+## Post-Production Workflow
 
-### Recommended Edits (Priority Order)
+### Step 1: Edit Actions (Video Editing)
 
-**Must-Have:**
+**Must-Have Edits:**
 1. **Cut all processing time** - Speed up or cut import sequences entirely. Demo should feel instant.
-2. **Add text overlays** - Label each feature as it appears (see overlay table above)
+2. **Smooth transitions** - No jarring cuts between scenes
 3. **Add cursor highlight** - Make clicks visible (use cursor highlight effect)
-4. **Smooth transitions** - No jarring cuts between scenes
+4. **Optimize length** - Trim to 60-90 seconds total
 
 **Should-Have:**
-5. **Add subtle background music** - Upbeat but not distracting (instrumental, low volume)
-6. **Add zoom effects** - Subtle zoom to highlight important sections
-7. **Optimize length** - Trim to 60-90 seconds total
+5. **Add zoom effects** - Subtle zoom to highlight important sections
+6. **Color correction** - Ensure consistent brightness/contrast
+7. **Stabilize shaky movements** - Smooth out any jerky mouse movements
+
+### Step 2: Add Voiceover (Audio Editing)
+
+**Voiceover Tips:**
+- Record voiceover separately (use a good microphone)
+- Match voiceover timing to the edited video actions
+- Add pauses where indicated in the script
+- Use noise reduction if needed
+- Normalize audio levels
+
+**Timing Guide:**
+- Total voiceover should be ~70-80 seconds
+- Match voiceover to actions - don't rush
+- Let key moments breathe (especially graph view)
+
+### Step 3: Add Text Overlays & Graphics
+
+**Must-Have Overlays:**
+- Add all text overlays listed in each scene
+- Use clean, readable fonts (SF Pro, Inter, or similar)
+- Keep overlays subtle—don't block content
+- Add subtle animations (fade in/out)
+
+**Should-Have:**
+- Add subtle background music - Upbeat but not distracting (instrumental, low volume)
+- Ensure music doesn't overpower voiceover
 
 **Nice-to-Have:**
-8. **Before/after comparison** - Show sparse graph → connected graph (if time allows)
-9. **Progress indicators** - Show "Step 1 of 4" etc. (optional)
-10. **Branding** - Subtle logo watermark (optional)
+- Before/after comparison - Show sparse graph → connected graph (if time allows)
+- Progress indicators - Show "Step 1 of 4" etc. (optional)
+- Branding - Subtle logo watermark (optional)
+
+### Step 4: Export
 
 **Export formats:**
 - **MP4** (1080p, 60fps) for YouTube/website embed
@@ -369,9 +435,11 @@ Use a tool like [Gifski](https://gif.ski/) or [LICEcap](https://www.cockos.com/l
 
 ---
 
-## Sample Voiceover Script (Full - Optimized)
+## Complete Voiceover Script (Timing Reference)
 
-Read this naturally—don't rush. Pauses are your friend. **Target: 70-80 seconds total.**
+Use this as a reference when recording voiceover. **Don't follow timings exactly** - match your voiceover to the edited video actions instead.
+
+**Total target length:** ~70-80 seconds (after editing out processing time)
 
 ```
 [0:00] Your meetings are full of insights. But they're stuck in Otter or Fireflies, 
@@ -435,35 +503,41 @@ Read this naturally—don't rush. Pauses are your friend. **Target: 70-80 second
        Upgrade to Pro for AI features—$39 one-time.
 ```
 
-**Timing notes:**
-- Total length: ~90 seconds (with pauses)
-- After editing out processing time: ~70-80 seconds
-- Adjust pacing based on your natural speaking speed
-- Don't rush—let key moments breathe
-
-**Tips for natural delivery:**
+**Tips for recording voiceover:**
+- Record in a quiet room with a good microphone
 - Talk like you're showing a friend, not presenting
 - Emphasize "creates new ones" and "builds itself" - that's the magic moment
-- Pause after "But here's what makes it powerful" - let it land
+- Pause after "But here's the best part" - let it land
 - Let yourself breathe between sentences  
 - It's okay to say "um" once or twice—keeps it human
 - Smile while you talk (it comes through in your voice)
+- Match timing to your edited video, not these timestamps
 
 ---
 
 ## Ready to Record?
 
+### Pre-Recording Checklist
+
+**Setup:**
 1. ☐ Test vault set up with sample notes
 2. ☐ MeetingMind configured and tested
 3. ☐ Entity extraction enabled in settings (Pro feature)
 4. ☐ All 4 demo transcripts ready in `test-files/demo/`
-5. ☐ Screen recorder ready
+5. ☐ Screen recorder ready (OBS, QuickTime, or Loom)
 6. ☐ Obsidian theme clean and fonts readable
-7. ☐ Read through script once
-8. ☐ Do a practice run (especially Scene 3 - participant connections, Scene 5 - entity extraction, and Scene 5b - graph view)
-9. ☐ Practice the import sequence - you'll want to speed this up in post-production
-10. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
-11. ☐ Hit record!
+7. ☐ Video editor ready (DaVinci Resolve, Final Cut, Premiere, or CapCut)
+
+**Practice:**
+8. ☐ Read through action script once
+9. ☐ Do a practice run (especially Scene 3 - participant connections, Scene 5 - entity extraction, and Scene 5b - graph view)
+10. ☐ Practice the import sequence - record at normal speed, you'll speed this up in post-production
+11. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
+
+**Recording:**
+12. ☐ Hit record! (Record actions only - no voiceover needed)
+13. ☐ Record all scenes in one take if possible (or multiple takes, you'll edit later)
+14. ☐ After recording actions, record voiceover separately (match to edited video)
 
 **Pro Tips:**
 
@@ -474,16 +548,24 @@ Read this naturally—don't rush. Pauses are your friend. **Target: 70-80 second
 - **Practice graph navigation** - Know how to switch to graph view quickly (Cmd+G), practice panning/zooming smoothly
 - **Document actual filenames** - Note actual entity filenames after import so you know what to click during recording
 
-**Recording Tips:**
-- **Hook is critical** - First 3 seconds determine if viewers keep watching. Practice the opening line.
+**Action Recording Tips:**
+- **Move slowly** - Viewers need time to read. Don't rush through key moments.
+- **Pause on key moments** - Let important sections sit for 1-2 seconds
+- **Smooth navigation** - Practice clicking through participant links and entity notes smoothly
+- **Record processing time** - You'll cut it out later, but record it so you have options
+- **Take multiple takes** - It's easier to edit if you have options
+
+**Voiceover Recording Tips:**
+- **Record separately** - Use a good microphone in a quiet room
+- **Match to edited video** - Record voiceover after you've edited the actions
 - **Emphasize "automatically"** - This is your key differentiator. Say it clearly.
 - **Let graph view breathe** - Pause for 2 seconds when graph appears. It's the visual climax.
-- **Move slowly** - Viewers need time to read. Don't rush through key moments.
-- **Smooth navigation** - Practice clicking through participant links and entity notes smoothly
+- **Natural delivery** - Talk like you're showing a friend, not presenting
 
 **Post-Production:**
 - **Cut ALL processing time** - Import sequences should feel instant (speed up or cut entirely)
 - **Add text overlays** - Essential for marketing effectiveness (see overlay table)
+- **Sync voiceover to actions** - Match voiceover timing to what's happening on screen
 - **Optimize length** - Target 60-90 seconds. Shorter = better for sharing
 - **Test with strangers** - Show to 3-5 people who don't know the product. Can they explain what it does?
 
