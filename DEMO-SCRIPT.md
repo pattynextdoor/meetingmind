@@ -1,10 +1,13 @@
 # MeetingMind Demo Recording Script
 
 ## Overview
-**Target length:** 50-60 seconds  
+**Target length:** 70-80 seconds (with processing time)  
+**Actual length:** 65-75 seconds (after editing out wait times)  
 **Format:** Screen recording with your voiceover  
 **Vibe:** Casual, like showing a friend—not a sales pitch  
 **Tools needed:** Screen recorder (OBS, QuickTime, or Loom), Obsidian, MeetingMind installed
+
+**Note:** AI processing takes 10-30 seconds. Either acknowledge this in voiceover or edit it out in post-production.
 
 ---
 
@@ -32,7 +35,7 @@ Demo Vault/
 
 **Note:** The `Meetings/` and `People/` folders will be auto-created when you import your first transcript.
 
-**Demo transcript:** `test-files/demo/transcript.json`
+**Demo transcript:** `test-files/demo/transcript-with-entities.json` (includes issues, updates, topics)
 
 ### 2. MeetingMind Settings
 
@@ -42,6 +45,7 @@ Before recording, configure these settings:
 - **AI enrichment:** Enabled (with your API key)
 - **Auto-linking:** Enabled
 - **Participant notes:** Enabled
+- **Entity extraction:** Enabled (Pro feature - use `transcript-with-entities.json` for demo)
 
 ### 3. Screen Setup
 
@@ -70,7 +74,7 @@ Before recording, configure these settings:
 
 ---
 
-### Scene 2: The Import (8 seconds)
+### Scene 2: The Import (10-12 seconds)
 
 **Show:** Command palette
 
@@ -79,18 +83,21 @@ Before recording, configure these settings:
 **Voiceover:**
 > "MeetingMind brings them into your vault."
 
-**Action:** Brief processing flash
+**Action:** Show status bar or processing indicator
+> "This takes about 10 seconds..."
+
+**Note:** In post-production, you can speed up or cut the waiting time. The actual processing includes AI enrichment and entity extraction.
 
 ---
 
-### Scene 3: The Connection (15 seconds)
+### Scene 3: The Connection (18-20 seconds)
 
 **Show:** The generated meeting note appears
 
 **Voiceover:**
 > "Now watch this."
 
-**Action:** Point cursor at `[[Cadence]]` link, hover to show preview
+**Action:** Scroll to participant section, point cursor at `[[Cadence]]` link, hover to show preview
 
 > "The meeting automatically links to your project note."
 
@@ -98,35 +105,54 @@ Before recording, configure these settings:
 
 > "And your people notes..."
 
-**Action:** Navigate back, click `[[Maya Rodriguez]]`
+**Action:** Click the meeting note tab to return (or use Obsidian's back button), scroll to participant links section
+
+**Action:** Click `[[Maya Rodriguez]]` from the meeting note
 
 > "All connected. Your meetings become part of your knowledge graph."
 
 ---
 
-### Scene 4: The Value (12 seconds)
+### Scene 4: The AI Value (10 seconds)
 
 **Scroll through the meeting note:**
 
 **Voiceover:**
 > "You get summaries, action items, decisions—"
 
-**Action:** Show action items section
+**Action:** Show action items section, decisions section
 
-> "—but more importantly, they're linked to everything else."
-
-**Action:** Show participant links, project links
-
-> "No more siloed meeting notes. Everything connects."
+> "—all extracted automatically."
 
 ---
 
-### Scene 5: Close (5 seconds)
+### Scene 5: Entity Extraction - The Magic (18-20 seconds)
 
-**Show:** Graph view or vault overview showing the meeting connected
+**Show:** File explorer, scroll to show entity folders
 
 **Voiceover:**
-> "That's MeetingMind. Meetings that actually connect to your vault."
+> "But here's what makes it powerful—"
+
+**Action:** Expand `Issues/` folder to show notes inside (or scroll to see notes)
+
+> "It doesn't just link to existing notes. It creates new ones."
+
+**Action:** Click on the first issue note (check actual filename after import - might be "OAuth integration with Google" or similar)
+
+> "Issues, updates, topics mentioned in meetings—"
+
+**Action:** Show the entity note, scroll to "Related Meetings" section showing the meeting link
+
+> "—automatically become part of your vault. Your knowledge graph builds itself."
+
+---
+
+### Scene 6: Close (5 seconds)
+
+**Show:** Pull back to show vault structure with meetings, people, and entities
+
+**Voiceover:**
+> "That's MeetingMind. Meetings that actually connect—and build—your vault."
 
 **Text overlay:** 
 ```
@@ -151,6 +177,12 @@ Free core • $25 Pro (one-time)
 - Don't speed up so fast that text is unreadable
 - Don't use a cluttered vault with distracting notes
 
+### Important Notes ⚠️
+- **Processing time**: AI takes 10-30 seconds. Either acknowledge it ("This takes about 10 seconds...") or edit it out in post
+- **Navigation**: Use Obsidian's back button or click the meeting note tab to return. Don't use browser-style navigation
+- **Entity filenames**: Check actual filenames after import - AI might name them slightly differently than expected
+- **Practice Scene 5**: Entity extraction is the "wow" moment - practice opening entity notes smoothly
+
 ---
 
 ## Post-Production
@@ -171,10 +203,12 @@ Free core • $25 Pro (one-time)
 |-------|--------------|
 | Scene 2 (Import) | `📥 Import from Otter, Fireflies, Zoom...` |
 | Scene 3 (Result) | `📝 Clean Markdown with frontmatter` |
+| Scene 3 (Links) | `🔗 Auto-linked to your vault` |
 | Scene 4 (Summary) | `🤖 AI-generated summary` |
 | Scene 4 (Actions) | `✅ Action items with owners` |
-| Scene 4 (Decisions) | `🎯 Decisions captured` |
-| Scene 5 (Links) | `🔗 Auto-linked to your vault` |
+| Scene 5 (Entities) | `📊 Entity extraction (Pro)` |
+| Scene 5 (Folders) | `Issues • Updates • Topics` |
+| Scene 6 (Close) | `Your knowledge graph builds itself` |
 
 ---
 
@@ -202,26 +236,37 @@ Read this naturally—don't rush. Pauses are your friend.
 
 [0:12] MeetingMind brings them into your vault.
 
-[0:16] Now watch this.
+[0:16] This takes about 10 seconds...
 
-[0:18] The meeting automatically links to your project note.
+[0:26] Now watch this.
 
-[0:22] And your people notes...
+[0:28] The meeting automatically links to your project note.
 
-[0:25] All connected. Your meetings become part of your knowledge graph.
+[0:32] And your people notes...
 
-[0:31] You get summaries, action items, decisions—
+[0:36] All connected. Your meetings become part of your knowledge graph.
 
-[0:35] —but more importantly, they're linked to everything else.
+[0:40] You get summaries, action items, decisions—
 
-[0:40] No more siloed meeting notes. Everything connects.
+[0:44] —all extracted automatically.
 
-[0:46] That's MeetingMind. Meetings that actually connect to your vault.
+[0:48] But here's what makes it powerful—
+
+[0:52] It doesn't just link to existing notes. It creates new ones.
+
+[0:58] Issues, updates, topics mentioned in meetings—
+
+[1:03] —automatically become part of your vault. 
+
+[1:08] Your knowledge graph builds itself.
+
+[1:13] That's MeetingMind. Meetings that actually connect—and build—your vault.
 ```
 
 **Tips for natural delivery:**
 - Talk like you're showing a friend, not presenting
-- Emphasize "connected" and "links" - that's the unique value
+- Emphasize "creates new ones" and "builds itself" - that's the magic moment
+- Pause after "But here's what makes it powerful" - let it land
 - Let yourself breathe between sentences  
 - It's okay to say "um" once or twice—keeps it human
 - Smile while you talk (it comes through in your voice)
@@ -231,12 +276,21 @@ Read this naturally—don't rush. Pauses are your friend.
 ## Ready to Record?
 
 1. ☐ Test vault set up with sample notes
-2. ☐ MeetingMind configured and tested  
-3. ☐ Screen recorder ready
-4. ☐ Obsidian theme clean and fonts readable
-5. ☐ Read through script once
-6. ☐ Do a practice run
-7. ☐ Hit record!
+2. ☐ MeetingMind configured and tested
+3. ☐ Entity extraction enabled in settings (Pro feature)
+4. ☐ Use `transcript-with-entities.json` for demo
+5. ☐ Screen recorder ready
+6. ☐ Obsidian theme clean and fonts readable
+7. ☐ Read through script once
+8. ☐ Do a practice run (especially Scene 5 - entity extraction)
+9. ☐ Hit record!
+
+**Pro Tips:**
+- Make sure entity extraction creates at least 2-3 entity notes so the demo looks impressive
+- The `transcript-with-entities.json` should generate multiple entities
+- **Before recording:** Do a test import and note the actual entity filenames so you know what to click
+- **Processing time:** Either acknowledge it in voiceover or plan to edit it out (speeding up or cutting)
+- **Navigation practice:** Practice clicking through links and using Obsidian's back button smoothly
 
 Good luck! 🎬
 
