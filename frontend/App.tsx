@@ -11,7 +11,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <a href="#" className="flex items-center gap-3 font-serif text-2xl tracking-tight text-stone-900 group">
           <img src="/logo.svg" alt="MeetingMind" className="w-8 h-8" />
-          Meeting<span className="text-emerald-800 group-hover:text-emerald-600 transition-colors">Mind</span>
+          <span className="tracking-tighter">Meeting<span className="text-emerald-800 group-hover:text-emerald-600 transition-colors">Mind</span></span>
         </a>
         
         <div className="hidden md:flex items-center gap-8">
@@ -468,7 +468,7 @@ const Footer = () => (
       <div className="flex items-center gap-8">
         <a href="#" className="flex items-center gap-2 font-serif text-xl text-stone-900">
           <img src="/logo.svg" alt="MeetingMind" className="w-6 h-6" />
-          Meeting<span className="text-emerald-800">Mind</span>
+          <span className="tracking-tighter">Meeting<span className="text-emerald-800">Mind</span></span>
         </a>
         <div className="hidden md:flex gap-6 text-sm text-stone-500">
           <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
