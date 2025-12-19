@@ -124,7 +124,7 @@ Team decided to maintain backward compatibility through Q1.
 | Tier | Price | Features |
 |------|-------|----------|
 | **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, meeting dashboard, Dataview-ready output |
-| **Pro** | $25 one-time | + Context-aware AI summaries, action items, decisions, vault-aware tag suggestions, participant insights, entity extraction. Uses your own API keys for full privacy control. |
+| **Pro** | $39 one-time | + Context-aware AI summaries, action items, decisions, vault-aware tag suggestions, participant insights, entity extraction. Uses your own API keys for full privacy control. |
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
 

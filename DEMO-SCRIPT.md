@@ -157,7 +157,7 @@ Before recording, configure these settings:
 **Text overlay:** 
 ```
 MeetingMind for Obsidian
-Free core • $25 Pro (one-time)
+Free core • $39 Pro (one-time)
 ```
 
 ---

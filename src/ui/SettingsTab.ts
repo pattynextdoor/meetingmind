@@ -270,7 +270,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       
       const buttonContainer = banner.createDiv({ cls: 'meetingmind-pro-banner-buttons' });
       const upgradeBtn = buttonContainer.createEl('button', { 
-        text: 'Upgrade for $25 (lifetime)', 
+        text: 'Upgrade for $39 (lifetime)', 
         cls: 'mod-cta' 
       });
       upgradeBtn.addEventListener('click', () => {
@@ -773,7 +773,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       upgradeContainer.createEl('h4', { text: 'Upgrade to MeetingMind Pro' });
       
       const priceEl = upgradeContainer.createDiv({ cls: 'meetingmind-price' });
-      priceEl.createEl('span', { text: '$25', cls: 'meetingmind-price-amount' });
+      priceEl.createEl('span', { text: '$39', cls: 'meetingmind-price-amount' });
       priceEl.createEl('span', { text: ' one-time payment', cls: 'meetingmind-price-label' });
       
       const benefitsEl = upgradeContainer.createDiv({ cls: 'meetingmind-upgrade-benefits' });

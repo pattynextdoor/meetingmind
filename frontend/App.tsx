@@ -193,7 +193,7 @@ const SocialProof = () => (
         { value: "VTT/SRT/JSON", label: "Format Support" },
         { value: "Claude + GPT", label: "AI Providers" },
         { value: "Auto", label: "Wiki-Linking" },
-        { value: "$25", label: "Lifetime Pro" },
+        { value: "$39", label: "Lifetime Pro" },
       ].map((stat, i) => (
         <div key={i} className="text-center group cursor-default">
           <div className="font-serif text-3xl md:text-4xl text-stone-900 mb-1 group-hover:scale-110 transition-transform duration-300 ease-out">{stat.value}</div>
@@ -622,7 +622,7 @@ const Pricing = () => {
     },
     {
       name: "Pro License",
-      price: "$25",
+      price: "$39",
       period: "once",
       description: "Unlock context-aware AI features. Pay once, use forever.",
       features: [

@@ -281,7 +281,7 @@ export class LicenseService {
    */
   showUpgradeNotice(feature: string): void {
     new Notice(
-      `${feature} requires MeetingMind Pro.\n\nGet it at tumbucon.gumroad.com/l/meetingmind-pro for $25 (lifetime).`,
+      `${feature} requires MeetingMind Pro.\n\nGet it at tumbucon.gumroad.com/l/meetingmind-pro for $39 (lifetime).`,
       8000
     );
   }

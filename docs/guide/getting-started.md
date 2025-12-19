@@ -13,7 +13,7 @@ MeetingMind is an Obsidian plugin that:
 
 ## Free vs Pro
 
-| Feature | Free | Pro ($25) |
+| Feature | Free | Pro ($39) |
 |---------|------|-----------|
 | Multi-format import (VTT, SRT, TXT, JSON) | ✅ | ✅ |
 | Auto-linking to vault notes | ✅ | ✅ |

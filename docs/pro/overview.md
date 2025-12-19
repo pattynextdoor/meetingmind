@@ -15,7 +15,7 @@ MeetingMind Pro unlocks AI-powered features that transform your meeting transcri
 
 ## Pricing
 
-**$25 one-time payment** — lifetime license, no subscription.
+**$39 one-time payment** — lifetime license, no subscription.
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
 
