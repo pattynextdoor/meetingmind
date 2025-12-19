@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Icons } from './components/Icons';
 import { AutoLinkVisual, AIExtractionVisual, DataviewVisual, GraphViewVisual, MacWindow } from './components/Visuals';
+import { WebGLBackground } from './components/WebGLBackground';
 import { PricingTier } from './types';
 
 // --- Components ---
@@ -32,7 +33,8 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section className="relative pt-24 pb-32 border-b border-stone-200 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-stone-100/50 via-[#faf9f7] to-[#faf9f7]">
+    <section className="relative pt-24 pb-32 border-b border-stone-200 overflow-hidden bg-[#faf9f7]">
+      <WebGLBackground />
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <div className="mb-8 animate-fade-up" style={{ animationDelay: '0ms' }}>
           <img src="/logo.svg" alt="MeetingMind" className="w-20 h-20 mx-auto drop-shadow-sm" />
