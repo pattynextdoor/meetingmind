@@ -1,13 +1,16 @@
 # MeetingMind Demo Recording Script
 
+> **📝 Marketing-Optimized Version**  
+> This script has been optimized for marketing effectiveness with stronger hooks, clearer value props, and better pacing. Key changes: problem-first hook, cut processing time, emphasize "automatically", stronger CTA.
+
 ## Overview
-**Target length:** 100-110 seconds (with processing time)  
-**Actual length:** 90-100 seconds (after editing out wait times)  
+**Target length:** 60-90 seconds (optimized for social media sharing)  
+**Actual length:** 70-80 seconds (after editing out wait times)  
 **Format:** Screen recording with your voiceover  
 **Vibe:** Casual, like showing a friend—not a sales pitch  
 **Tools needed:** Screen recorder (OBS, QuickTime, or Loom), Obsidian, MeetingMind installed
 
-**Note:** AI processing takes 10-30 seconds per meeting. Either acknowledge this in voiceover or edit it out in post-production (recommended - speed up the import sequence).
+**Note:** AI processing takes 10-30 seconds per meeting. **Edit out processing time in post-production** (recommended - speed up or cut the import sequence entirely). The demo should feel fast and effortless.
 
 ---
 
@@ -65,49 +68,49 @@ Before recording, configure these settings:
 
 ## Demo Script
 
-### Scene 1: The Obsidian Context (10-12 seconds)
+### Scene 1: The Hook - Problem Statement (5-7 seconds)
 
-**Show:** Obsidian vault with existing notes visible in file explorer:
+**Show:** Obsidian vault with existing notes visible in file explorer (quick pan):
 - `Cadence.md` (project note)
 - `People/` folder with participant notes
 
 **Voiceover:**
-> "You've got your Obsidian vault—projects, people, ideas all connected."
+> "Your meetings are full of insights. But they're stuck in Otter or Fireflies, disconnected from your notes."
 
-**Action:** Click on `Cadence.md` to show it's a real note with content
+**Action:** Quick visual - show sparse graph view (Cmd+G) for 1-2 seconds, then return to file explorer
 
-**Optional:** Quick peek at graph view (Cmd+G) - show sparse graph with just a few nodes
+**Voiceover (continues):**
+> "MeetingMind fixes that—automatically."
 
-> "But your meetings? They're stuck in Otter or Fireflies, disconnected from everything else."
-
-**Action:** Return to file explorer view
+**Text overlay:** `Stop copy-pasting transcripts`
 
 ---
 
-### Scene 2: The First Import (10-12 seconds)
+### Scene 2: The Import - One Click (6-8 seconds)
 
 **Show:** Command palette
 
 **Action:** Cmd+P → "MeetingMind: Import file" → select `01-monday-standup.json`
 
 **Voiceover:**
-> "MeetingMind brings them into your vault."
+> "One click, and MeetingMind brings them into your vault."
 
-**Action:** Show status bar or processing indicator
-> "This takes about 10 seconds..."
+**Action:** **CUT TO** - File explorer showing the first meeting note created (edit out processing time entirely)
 
-**Note:** In post-production, you can speed up or cut the waiting time. The actual processing includes AI enrichment and entity extraction.
+**Text overlay:** `📥 Import from Otter, Fireflies, Zoom...`
+
+**Note:** In post-production, **cut out all processing time**. Jump directly from file selection to the result. The demo should feel instant and effortless.
 
 ---
 
-### Scene 2b: Building the Series (15-18 seconds)
+### Scene 2b: Building the Series (5-7 seconds)
 
 **Show:** File explorer showing the first meeting note created
 
 **Voiceover:**
-> "Let me import a few more meetings to show you how it builds..."
+> "Let me import a few more meetings..."
 
-**Action:** Quickly import 2-3 more meetings (use speed-up in post):
+**Action:** **Time-lapse effect** - Quickly show 2-3 more imports happening (speed up significantly in post):
 - `02-feature-discussion.json` (feature discussion)
 - `03-wednesday-standup.json` (standup with different attendees)
 - `04-launch-retrospective.json` (retrospective)
@@ -115,14 +118,13 @@ Before recording, configure these settings:
 **Voiceover (while importing):**
 > "Different meeting types, different lengths, different people..."
 
-**Action:** Show meetings folder filling up with notes
+**Action:** Show meetings folder filling up with notes (fast-forward effect)
 
-**Voiceover:**
-> "Watch what happens..."
+**Note:** This entire sequence should feel fast—use time-lapse or quick cuts. Total time: 5-7 seconds max.
 
 ---
 
-### Scene 3: The Connection (20-25 seconds)
+### Scene 3: The Connection - Auto-Linking (12-15 seconds)
 
 **Show:** Open one of the meeting notes (maybe the feature discussion)
 
@@ -131,32 +133,33 @@ Before recording, configure these settings:
 
 **Action:** Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links
 
-> "Each meeting automatically links to participant notes."
+**Voiceover:**
+> "Watch—it automatically links to participant notes."
+
+**Text overlay:** `🔗 Auto-linked to your vault`
 
 **Action:** Click `[[Maya Rodriguez]]` → participant note opens
 
 **Show:** Participant note showing multiple meetings linked
 
 **Voiceover:**
-> "And look - Maya's note shows all her meetings. Monday standup, feature discussion, Wednesday standup..."
+> "Maya's note shows all her meetings—Monday standup, feature discussion, Wednesday standup..."
 
 **Action:** Scroll to show the "Related Meetings" section in Maya's note
 
-> "Your people notes track their entire meeting history."
+**Voiceover:**
+> "Your people notes track their entire meeting history automatically."
 
 **Action:** Click back, open another meeting note (maybe the retrospective)
 
-**Action:** Show participants section again
+**Action:** Show participants section again, click `[[Derek Nguyen]]` 
 
-> "Different meetings, different combinations of people -"
-
-**Action:** Click `[[Derek Nguyen]]` 
-
-> "But everyone's connected. Your knowledge graph builds itself."
+**Voiceover:**
+> "Different meetings, different people—but everyone's connected. Your knowledge graph builds itself."
 
 ---
 
-### Scene 4: The AI Value (12-15 seconds)
+### Scene 4: The AI Value - Pro Features (8-10 seconds)
 
 **Scroll through one of the meeting notes (maybe the retrospective):**
 
@@ -165,32 +168,41 @@ Before recording, configure these settings:
 
 **Action:** Show summary section, action items section, decisions section
 
+**Text overlay:** `🤖 AI-powered summaries (Pro)`
+
+**Voiceover:**
 > "—all extracted automatically."
 
 **Action:** Open a different meeting note (standup) - show it's shorter but still has AI extraction
 
 **Voiceover:**
-> "Works for quick standups—"
+> "Quick standups get quick summaries—"
 
 **Action:** Open the feature discussion - show more detailed extraction
 
-> "—and deep dives. The AI adapts to the meeting type."
+**Text overlay:** `✅ Action items with owners`
+
+**Voiceover:**
+> "—and deep dives get detailed analysis. The AI adapts to the meeting type."
 
 ---
 
-### Scene 5: Entity Extraction - The Magic (20-25 seconds)
+### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
 
 **Show:** File explorer, scroll to show entity folders (`Issues/`, `Updates/`, `Topics/`)
 
 **Voiceover:**
-> "But here's what makes it powerful—"
+> "But here's the magic—MeetingMind doesn't just link to existing notes. It creates new ones."
+
+**Text overlay:** `📊 Entity extraction (Pro)`
 
 **Action:** Expand `Issues/` folder to show notes inside
 
-> "It doesn't just link to existing notes. It creates new ones."
+**Text overlay:** `Issues • Updates • Topics`
 
 **Action:** Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
 
+**Voiceover:**
 > "Issues mentioned across different meetings—"
 
 **Action:** Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
@@ -202,22 +214,26 @@ Before recording, configure these settings:
 
 **Action:** Show topic note with related meetings
 
-> "Topics evolve across meetings. Your knowledge graph builds itself."
+**Voiceover:**
+> "Topics evolve across meetings. Your knowledge graph builds itself automatically."
 
 ---
 
-### Scene 5b: The Graph View - Watch It Grow (12-15 seconds)
+### Scene 5b: The Graph View - Visual Climax (12-15 seconds)
 
 **Show:** Switch to Obsidian's Graph View (Cmd+G or click graph icon)
 
 **Voiceover:**
 > "But here's the best part—"
 
-**Action:** Show the graph view with all the connections visible
+**Action:** **PAUSE for 2 seconds** - Let the graph view sit and make visual impact
 
+**Text overlay:** `🕸️ Watch your graph grow`
+
+**Voiceover:**
 > "Watch your graph grow."
 
-**Action:** Pan/zoom to show the network of connections:
+**Action:** Pan/zoom slowly to show the network of connections:
 - Meeting notes connected to participant notes
 - Participants connected to each other through meetings
 - Entity notes (issues, topics) connected to meetings
@@ -228,34 +244,39 @@ Before recording, configure these settings:
 
 **Action:** Zoom out to show the full graph structure
 
+**Text overlay:** `Every meeting adds connections`
+
+**Voiceover:**
 > "—all connected. Your knowledge graph builds itself, visually."
 
 **Action:** Hover over a node to show it highlights connections
 
-> "Click any node, see everything connected. Your meetings aren't isolated—they're part of a living network."
+**Voiceover:**
+> "Your meetings aren't isolated—they're part of a living network."
 
 ---
 
-### Scene 6: The Big Picture (8-10 seconds)
+### Scene 6: The Big Picture - Call to Action (5-7 seconds)
 
 **Show:** Pull back to show vault structure - meetings folder, people folder, entity folders
 
 **Voiceover:**
-> "Four meetings. Different types, different people, different lengths."
+> "Four meetings. One click each. A complete knowledge graph."
 
-**Action:** Show file explorer with all the generated notes
+**Action:** Show file explorer with all the generated notes (quick pan)
 
-> "But look what you get—"
-
-**Action:** Count or highlight: multiple meeting notes, participant notes with histories, entity notes tracking issues and topics
-
-> "A complete knowledge graph. Meetings that actually connect—and build—your vault."
+**Voiceover:**
+> "That's MeetingMind."
 
 **Text overlay:** 
 ```
 MeetingMind for Obsidian
-Free core • $39 Pro (one-time)
+Free core features • $39 Pro (one-time)
+Try it free in Obsidian Community Plugins
 ```
+
+**Voiceover (optional, if time allows):**
+> "Get MeetingMind free in Obsidian Community Plugins. Upgrade to Pro for AI features—$39 one-time."
 
 ---
 
@@ -275,40 +296,64 @@ Free core • $39 Pro (one-time)
 - Don't use a cluttered vault with distracting notes
 
 ### Important Notes ⚠️
-- **Processing time**: AI takes 10-30 seconds. Either acknowledge it ("This takes about 10 seconds...") or edit it out in post
+- **Processing time**: **MUST edit out in post-production** - AI takes 10-30 seconds. Cut or speed up all import sequences. The demo should feel instant and effortless.
+- **Target length**: Aim for 60-90 seconds total. Shorter = better for social media sharing.
+- **Hook is critical**: First 3 seconds determine if viewers keep watching. Lead with the problem, not Obsidian context.
 - **Navigation**: Use Obsidian's back button or click the meeting note tab to return. Don't use browser-style navigation
 - **Entity filenames**: Check actual filenames after import - AI might name them slightly differently than expected
 - **Practice Scene 5**: Entity extraction is the "wow" moment - practice opening entity notes smoothly
-- **Graph View**: Practice navigating the graph view smoothly - pan, zoom, and hover to show connections. This is a powerful visual moment
+- **Graph View**: Practice navigating the graph view smoothly - pan, zoom, and hover to show connections. This is the visual climax—let it breathe.
+- **Text overlays**: Add in post-production. They're essential for marketing effectiveness.
 
 ---
 
 ## Post-Production
 
-### Recommended Edits
+### Recommended Edits (Priority Order)
 
-1. **Trim loading time** - Cut or speed up any waiting
-2. **Add text overlays** - Label each feature as it appears
-3. **Add subtle background music** - Upbeat but not distracting
-4. **Add cursor highlight** - Make clicks visible
-5. **Export as:**
-   - MP4 for YouTube/website embed
-   - GIF (15-20 sec version) for README/Reddit
+**Must-Have:**
+1. **Cut all processing time** - Speed up or cut import sequences entirely. Demo should feel instant.
+2. **Add text overlays** - Label each feature as it appears (see overlay table above)
+3. **Add cursor highlight** - Make clicks visible (use cursor highlight effect)
+4. **Smooth transitions** - No jarring cuts between scenes
+
+**Should-Have:**
+5. **Add subtle background music** - Upbeat but not distracting (instrumental, low volume)
+6. **Add zoom effects** - Subtle zoom to highlight important sections
+7. **Optimize length** - Trim to 60-90 seconds total
+
+**Nice-to-Have:**
+8. **Before/after comparison** - Show sparse graph → connected graph (if time allows)
+9. **Progress indicators** - Show "Step 1 of 4" etc. (optional)
+10. **Branding** - Subtle logo watermark (optional)
+
+**Export formats:**
+- **MP4** (1080p, 60fps) for YouTube/website embed
+- **GIF** (15-20 sec version) for README/Reddit
+- **MP4** (30 sec teaser) for Twitter/X, Instagram
 
 ### Text Overlays to Add
 
-| Scene | Overlay Text |
-|-------|--------------|
-| Scene 2 (Import) | `📥 Import from Otter, Fireflies, Zoom...` |
-| Scene 3 (Result) | `📝 Clean Markdown with frontmatter` |
-| Scene 3 (Links) | `🔗 Auto-linked to your vault` |
-| Scene 4 (Summary) | `🤖 AI-generated summary` |
-| Scene 4 (Actions) | `✅ Action items with owners` |
-| Scene 5 (Entities) | `📊 Entity extraction (Pro)` |
-| Scene 5 (Folders) | `Issues • Updates • Topics` |
-| Scene 5b (Graph) | `🕸️ Watch your graph grow` |
-| Scene 5b (Graph) | `Every meeting adds connections` |
-| Scene 6 (Close) | `Your knowledge graph builds itself` |
+**Must-have overlays (add in post-production):**
+
+| Scene | Overlay Text | Timing |
+|-------|--------------|--------|
+| Scene 1 (Hook) | `Stop copy-pasting transcripts` | 0-3 seconds |
+| Scene 2 (Import) | `📥 Import from Otter, Fireflies, Zoom...` | During import |
+| Scene 3 (Links) | `🔗 Auto-linked to your vault` | When showing links |
+| Scene 4 (Summary) | `🤖 AI-powered summaries (Pro)` | When showing AI features |
+| Scene 4 (Actions) | `✅ Action items with owners` | When showing action items |
+| Scene 5 (Entities) | `📊 Entity extraction (Pro)` | When showing entity folders |
+| Scene 5 (Folders) | `Issues • Updates • Topics` | When expanding folders |
+| Scene 5b (Graph) | `🕸️ Watch your graph grow` | When graph appears |
+| Scene 5b (Graph) | `Every meeting adds connections` | During zoom out |
+| Scene 6 (CTA) | `Free core • $39 Pro (one-time)` | Final screen |
+
+**Design notes:**
+- Use clean, readable fonts (SF Pro, Inter, or similar)
+- Keep overlays subtle—don't block content
+- Use consistent positioning (e.g., bottom-right for feature labels)
+- Add subtle animations (fade in/out)
 
 ---
 
@@ -324,73 +369,77 @@ Use a tool like [Gifski](https://gif.ski/) or [LICEcap](https://www.cockos.com/l
 
 ---
 
-## Sample Voiceover Script (Full)
+## Sample Voiceover Script (Full - Optimized)
 
-Read this naturally—don't rush. Pauses are your friend.
+Read this naturally—don't rush. Pauses are your friend. **Target: 70-80 seconds total.**
 
 ```
-[0:00] You've got your Obsidian vault—projects, people, ideas all connected.
+[0:00] Your meetings are full of insights. But they're stuck in Otter or Fireflies, 
+       disconnected from your notes.
 
-[0:05] But your meetings? They're stuck in Otter or Fireflies, 
-       disconnected from everything else.
+[0:05] MeetingMind fixes that—automatically.
 
-[0:12] MeetingMind brings them into your vault.
+[0:08] One click, and MeetingMind brings them into your vault.
 
-[0:16] This takes about 10 seconds...
+[0:12] Let me import a few more meetings...
 
-[0:26] Let me import a few more meetings to show you how it builds...
+[0:15] Different meeting types, different lengths, different people...
 
-[0:30] Different meeting types, different lengths, different people...
+[0:20] Now watch this.
 
-[0:35] Watch what happens.
+[0:22] Watch—it automatically links to participant notes.
 
-[0:38] Now watch this.
+[0:26] Maya's note shows all her meetings—Monday standup, feature discussion, 
+       Wednesday standup...
 
-[0:40] Each meeting automatically links to participant notes.
+[0:32] Your people notes track their entire meeting history automatically.
 
-[0:45] And look - Maya's note shows all her meetings. Monday standup, 
-       feature discussion, Wednesday standup...
+[0:37] Different meetings, different people—but everyone's connected. 
+       Your knowledge graph builds itself.
 
-[0:52] Your people notes track their entire meeting history.
+[0:44] You get summaries, action items, decisions—
 
-[0:56] Different meetings, different combinations of people -
+[0:47] —all extracted automatically.
 
-[1:00] But everyone's connected. Your knowledge graph builds itself.
+[0:50] Quick standups get quick summaries—
 
-[1:05] You get summaries, action items, decisions—
+[0:53] —and deep dives get detailed analysis. The AI adapts to the meeting type.
 
-[1:09] —all extracted automatically.
+[0:59] But here's the magic—MeetingMind doesn't just link to existing notes. 
+       It creates new ones.
 
-[1:12] Works for quick standups—
+[1:05] Issues mentioned across different meetings—
 
-[1:15] —and deep dives. The AI adapts to the meeting type.
+[1:09] —get tracked automatically. Same issue, different meetings, all connected.
 
-[1:20] But here's what makes it powerful—
+[1:14] Topics evolve across meetings. Your knowledge graph builds itself automatically.
 
-[1:24] It doesn't just link to existing notes. It creates new ones.
+[1:20] But here's the best part—
 
-[1:30] Issues mentioned across different meetings—
+[1:23] [PAUSE - let graph view sit for 2 seconds]
 
-[1:34] —get tracked automatically. Same issue, different meetings, all connected.
+[1:25] Watch your graph grow.
 
-[1:40] Topics evolve across meetings. Your knowledge graph builds itself.
+[1:28] Every meeting adds new nodes. Every participant becomes a hub. 
+       Every issue, every topic—
 
-[1:45] But here's the best part—
+[1:34] —all connected. Your knowledge graph builds itself, visually.
 
-[1:48] Watch your graph grow.
+[1:39] Your meetings aren't isolated—they're part of a living network.
 
-[1:51] Every meeting adds new nodes. Every participant becomes a hub. Every issue, every topic—
+[1:44] Four meetings. One click each. A complete knowledge graph.
 
-[1:57] —all connected. Your knowledge graph builds itself, visually.
+[1:48] That's MeetingMind.
 
-[2:02] Click any node, see everything connected. Your meetings aren't isolated—they're part of a living network.
-
-[2:08] Four meetings. Different types, different people, different lengths.
-
-[2:12] But look what you get—
-
-[2:15] A complete knowledge graph. Meetings that actually connect—and build—your vault.
+[1:50] Get MeetingMind free in Obsidian Community Plugins. 
+       Upgrade to Pro for AI features—$39 one-time.
 ```
+
+**Timing notes:**
+- Total length: ~90 seconds (with pauses)
+- After editing out processing time: ~70-80 seconds
+- Adjust pacing based on your natural speaking speed
+- Don't rush—let key moments breathe
 
 **Tips for natural delivery:**
 - Talk like you're showing a friend, not presenting
@@ -417,23 +466,49 @@ Read this naturally—don't rush. Pauses are your friend.
 11. ☐ Hit record!
 
 **Pro Tips:**
-- **Import sequence:** Import all 4 meetings before recording, or plan to speed up the import sequence significantly in post-production
-- **Entity extraction:** Make sure entity extraction creates multiple entity notes across the different meetings so the demo looks impressive
-- **Participant notes:** Before recording, verify that participant notes show multiple meetings linked (especially Maya and Chris who appear in multiple meetings)
-- **Graph view:** Practice navigating the graph view smoothly:
-  - Know how to switch to graph view quickly (Cmd+G)
-  - Practice panning and zooming to show different parts of the graph
-  - Test hovering over nodes to highlight connections
-  - Consider using graph view filters to highlight specific node types (meetings, people, entities)
-- **Before recording:** Do a test import of all 4 meetings and note:
-  - Actual entity filenames so you know what to click
-  - Which participants appear in which meetings
-  - Which entities are mentioned across multiple meetings
-  - How the graph looks after all imports - identify good nodes to hover/click
-- **Processing time:** Plan to edit out or speed up the import sequence - showing 4 imports in real-time would be too long
-- **Navigation practice:** Practice clicking through participant links and entity notes smoothly - this is the key demo moment
-- **Graph view timing:** The graph view scene (5b) is a powerful visual moment - make sure it's smooth and shows the connections clearly
+
+**Pre-Recording Setup:**
+- **Import all 4 meetings BEFORE recording** - This way you can focus on showing results, not waiting for processing
+- **Test entity extraction** - Make sure entity extraction creates multiple entity notes across different meetings
+- **Verify participant notes** - Check that participant notes show multiple meetings linked (especially Maya and Chris)
+- **Practice graph navigation** - Know how to switch to graph view quickly (Cmd+G), practice panning/zooming smoothly
+- **Document actual filenames** - Note actual entity filenames after import so you know what to click during recording
+
+**Recording Tips:**
+- **Hook is critical** - First 3 seconds determine if viewers keep watching. Practice the opening line.
+- **Emphasize "automatically"** - This is your key differentiator. Say it clearly.
+- **Let graph view breathe** - Pause for 2 seconds when graph appears. It's the visual climax.
+- **Move slowly** - Viewers need time to read. Don't rush through key moments.
+- **Smooth navigation** - Practice clicking through participant links and entity notes smoothly
+
+**Post-Production:**
+- **Cut ALL processing time** - Import sequences should feel instant (speed up or cut entirely)
+- **Add text overlays** - Essential for marketing effectiveness (see overlay table)
+- **Optimize length** - Target 60-90 seconds. Shorter = better for sharing
+- **Test with strangers** - Show to 3-5 people who don't know the product. Can they explain what it does?
 
 Good luck! 🎬
+
+---
+
+## Key Marketing Improvements Made
+
+This script has been optimized based on marketing best practices:
+
+✅ **Stronger Hook** - Leads with problem statement, not Obsidian context  
+✅ **Faster Pacing** - Target 60-90 seconds (down from 100-110)  
+✅ **Cut Processing Time** - All import waits edited out in post-production  
+✅ **Emphasize "Automatically"** - Key differentiator mentioned throughout  
+✅ **Clearer Value Props** - Text overlays highlight features as they appear  
+✅ **Stronger CTA** - Clear call-to-action with pricing and next steps  
+✅ **Better Flow** - Graph view is the visual climax, entity extraction is the magic moment  
+✅ **Pro Feature Clarity** - Clearly distinguishes Free vs Pro features  
+
+**Next Steps:**
+1. Practice recording with this script
+2. Record 2-3 test runs
+3. Edit in post-production (cut processing time, add overlays)
+4. Test with 3-5 people who don't know the product
+5. Iterate based on feedback
 
 
