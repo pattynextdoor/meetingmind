@@ -1,7 +1,7 @@
 {
   "id": "meetingmind",
   "name": "MeetingMind",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "minAppVersion": "1.4.0",
   "description": "Import meeting transcripts with AI summaries, action items, and auto-linking to your vault.",
   "author": "Patrick Tumbucon",
