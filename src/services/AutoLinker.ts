@@ -139,7 +139,6 @@ export class AutoLinker {
   private isInsideExistingLink(text: string, start: number, end: number): boolean {
     // Check for [[wiki-links]]
     const beforeText = text.substring(0, start);
-    const afterText = text.substring(end);
     
     // Count unclosed [[ before position
     const openBrackets = (beforeText.match(/\[\[/g) || []).length;

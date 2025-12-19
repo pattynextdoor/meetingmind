@@ -113,7 +113,7 @@ export class LicenseService {
       // On network error, keep existing Pro status for grace period
       // This only applies if they previously had a validated license
       if (this.licenseInfo.status !== 'free' && now - this.lastValidation < this.GRACE_PERIOD) {
-        console.log('MeetingMind: Using cached license during grace period');
+        console.debug('MeetingMind: Using cached license during grace period');
         return this.licenseInfo;
       }
       
@@ -141,9 +141,9 @@ export class LicenseService {
    */
   private async validateWithGumroad(key: string): Promise<LicenseInfo> {
     try {
-      console.log('MeetingMind: Validating license with Gumroad...');
-      console.log('MeetingMind: Product ID:', GUMROAD_PRODUCT_ID);
-      console.log('MeetingMind: License key format check passed');
+      console.debug('MeetingMind: Validating license with Gumroad...');
+      console.debug('MeetingMind: Product ID:', GUMROAD_PRODUCT_ID);
+      console.debug('MeetingMind: License key format check passed');
       
       const response = await requestUrl({
         url: 'https://api.gumroad.com/v2/licenses/verify',
@@ -155,22 +155,22 @@ export class LicenseService {
         throw: false, // Don't throw on non-200 responses
       });
       
-      console.log('MeetingMind: Gumroad response status:', response.status);
+      console.debug('MeetingMind: Gumroad response status:', response.status);
       
       let data;
       try {
         data = response.json;
-        console.log('MeetingMind: Gumroad response:', JSON.stringify(data, null, 2));
-      } catch (e) {
-        console.log('MeetingMind: Response text:', response.text);
+        console.debug('MeetingMind: Gumroad response:', JSON.stringify(data, null, 2));
+        } catch {
+        console.debug('MeetingMind: Response text:', response.text);
       }
       
       if (response.status === 200 && data?.success) {
-        console.log('MeetingMind: Gumroad license valid!');
+        console.debug('MeetingMind: Gumroad license valid!');
         
         // Check if the license has been refunded
         if (data.purchase?.refunded) {
-          console.log('MeetingMind: License has been refunded');
+          console.debug('MeetingMind: License has been refunded');
           return {
             status: 'free',
             features: TIER_FEATURES.free,
@@ -190,18 +190,19 @@ export class LicenseService {
         };
       } else {
         // Log the specific error from Gumroad
-        console.log('MeetingMind: Gumroad validation failed');
-        console.log('MeetingMind: Error message:', data?.message || 'Unknown error');
+        console.debug('MeetingMind: Gumroad validation failed');
+        console.debug('MeetingMind: Error message:', data?.message || 'Unknown error');
         
         // If Gumroad says the license is valid format but wrong product, 
         // it might be a product_id mismatch
         if (data?.message?.includes('product')) {
-          console.log('MeetingMind: Possible product_id mismatch. Check Gumroad dashboard for correct permalink.');
+          console.debug('MeetingMind: Possible product_id mismatch. Check Gumroad dashboard for correct permalink.');
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'License validation failed';
       console.error('MeetingMind: Gumroad API error:', error);
-      console.error('MeetingMind: Error details:', error.message || error);
+      console.error('MeetingMind: Error details:', errorMessage);
       
       // Network errors - don't invalidate existing license, trigger grace period
       throw error;
@@ -223,7 +224,7 @@ export class LicenseService {
     // Gumroad-format keys are NOT accepted here - they must pass API validation
     // This prevents abuse by generating random keys
     if (this.isGumroadKey(key)) {
-      console.log('MeetingMind: Gumroad keys require API validation');
+      console.debug('MeetingMind: Gumroad keys require API validation');
       return {
         status: 'free',
         features: TIER_FEATURES.free,
@@ -233,7 +234,7 @@ export class LicenseService {
     // Development/testing keys
     // TEST-PRO works in all environments for testing/demo purposes
     if (upperKey === 'DEV-MODE' || upperKey === 'TEST-PRO') {
-      console.log('MeetingMind: Using test license key (TEST-PRO)');
+      console.debug('MeetingMind: Using test license key (TEST-PRO)');
       return {
         status: 'pro',
         features: TIER_FEATURES.pro,

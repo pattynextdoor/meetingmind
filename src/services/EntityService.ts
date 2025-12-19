@@ -167,7 +167,7 @@ export class EntityService {
       }
       
       await this.app.vault.modify(file, content);
-      console.log(`MeetingMind: Updated entity status for ${entityPath} to ${newStatus}`);
+      console.debug(`MeetingMind: Updated entity status for ${entityPath} to ${newStatus}`);
     } catch (error) {
       console.error(`MeetingMind: Failed to update entity status for ${entityPath}`, error);
     }
@@ -309,7 +309,7 @@ export class EntityService {
     
     try {
       await this.app.vault.create(filePath, content);
-      console.log(`MeetingMind: Created ${entity.type} note for ${entity.name}`);
+      console.debug(`MeetingMind: Created ${entity.type} note for ${entity.name}`);
       return filePath;
     } catch (error) {
       console.error(`MeetingMind: Failed to create note for ${entity.name}`, error);
@@ -399,7 +399,7 @@ created: ${date}
       
       // Check if this meeting is already referenced
       if (content.includes(meetingLink)) {
-        console.log(`MeetingMind: Meeting already referenced in ${notePath}`);
+        console.debug(`MeetingMind: Meeting already referenced in ${notePath}`);
         return;
       }
       
@@ -449,7 +449,7 @@ created: ${date}
       }
       
       await this.app.vault.modify(file, content);
-      console.log(`MeetingMind: Updated ${entity.type} note ${notePath}`);
+      console.debug(`MeetingMind: Updated ${entity.type} note ${notePath}`);
       
     } catch (error) {
       console.error(`MeetingMind: Failed to update ${notePath}`, error);
@@ -466,10 +466,10 @@ created: ${date}
     if (!folder) {
       try {
         await this.app.vault.createFolder(normalizedPath);
-        console.log(`MeetingMind: Created folder ${normalizedPath}`);
-      } catch (e) {
+        console.debug(`MeetingMind: Created folder ${normalizedPath}`);
+      } catch {
         // Folder might already exist
-        console.log(`MeetingMind: Folder ${normalizedPath} may already exist`);
+        console.debug(`MeetingMind: Folder ${normalizedPath} may already exist`);
       }
     }
   }

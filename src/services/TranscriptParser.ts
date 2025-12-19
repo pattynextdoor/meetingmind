@@ -88,8 +88,13 @@ export class TranscriptParser {
       
       if (timestampMatch) {
         // Save previous segment
-        if (currentSegment && currentSegment.text) {
-          segments.push(currentSegment as TranscriptSegment);
+        if (currentSegment && currentSegment.text && currentSegment.timestamp !== undefined) {
+          segments.push({
+            timestamp: currentSegment.timestamp,
+            endTimestamp: currentSegment.endTimestamp,
+            speaker: currentSegment.speaker || '',
+            text: currentSegment.text,
+          });
         }
         
         currentSegment = {
@@ -118,8 +123,13 @@ export class TranscriptParser {
     }
     
     // Add final segment
-    if (currentSegment && currentSegment.text) {
-      segments.push(currentSegment as TranscriptSegment);
+    if (currentSegment && currentSegment.text && currentSegment.timestamp !== undefined) {
+      segments.push({
+        timestamp: currentSegment.timestamp,
+        endTimestamp: currentSegment.endTimestamp,
+        speaker: currentSegment.speaker || '',
+        text: currentSegment.text,
+      });
     }
     
     return segments;

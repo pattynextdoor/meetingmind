@@ -3,7 +3,7 @@
  */
 
 import { App, TFile, normalizePath } from 'obsidian';
-import { ParticipantInsight, ActionItem } from '../types';
+import { ParticipantInsight } from '../types';
 
 export interface ParticipantInfo {
   name: string;
@@ -152,7 +152,7 @@ export class ParticipantService {
     
     try {
       await this.app.vault.create(filePath, content);
-      console.log(`MeetingMind: Created participant note for ${name}`);
+      console.debug(`MeetingMind: Created participant note for ${name}`);
       return filePath;
     } catch (error) {
       console.error(`MeetingMind: Failed to create note for ${name}`, error);
@@ -265,7 +265,7 @@ tags: [person]
       
       // Check if this meeting is already referenced
       if (content.includes(meetingLink)) {
-        console.log(`MeetingMind: Meeting already referenced in ${notePath}`);
+        console.debug(`MeetingMind: Meeting already referenced in ${notePath}`);
         return;
       }
       
@@ -411,7 +411,7 @@ tags: [person]
       }
       
       await this.app.vault.modify(file, content);
-      console.log(`MeetingMind: Updated participant note ${notePath}`);
+      console.debug(`MeetingMind: Updated participant note ${notePath}`);
       
     } catch (error) {
       console.error(`MeetingMind: Failed to update ${notePath}`, error);
@@ -454,7 +454,7 @@ tags: [person]
     if (!folder) {
       try {
         await this.app.vault.createFolder(normalizedPath);
-      } catch (e) {
+      } catch {
         // Folder might already exist
       }
     }
@@ -467,7 +467,7 @@ tags: [person]
   async cleanupOrphanedReferences(): Promise<{ cleaned: number; removed: number; deleted: number }> {
     let cleaned = 0;
     let removed = 0;
-    let deleted = 0;
+    const deleted = 0;
     
     if (!this.peopleFolder) {
       return { cleaned, removed, deleted };

@@ -96,7 +96,7 @@ export class StatsService {
   /**
    * Parse participants from frontmatter (handles various formats)
    */
-  private parseParticipants(raw: any): string[] {
+  private parseParticipants(raw: unknown): string[] {
     if (!raw) return [];
     
     if (Array.isArray(raw)) {

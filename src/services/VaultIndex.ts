@@ -2,7 +2,7 @@
  * VaultIndex - Builds and maintains an index of linkable entities in the vault
  */
 
-import { App, TFile, CachedMetadata } from 'obsidian';
+import { App } from 'obsidian';
 import { VaultIndex as VaultIndexType } from '../types';
 
 export class VaultIndexService {
@@ -120,7 +120,7 @@ export class VaultIndexService {
     this.index.lastUpdated = new Date();
     
     const elapsed = Date.now() - startTime;
-    console.log(`MeetingMind: Vault index built in ${elapsed}ms with ${files.length} files, ${this.index.sortedTerms.length} terms`);
+    console.debug(`MeetingMind: Vault index built in ${elapsed}ms with ${files.length} files, ${this.index.sortedTerms.length} terms`);
   }
   
   /**

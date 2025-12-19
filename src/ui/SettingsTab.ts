@@ -2,12 +2,12 @@
  * SettingsTab - Plugin settings UI
  */
 
-import { App, PluginSettingTab, Setting, Notice, ButtonComponent, TextComponent } from 'obsidian';
+import { App, PluginSettingTab, Setting, Notice } from 'obsidian';
 import MeetingMindPlugin from '../main';
 import { AIProvider } from '../types';
 
 // Debounce utility for text inputs
-function debounce<T extends (...args: any[]) => any>(
+function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -30,7 +30,10 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     
-    containerEl.createEl('h1', { text: 'MeetingMind Settings' });
+    new Setting(containerEl)
+      .setName('MeetingMind Settings')
+      .setHeading();
+    
     containerEl.createEl('p', { 
       text: 'Configure how MeetingMind imports and processes your meeting transcripts.',
       cls: 'setting-item-description'
@@ -62,7 +65,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create Sources section
    */
   private createSourcesSection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '📥 Sources' });
+    new Setting(containerEl)
+      .setName('📥 Sources')
+      .setHeading();
     
     // Folder watcher toggle (primary method)
     new Setting(containerEl)
@@ -98,7 +103,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     
     // Otter.ai export guide
     const otterGuide = containerEl.createDiv({ cls: 'meetingmind-otter-guide' });
-    otterGuide.createEl('h4', { text: '🦦 Using Otter.ai?' });
+    new Setting(otterGuide)
+      .setName('🦦 Using Otter.ai?')
+      .setHeading();
     otterGuide.createEl('p', { 
       text: 'Export your transcripts from Otter.ai and drop them in your watched folder:',
       cls: 'setting-item-description'
@@ -114,7 +121,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     });
     
     // Fireflies.ai Integration
-    containerEl.createEl('h3', { text: '🔥 Fireflies.ai Integration' });
+    new Setting(containerEl)
+      .setName('🔥 Fireflies.ai Integration')
+      .setHeading();
     
     new Setting(containerEl)
       .setName('Enable Fireflies.ai sync')
@@ -143,7 +152,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
               this.plugin.updateFirefliesService();
             });
           text.inputEl.type = 'password';
-          text.inputEl.style.width = '300px';
+          text.inputEl.addClass('meetingmind-api-key-input');
         });
       
       // Test connection button
@@ -200,8 +209,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
             try {
               const transcripts = await this.plugin.firefliesService.sync();
               new Notice(`Synced ${transcripts.length} transcripts from Fireflies.ai`);
-            } catch (error: any) {
-              new Notice(`Sync failed: ${error.message}`);
+            } catch (error: unknown) {
+              const errorMessage = error instanceof Error ? error.message : 'Sync failed';
+              new Notice(`Sync failed: ${errorMessage}`);
             }
             
             button.setButtonText('Sync Now');
@@ -215,7 +225,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create Output section
    */
   private createOutputSection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '📁 Output' });
+    new Setting(containerEl)
+      .setName('📁 Output')
+      .setHeading();
     
     // Destination folder
     new Setting(containerEl)
@@ -250,11 +262,12 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create AI section
    */
   private createAISection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '🤖 AI Enrichment' });
+    new Setting(containerEl)
+      .setName('🤖 AI Enrichment')
+      .setHeading();
     
     // Check license status
     const hasAILicense = this.plugin.licenseService.hasFeature('aiEnrichment');
-    const licenseStatus = this.plugin.licenseService.getStatusText();
     
     // Show upgrade banner if no license
     if (!hasAILicense) {
@@ -388,7 +401,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         );
       
       // Feature toggles
-      containerEl.createEl('h4', { text: 'AI Features' });
+      new Setting(containerEl)
+        .setName('AI Features')
+        .setHeading();
       
       new Setting(containerEl)
         .setName('Generate summary')
@@ -454,7 +469,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create Linking section
    */
   private createLinkingSection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '🔗 Auto-Linking' });
+    new Setting(containerEl)
+      .setName('🔗 Auto-Linking')
+      .setHeading();
     
     // Enable auto-linking
     new Setting(containerEl)
@@ -538,12 +555,14 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create Participants section
    */
   private createParticipantsSection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '👥 Participants' });
+    new Setting(containerEl)
+      .setName('👥 Participants')
+      .setHeading();
     
     // Auto-create participant notes
     new Setting(containerEl)
       .setName('Auto-create participant notes')
-      .setDesc('Automatically create notes for meeting participants who don\'t have one')
+      .setDesc('Automatically create notes for meeting participants who do not have one')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.autoCreateParticipants)
         .onChange(async (value) => {
@@ -588,7 +607,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create Entity Extraction section (Pro)
    */
   private createEntitySection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '📊 Entity Extraction (Pro)' });
+    new Setting(containerEl)
+      .setName('📊 Entity Extraction (Pro)')
+      .setHeading();
     
     const isPro = this.plugin.licenseService.isPro();
     
@@ -706,7 +727,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    * Create License section
    */
   private createLicenseSection(containerEl: HTMLElement): void {
-    containerEl.createEl('h2', { text: '🔑 License' });
+    new Setting(containerEl)
+      .setName('🔑 License')
+      .setHeading();
     
     const licenseInfo = this.plugin.licenseService.getLicenseInfo();
     const statusText = this.plugin.licenseService.getStatusText();
@@ -755,7 +778,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
             } else {
               new Notice('License cleared - Free tier active');
             }
-          } catch (error) {
+          } catch {
             new Notice('License validation failed. Please try again.');
           }
           
@@ -770,7 +793,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Free tier - show upgrade options
       const upgradeContainer = containerEl.createDiv({ cls: 'meetingmind-upgrade-section' });
       
-      upgradeContainer.createEl('h4', { text: 'Upgrade to MeetingMind Pro' });
+      new Setting(upgradeContainer)
+        .setName('Upgrade to MeetingMind Pro')
+        .setHeading();
       
       const priceEl = upgradeContainer.createDiv({ cls: 'meetingmind-price' });
       priceEl.createEl('span', { text: '$39', cls: 'meetingmind-price-amount' });

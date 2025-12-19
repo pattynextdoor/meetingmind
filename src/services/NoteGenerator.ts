@@ -3,7 +3,7 @@
  */
 
 import { App, TFile, normalizePath } from 'obsidian';
-import { ProcessedMeeting, RawTranscript, AIEnrichment, SuggestedLink, ActionItem } from '../types';
+import { ProcessedMeeting, RawTranscript, SuggestedLink, ActionItem } from '../types';
 import { TranscriptParser } from './TranscriptParser';
 
 export class NoteGenerator {
@@ -44,7 +44,7 @@ export class NoteGenerator {
     // Create the note
     const file = await this.app.vault.create(finalPath, content);
     
-    console.log(`MeetingMind: Created note at ${finalPath}`);
+    console.debug(`MeetingMind: Created note at ${finalPath}`);
     return file;
   }
   
@@ -89,7 +89,7 @@ export class NoteGenerator {
   private buildFrontmatter(meeting: ProcessedMeeting): string {
     const { transcript, enrichment } = meeting;
     
-    const frontmatter: Record<string, any> = {
+    const frontmatter: Record<string, unknown> = {
       date: this.formatDateISO(transcript.date),
       duration: transcript.duration,
       attendees: transcript.participants.map(p => `"[[${p}]]"`),
@@ -234,7 +234,7 @@ export class NoteGenerator {
     // Remove or replace characters that are invalid in filenames
     return name
       .replace(/[<>:"/\\|?*]/g, '') // Windows invalid chars
-      // eslint-disable-next-line no-control-regex
+      // eslint-disable-next-line no-control-regex -- Control characters must be removed for filesystem safety
       .replace(/[\x00-\x1f\x80-\x9f]/g, '') // Control characters
       .replace(/^\.+/, '') // Leading dots
       .replace(/\.+$/, '') // Trailing dots
@@ -260,10 +260,10 @@ export class NoteGenerator {
     if (!folder) {
       try {
         await this.app.vault.createFolder(normalizedPath);
-        console.log(`MeetingMind: Created folder ${normalizedPath}`);
-      } catch (e) {
+        console.debug(`MeetingMind: Created folder ${normalizedPath}`);
+      } catch {
         // Folder might already exist or there's a race condition
-        console.log(`MeetingMind: Folder ${normalizedPath} may already exist`);
+        console.debug(`MeetingMind: Folder ${normalizedPath} may already exist`);
       }
     }
   }

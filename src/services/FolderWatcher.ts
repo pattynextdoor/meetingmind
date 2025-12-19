@@ -2,7 +2,7 @@
  * FolderWatcher - Monitor a folder for new transcript files
  */
 
-import { App, TFile, TFolder, Vault, Notice } from 'obsidian';
+import { App, TFile, TFolder, Notice } from 'obsidian';
 
 export type FileCallback = (file: TFile) => Promise<void>;
 
@@ -60,7 +60,7 @@ export class FolderWatcher {
     // Also check immediately
     this.checkForNewFiles();
     
-    console.log(`MeetingMind: Folder watcher started for ${this.watchFolder}`);
+    console.debug(`MeetingMind: Folder watcher started for ${this.watchFolder}`);
   }
   
   /**
@@ -71,7 +71,7 @@ export class FolderWatcher {
       clearInterval(this.watchInterval);
       this.watchInterval = null;
     }
-    console.log('MeetingMind: Folder watcher stopped');
+    console.debug('MeetingMind: Folder watcher stopped');
   }
   
   /**
@@ -102,7 +102,7 @@ export class FolderWatcher {
         const fileKey = `${file.path}:${file.stat.mtime}`;
         
         if (!this.processedFiles.has(fileKey)) {
-          console.log(`MeetingMind: New transcript file detected: ${file.name}`);
+          console.debug(`MeetingMind: New transcript file detected: ${file.name}`);
           this.processedFiles.add(fileKey);
           
           try {

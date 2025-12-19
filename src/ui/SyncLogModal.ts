@@ -16,7 +16,7 @@ export class SyncLogModal extends Modal {
   onOpen(): void {
     const { contentEl } = this;
     
-    contentEl.createEl('h2', { text: 'MeetingMind Activity Log' });
+    contentEl.createEl('h2', { text: 'MeetingMind activity log' });
     
     if (this.logs.length === 0) {
       contentEl.createEl('p', { 
@@ -53,9 +53,6 @@ export class SyncLogModal extends Modal {
         details.setText(log.details);
       }
     }
-    
-    // Add styles
-    this.addStyles();
   }
   
   onClose(): void {
@@ -99,65 +96,6 @@ export class SyncLogModal extends Modal {
       default:
         return '•';
     }
-  }
-  
-  private addStyles(): void {
-    const style = document.createElement('style');
-    style.textContent = `
-      .sync-log-container {
-        max-height: 400px;
-        overflow-y: auto;
-      }
-      
-      .sync-log-entry {
-        padding: 8px 12px;
-        margin-bottom: 8px;
-        border-radius: 4px;
-        background: var(--background-secondary);
-        border-left: 3px solid var(--text-muted);
-      }
-      
-      .sync-log-success {
-        border-left-color: var(--color-green);
-      }
-      
-      .sync-log-error {
-        border-left-color: var(--color-red);
-      }
-      
-      .sync-log-warning {
-        border-left-color: var(--color-orange);
-      }
-      
-      .sync-log-timestamp {
-        font-size: 0.85em;
-        color: var(--text-muted);
-        margin-right: 8px;
-      }
-      
-      .sync-log-icon {
-        margin-right: 8px;
-      }
-      
-      .sync-log-content {
-        margin-top: 4px;
-      }
-      
-      .sync-log-details {
-        font-size: 0.85em;
-        color: var(--text-muted);
-        margin-top: 4px;
-        padding-left: 8px;
-        border-left: 2px solid var(--background-modifier-border);
-      }
-      
-      .sync-log-empty {
-        color: var(--text-muted);
-        text-align: center;
-        padding: 20px;
-      }
-    `;
-    this.contentEl.appendChild(style);
   }
 }
 

@@ -3,7 +3,7 @@
  * Fetches meeting transcripts from Fireflies.ai
  */
 
-import { requestUrl, RequestUrlResponse, Notice } from 'obsidian';
+import { requestUrl, RequestUrlResponse } from 'obsidian';
 import { RawTranscript, TranscriptSegment } from '../types';
 
 // Fireflies GraphQL endpoint
@@ -164,8 +164,9 @@ export class FirefliesService {
       }
       
       return { success: false, message: 'Could not fetch user info' };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'Connection failed' };
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Connection failed';
+      return { success: false, message: errorMessage };
     }
   }
   
@@ -186,7 +187,7 @@ export class FirefliesService {
     // Initial sync
     this.sync();
     
-    console.log(`MeetingMind: Fireflies sync started (every ${this.syncInterval} minutes)`);
+    console.debug(`MeetingMind: Fireflies sync started (every ${this.syncInterval} minutes)`);
   }
   
   /**
@@ -197,7 +198,7 @@ export class FirefliesService {
       clearInterval(this.syncTimer);
       this.syncTimer = null;
     }
-    console.log('MeetingMind: Fireflies sync stopped');
+    console.debug('MeetingMind: Fireflies sync stopped');
   }
   
   /**
@@ -205,7 +206,7 @@ export class FirefliesService {
    */
   async sync(): Promise<RawTranscript[]> {
     if (!this.isConnected()) {
-      console.log('MeetingMind: Cannot sync - Fireflies not configured');
+      console.debug('MeetingMind: Cannot sync - Fireflies not configured');
       return [];
     }
     
@@ -223,13 +224,14 @@ export class FirefliesService {
       this.lastSyncTimestamp = Date.now();
       
       this.updateStatus('idle', `Synced ${transcripts.length} transcripts from Fireflies`);
-      console.log(`MeetingMind: Fireflies sync complete - ${transcripts.length} new transcripts`);
+      console.debug(`MeetingMind: Fireflies sync complete - ${transcripts.length} new transcripts`);
       
       return transcripts;
       
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Fireflies sync failed';
       console.error('MeetingMind: Fireflies sync failed', error);
-      this.updateStatus('error', `Fireflies sync failed: ${error.message}`);
+      this.updateStatus('error', `Fireflies sync failed: ${errorMessage}`);
       return [];
     }
   }
@@ -248,7 +250,7 @@ export class FirefliesService {
       });
       
       if (!listResult.data?.transcripts) {
-        console.log('MeetingMind: No transcripts returned from Fireflies');
+        console.debug('MeetingMind: No transcripts returned from Fireflies');
         return [];
       }
       
@@ -258,7 +260,7 @@ export class FirefliesService {
       const sinceDate = timestamp ? new Date(timestamp) : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
       const newTranscripts = transcripts.filter(t => new Date(t.date) > sinceDate);
       
-      console.log(`MeetingMind: Found ${newTranscripts.length} new Fireflies transcripts`);
+      console.debug(`MeetingMind: Found ${newTranscripts.length} new Fireflies transcripts`);
       
       // Fetch full details for each new transcript
       for (const transcript of newTranscripts) {
@@ -346,7 +348,7 @@ export class FirefliesService {
   /**
    * Make a GraphQL request to Fireflies API
    */
-  private async graphqlRequest(query: string, variables?: Record<string, any>): Promise<any> {
+  private async graphqlRequest(query: string, variables?: Record<string, unknown>): Promise<unknown> {
     const response: RequestUrlResponse = await requestUrl({
       url: FIREFLIES_API_URL,
       method: 'POST',
@@ -361,15 +363,18 @@ export class FirefliesService {
     });
     
     if (response.status !== 200) {
-      const error: any = new Error(`Fireflies API error: ${response.status}`);
+      const error = new Error(`Fireflies API error: ${response.status}`) as Error & { status: number };
       error.status = response.status;
       throw error;
     }
     
-    const data = response.json;
+    const data = response.json as {
+      errors?: Array<{ message?: string }>;
+      data?: unknown;
+    };
     
     if (data.errors && data.errors.length > 0) {
-      const errorMessage = data.errors.map((e: any) => e.message).join(', ');
+      const errorMessage = data.errors.map((e) => e.message || 'Unknown error').join(', ');
       throw new Error(`Fireflies API error: ${errorMessage}`);
     }
     

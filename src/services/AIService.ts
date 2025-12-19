@@ -183,17 +183,24 @@ ${transcriptText}`;
         throw new Error('No JSON found in response');
       }
       
-      const data = JSON.parse(jsonMatch[0]);
+      const data = JSON.parse(jsonMatch[0]) as { participants?: Array<{
+        name?: string;
+        role?: string;
+        keyPoints?: string[];
+        actionItems?: Array<string | { task?: string; dueDate?: string; due_date?: string }>;
+        wins?: string[];
+        sentiment?: string;
+      }> };
       const participants = data.participants || [];
       
-      return participants.map((p: any) => ({
+      return participants.map((p) => ({
         name: p.name || '',
         role: p.role || undefined,
         keyPoints: p.keyPoints || [],
-        actionItems: (p.actionItems || []).map((item: any) => ({
-          task: item.task || item,
+        actionItems: (p.actionItems || []).map((item) => ({
+          task: typeof item === 'string' ? item : (item.task || ''),
           assignee: p.name,
-          dueDate: item.dueDate || item.due_date || undefined,
+          dueDate: typeof item === 'object' && item !== null ? (item.dueDate || item.due_date || undefined) : undefined,
         })),
         wins: p.wins || [],
         sentiment: p.sentiment || undefined,
@@ -286,9 +293,13 @@ ${transcriptText}`;
         throw new Error('No JSON found in response');
       }
       
-      const data = JSON.parse(jsonMatch[0]);
+      const data = JSON.parse(jsonMatch[0]) as {
+        issues?: Array<Record<string, unknown>>;
+        updates?: Array<Record<string, unknown>>;
+        topics?: Array<Record<string, unknown>>;
+      };
       
-      const parseEntity = (item: any, type: 'issue' | 'update' | 'topic'): Entity => {
+      const parseEntity = (item: Record<string, unknown>, type: 'issue' | 'update' | 'topic'): Entity => {
         const entity: Entity = {
           type,
           name: item.name || '',
@@ -306,9 +317,9 @@ ${transcriptText}`;
       };
       
       return {
-        issues: (data.issues || []).map((item: any) => parseEntity(item, 'issue')),
-        updates: (data.updates || []).map((item: any) => parseEntity(item, 'update')),
-        topics: (data.topics || []).map((item: any) => parseEntity(item, 'topic')),
+        issues: (data.issues || []).map((item) => parseEntity(item, 'issue')),
+        updates: (data.updates || []).map((item) => parseEntity(item, 'update')),
+        topics: (data.topics || []).map((item) => parseEntity(item, 'topic')),
       };
     } catch (error) {
       console.error('MeetingMind: Failed to parse entity extraction', error);
@@ -323,7 +334,7 @@ ${transcriptText}`;
   /**
    * Process a long transcript by chunking
    */
-  private async processLongTranscript(transcript: RawTranscript, fullText: string): Promise<AIEnrichment> {
+  private async processLongTranscript(transcript: RawTranscript, _fullText: string): Promise<AIEnrichment> {
     // Split into chunks based on time segments (~30 min each)
     const chunks = this.splitIntoChunks(transcript.segments);
     const chunkResults: AIEnrichment[] = [];
@@ -510,13 +521,13 @@ ${transcriptText}`;
       
       const data = response.json;
       return data.content[0].text;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Claude API call failed:', error);
       // Re-throw with more context
-      if (error.message) {
+      if (error instanceof Error) {
         throw error;
       }
-      throw new Error(`Claude API request failed: ${error}`);
+      throw new Error(`Claude API request failed: ${String(error)}`);
     }
   }
   
@@ -564,14 +575,20 @@ ${transcriptText}`;
         throw new Error('No JSON found in response');
       }
       
-      const data = JSON.parse(jsonMatch[0]);
+      const data = JSON.parse(jsonMatch[0]) as {
+        summary?: string;
+        actionItems?: Array<string | { task?: string; assignee?: string; dueDate?: string; due_date?: string }>;
+        decisions?: string[];
+        suggestedTags?: string[];
+        tags?: string[];
+      };
       
       return {
         summary: data.summary || '',
-        actionItems: (data.actionItems || []).map((item: any) => ({
-          task: item.task || item,
-          assignee: item.assignee || undefined,
-          dueDate: item.dueDate || item.due_date || undefined,
+        actionItems: (data.actionItems || []).map((item) => ({
+          task: typeof item === 'string' ? item : (item.task || ''),
+          assignee: typeof item === 'object' && item !== null ? (item.assignee || undefined) : undefined,
+          dueDate: typeof item === 'object' && item !== null ? (item.dueDate || item.due_date || undefined) : undefined,
         })),
         decisions: data.decisions || [],
         suggestedTags: (data.suggestedTags || data.tags || []).map((tag: string) => 
@@ -624,8 +641,9 @@ ${transcriptText}`;
       }
       
       return { success: true, message: 'Connection successful!' };
-    } catch (error: any) {
-      return { success: false, message: error.message || 'Connection failed' };
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Connection failed';
+      return { success: false, message: errorMessage };
     }
   }
   
@@ -703,13 +721,20 @@ ${transcriptText}`;
         return [];
       }
       
-      const data = JSON.parse(jsonMatch[0]);
+      const data = JSON.parse(jsonMatch[0]) as {
+        statusUpdates?: Array<{
+          entityName?: string;
+          entityType?: 'issue' | 'update' | 'topic';
+          newStatus?: string;
+          reason?: string;
+        }>;
+      };
       
       if (!data.statusUpdates || !Array.isArray(data.statusUpdates)) {
         return [];
       }
       
-      return data.statusUpdates.map((update: any) => ({
+      return data.statusUpdates.map((update) => ({
         entityName: update.entityName || '',
         entityType: update.entityType || 'issue',
         newStatus: update.newStatus,

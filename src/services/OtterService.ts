@@ -3,8 +3,8 @@
  * Handles OAuth, transcript fetching, and sync
  */
 
-import { requestUrl, RequestUrlResponse, Notice } from 'obsidian';
-import { RawTranscript, OtterTranscript, TranscriptSegment, SyncStatus } from '../types';
+import { requestUrl, RequestUrlResponse } from 'obsidian';
+import { RawTranscript, TranscriptSegment, SyncStatus } from '../types';
 import { TranscriptParser } from './TranscriptParser';
 
 // Otter.ai API endpoints (these would need to be updated with actual Otter API endpoints)
@@ -103,7 +103,7 @@ export class OtterService {
     // Initial sync
     this.sync();
     
-    console.log(`MeetingMind: Otter sync started (every ${this.syncInterval} minutes)`);
+    console.debug(`MeetingMind: Otter sync started (every ${this.syncInterval} minutes)`);
   }
   
   /**
@@ -114,7 +114,7 @@ export class OtterService {
       clearInterval(this.syncTimer);
       this.syncTimer = null;
     }
-    console.log('MeetingMind: Otter sync stopped');
+    console.debug('MeetingMind: Otter sync stopped');
   }
   
   /**
@@ -122,7 +122,7 @@ export class OtterService {
    */
   async sync(): Promise<void> {
     if (!this.isConnected()) {
-      console.log('MeetingMind: Cannot sync - not connected to Otter');
+      console.debug('MeetingMind: Cannot sync - not connected to Otter');
       return;
     }
     
@@ -143,12 +143,13 @@ export class OtterService {
       this.retryDelay = 60000;
       
       this.updateStatus('idle', `Synced ${transcripts.length} transcripts`);
-      console.log(`MeetingMind: Otter sync complete - ${transcripts.length} new transcripts`);
+      console.debug(`MeetingMind: Otter sync complete - ${transcripts.length} new transcripts`);
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('MeetingMind: Otter sync failed', error);
       
-      if (error.status === 401) {
+      const errorWithStatus = error as Error & { status?: number };
+      if (errorWithStatus.status === 401) {
         // Token expired - try refresh
         const refreshed = await this.tryRefreshToken();
         if (refreshed) {
@@ -207,7 +208,13 @@ export class OtterService {
         return null;
       }
       
-      const segments: TranscriptSegment[] = (response.transcripts || []).map((t: any) => ({
+      const responseData = response as { transcripts?: Array<{
+        speaker?: string;
+        start_time?: number;
+        end_time?: number;
+        text?: string;
+      }> };
+      const segments: TranscriptSegment[] = (responseData.transcripts || []).map((t) => ({
         speaker: t.speaker || 'Unknown',
         timestamp: t.start_time || 0,
         endTimestamp: t.end_time,
@@ -240,7 +247,7 @@ export class OtterService {
   /**
    * Make an authenticated API request
    */
-  private async apiRequest(endpoint: string, method: string = 'GET', body?: any): Promise<any> {
+  private async apiRequest(endpoint: string, method: string = 'GET', body?: unknown): Promise<unknown> {
     const response: RequestUrlResponse = await requestUrl({
       url: `${OTTER_API_BASE}${endpoint}`,
       method,
@@ -252,13 +259,13 @@ export class OtterService {
     });
     
     if (response.status === 401) {
-      const error: any = new Error('Unauthorized');
+      const error = new Error('Unauthorized') as Error & { status: number };
       error.status = 401;
       throw error;
     }
     
     if (response.status === 429) {
-      const error: any = new Error('Rate limited');
+      const error = new Error('Rate limited') as Error & { status: number };
       error.status = 429;
       throw error;
     }
@@ -299,7 +306,7 @@ export class OtterService {
           this.onTokenRefresh(this.accessToken, this.refreshToken);
         }
         
-        console.log('MeetingMind: Otter token refreshed successfully');
+        console.debug('MeetingMind: Otter token refreshed successfully');
         return true;
       }
     } catch (error) {
