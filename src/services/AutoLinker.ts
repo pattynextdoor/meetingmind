@@ -45,7 +45,13 @@ export class AutoLinker {
       // Create word boundary regex for matching
       // Using regex with word boundaries to ensure we match complete words
       const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`\\b${escapedTerm}\\b`, 'gi');
+      // For terms with special characters, word boundary \b doesn't work well
+      // Use negative lookbehind/lookahead instead
+      const hasSpecialChars = /[+*?^${}()|[\]\\-]/.test(term);
+      const boundaryPattern = hasSpecialChars 
+        ? `(?<!\\w)${escapedTerm}(?!\\w)` // Negative lookbehind/lookahead for word boundaries
+        : `\\b${escapedTerm}\\b`; // Standard word boundary for normal terms
+      const regex = new RegExp(boundaryPattern, 'gi');
       
       let match;
       while ((match = regex.exec(text)) !== null) {
@@ -185,8 +191,8 @@ export class AutoLinker {
    * Create a wiki-link, using display text if different from note name
    */
   private createLink(noteName: string, originalText: string): string {
-    // If the original text matches the note name (case-insensitive), just use [[noteName]]
-    if (originalText.toLowerCase() === noteName.toLowerCase()) {
+    // If the original text matches the note name exactly (case-sensitive), just use [[noteName]]
+    if (originalText === noteName) {
       return `[[${noteName}]]`;
     }
     // Otherwise use [[noteName|displayText]] format

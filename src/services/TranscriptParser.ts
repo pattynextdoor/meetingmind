@@ -48,13 +48,16 @@ export class TranscriptParser {
     // Extract title from filename
     const title = this.extractTitle(filename);
     
+    // Extract date from filename if present (YYYY-MM-DD format)
+    const date = this.extractDateFromFilename(filename);
+    
     // Generate hash for deduplication
     const hash = this.generateHash(content);
     
     return {
       source: 'local',
       title,
-      date: new Date(),
+      date,
       duration,
       participants,
       segments,
@@ -80,8 +83,8 @@ export class TranscriptParser {
         continue;
       }
       
-      // Check for timestamp line (00:00:00.000 --> 00:00:00.000)
-      const timestampMatch = line.match(/(\d{2}:\d{2}:\d{2}[.,]\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}[.,]\d{3})/);
+      // Check for timestamp line (HH:MM:SS.mmm or MM:SS.mmm --> HH:MM:SS.mmm or MM:SS.mmm)
+      const timestampMatch = line.match(/(\d{2}:\d{2}(?::\d{2})?[.,]\d{3})\s*-->\s*(\d{2}:\d{2}(?::\d{2})?[.,]\d{3})/);
       
       if (timestampMatch) {
         // Save previous segment
@@ -324,6 +327,24 @@ export class TranscriptParser {
     const withoutDate = withoutExt.replace(/^\d{4}-\d{2}-\d{2}\s*[-_]?\s*/, '');
     // Clean up and return
     return withoutDate.trim() || 'Meeting';
+  }
+  
+  /**
+   * Extract date from filename if present (YYYY-MM-DD format)
+   */
+  private extractDateFromFilename(filename: string): Date {
+    // Try to extract date from filename (YYYY-MM-DD format)
+    const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
+    if (dateMatch) {
+      const dateStr = dateMatch[1];
+      const parsedDate = new Date(dateStr);
+      // Check if date is valid
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate;
+      }
+    }
+    // Default to current date if no date found in filename
+    return new Date();
   }
   
   /**
