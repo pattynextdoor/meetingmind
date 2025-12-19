@@ -57,6 +57,23 @@ Already imported a transcript but want to add AI enrichment or update links?
 
 This re-runs AI enrichment and auto-linking with your current settings.
 
+## Cleaning Up After Deleting Meetings
+
+If you delete a meeting note from your Meetings folder, references to it will remain in:
+- Participant notes (in the "Meetings" section)
+- Entity notes (in the "Related Meetings" section)
+
+To clean up these orphaned references:
+
+1. `Cmd/Ctrl + P` → "MeetingMind: Cleanup orphaned references"
+
+This command will:
+- Scan all participant notes and remove references to deleted meetings
+- Scan all entity notes (Issues, Updates, Topics) and remove references to deleted meetings
+- Clean up empty sections if they become empty after cleanup
+
+**Tip:** Run this command after deleting multiple meeting notes to keep your vault clean.
+
 ## Output
 
 Imported transcripts are saved to your configured output folder with:

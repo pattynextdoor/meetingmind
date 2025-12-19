@@ -1,0 +1,75 @@
+{
+  "title": "Search Feature Deep Dive",
+  "created_at": "2025-01-20T14:00:00Z",
+  "duration": 1620,
+  "speakers": ["Maya Rodriguez", "Chris Park"],
+  "transcripts": [
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 0,
+      "end_time": 25,
+      "text": "Hey Chris, I want to talk through the search feature requirements. We've gotten feedback that users want better search, especially for finding old meetings and notes."
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 25,
+      "end_time": 50,
+      "text": "Yeah, I've seen those requests. Right now we're just doing basic text matching. What are you thinking - full-text search with filters, or something more advanced?"
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 50,
+      "end_time": 85,
+      "text": "I think we need both. Basic search should work immediately - like typing 'pricing discussion' and finding all meetings where that was mentioned. But we should also support filters - by date range, participants, tags. And maybe even semantic search eventually."
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 85,
+      "end_time": 120,
+      "text": "Okay, so phase one would be improved full-text search with filters. That's doable. We could use something like Algolia or build our own with Elasticsearch. What's the timeline?"
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 120,
+      "end_time": 155,
+      "text": "I'd like to ship basic improved search before launch if possible. The filters can come in v1.1. For now, let's focus on making the search results more relevant - ranking by recency and relevance, showing snippets."
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 155,
+      "end_time": 190,
+      "text": "That makes sense. I can prototype something this week. Quick question - should search include content from transcripts, or just metadata like titles and tags?"
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 190,
+      "end_time": 225,
+      "text": "Definitely include transcript content. That's where the real value is - finding that one meeting where someone mentioned a specific feature or decision. But we should highlight which part matched."
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 225,
+      "end_time": 260,
+      "text": "Got it. I'll build a prototype that indexes transcript content and shows highlighted snippets. I'll have something to show you by Thursday."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 260,
+      "end_time": 285,
+      "text": "Perfect. One more thing - we should make search accessible from the command palette too, not just the UI. Power users will love that."
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 285,
+      "end_time": 300,
+      "text": "Absolutely. Command palette integration is easy. I'll add that to the prototype."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 300,
+      "end_time": 320,
+      "text": "Great. Let's sync again Thursday to review. Thanks Chris!"
+    }
+  ]
+}
+

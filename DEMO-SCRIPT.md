@@ -1,13 +1,13 @@
 # MeetingMind Demo Recording Script
 
 ## Overview
-**Target length:** 70-80 seconds (with processing time)  
-**Actual length:** 65-75 seconds (after editing out wait times)  
+**Target length:** 100-110 seconds (with processing time)  
+**Actual length:** 90-100 seconds (after editing out wait times)  
 **Format:** Screen recording with your voiceover  
 **Vibe:** Casual, like showing a friend—not a sales pitch  
 **Tools needed:** Screen recorder (OBS, QuickTime, or Loom), Obsidian, MeetingMind installed
 
-**Note:** AI processing takes 10-30 seconds. Either acknowledge this in voiceover or edit it out in post-production.
+**Note:** AI processing takes 10-30 seconds per meeting. Either acknowledge this in voiceover or edit it out in post-production (recommended - speed up the import sequence).
 
 ---
 
@@ -35,7 +35,13 @@ Demo Vault/
 
 **Note:** The `Meetings/` and `People/` folders will be auto-created when you import your first transcript.
 
-**Demo transcript:** `test-files/demo/transcript-with-entities.json` (includes issues, updates, topics)
+**Demo transcripts:** Series of 4 meetings in `test-files/demo/`:
+- `01-monday-standup.json` - Short standup (7 min, 3 people: Maya, Chris, Aisha)
+- `02-feature-discussion.json` - Feature deep dive (27 min, 2 people: Maya, Chris)
+- `03-wednesday-standup.json` - Longer standup (13 min, 4 people: Maya, Chris, Aisha, Derek)
+- `04-launch-retrospective.json` - Retrospective (40 min, 4 people: Maya, Chris, Aisha, Derek)
+
+**Note:** These transcripts show varying meeting types, lengths, and attendee combinations to demonstrate how MeetingMind builds connections across different contexts.
 
 ### 2. MeetingMind Settings
 
@@ -59,7 +65,7 @@ Before recording, configure these settings:
 
 ## Demo Script
 
-### Scene 1: The Obsidian Context (8 seconds)
+### Scene 1: The Obsidian Context (10-12 seconds)
 
 **Show:** Obsidian vault with existing notes visible in file explorer:
 - `Cadence.md` (project note)
@@ -70,15 +76,19 @@ Before recording, configure these settings:
 
 **Action:** Click on `Cadence.md` to show it's a real note with content
 
+**Optional:** Quick peek at graph view (Cmd+G) - show sparse graph with just a few nodes
+
 > "But your meetings? They're stuck in Otter or Fireflies, disconnected from everything else."
+
+**Action:** Return to file explorer view
 
 ---
 
-### Scene 2: The Import (10-12 seconds)
+### Scene 2: The First Import (10-12 seconds)
 
 **Show:** Command palette
 
-**Action:** Cmd+P → "MeetingMind: Import file" → select transcript
+**Action:** Cmd+P → "MeetingMind: Import file" → select `01-monday-standup.json`
 
 **Voiceover:**
 > "MeetingMind brings them into your vault."
@@ -90,69 +100,156 @@ Before recording, configure these settings:
 
 ---
 
-### Scene 3: The Connection (18-20 seconds)
+### Scene 2b: Building the Series (15-18 seconds)
 
-**Show:** The generated meeting note appears
+**Show:** File explorer showing the first meeting note created
+
+**Voiceover:**
+> "Let me import a few more meetings to show you how it builds..."
+
+**Action:** Quickly import 2-3 more meetings (use speed-up in post):
+- `02-feature-discussion.json` (feature discussion)
+- `03-wednesday-standup.json` (standup with different attendees)
+- `04-launch-retrospective.json` (retrospective)
+
+**Voiceover (while importing):**
+> "Different meeting types, different lengths, different people..."
+
+**Action:** Show meetings folder filling up with notes
+
+**Voiceover:**
+> "Watch what happens..."
+
+---
+
+### Scene 3: The Connection (20-25 seconds)
+
+**Show:** Open one of the meeting notes (maybe the feature discussion)
 
 **Voiceover:**
 > "Now watch this."
 
-**Action:** Scroll to participant section, point cursor at `[[Cadence]]` link, hover to show preview
+**Action:** Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links
 
-> "The meeting automatically links to your project note."
+> "Each meeting automatically links to participant notes."
 
-**Action:** Click `[[Cadence]]` → project note opens showing team members
+**Action:** Click `[[Maya Rodriguez]]` → participant note opens
 
-> "And your people notes..."
+**Show:** Participant note showing multiple meetings linked
 
-**Action:** Click the meeting note tab to return (or use Obsidian's back button), scroll to participant links section
+**Voiceover:**
+> "And look - Maya's note shows all her meetings. Monday standup, feature discussion, Wednesday standup..."
 
-**Action:** Click `[[Maya Rodriguez]]` from the meeting note
+**Action:** Scroll to show the "Related Meetings" section in Maya's note
 
-> "All connected. Your meetings become part of your knowledge graph."
+> "Your people notes track their entire meeting history."
+
+**Action:** Click back, open another meeting note (maybe the retrospective)
+
+**Action:** Show participants section again
+
+> "Different meetings, different combinations of people -"
+
+**Action:** Click `[[Derek Nguyen]]` 
+
+> "But everyone's connected. Your knowledge graph builds itself."
 
 ---
 
-### Scene 4: The AI Value (10 seconds)
+### Scene 4: The AI Value (12-15 seconds)
 
-**Scroll through the meeting note:**
+**Scroll through one of the meeting notes (maybe the retrospective):**
 
 **Voiceover:**
 > "You get summaries, action items, decisions—"
 
-**Action:** Show action items section, decisions section
+**Action:** Show summary section, action items section, decisions section
 
 > "—all extracted automatically."
 
+**Action:** Open a different meeting note (standup) - show it's shorter but still has AI extraction
+
+**Voiceover:**
+> "Works for quick standups—"
+
+**Action:** Open the feature discussion - show more detailed extraction
+
+> "—and deep dives. The AI adapts to the meeting type."
+
 ---
 
-### Scene 5: Entity Extraction - The Magic (18-20 seconds)
+### Scene 5: Entity Extraction - The Magic (20-25 seconds)
 
-**Show:** File explorer, scroll to show entity folders
+**Show:** File explorer, scroll to show entity folders (`Issues/`, `Updates/`, `Topics/`)
 
 **Voiceover:**
 > "But here's what makes it powerful—"
 
-**Action:** Expand `Issues/` folder to show notes inside (or scroll to see notes)
+**Action:** Expand `Issues/` folder to show notes inside
 
 > "It doesn't just link to existing notes. It creates new ones."
 
-**Action:** Click on the first issue note (check actual filename after import - might be "OAuth integration with Google" or similar)
+**Action:** Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
 
-> "Issues, updates, topics mentioned in meetings—"
+> "Issues mentioned across different meetings—"
 
-**Action:** Show the entity note, scroll to "Related Meetings" section showing the meeting link
+**Action:** Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
 
-> "—automatically become part of your vault. Your knowledge graph builds itself."
+**Voiceover:**
+> "—get tracked automatically. Same issue, different meetings, all connected."
+
+**Action:** Open `Topics/` folder, click on a topic note (e.g., "Search Feature")
+
+**Action:** Show topic note with related meetings
+
+> "Topics evolve across meetings. Your knowledge graph builds itself."
 
 ---
 
-### Scene 6: Close (5 seconds)
+### Scene 5b: The Graph View - Watch It Grow (12-15 seconds)
 
-**Show:** Pull back to show vault structure with meetings, people, and entities
+**Show:** Switch to Obsidian's Graph View (Cmd+G or click graph icon)
 
 **Voiceover:**
-> "That's MeetingMind. Meetings that actually connect—and build—your vault."
+> "But here's the best part—"
+
+**Action:** Show the graph view with all the connections visible
+
+> "Watch your graph grow."
+
+**Action:** Pan/zoom to show the network of connections:
+- Meeting notes connected to participant notes
+- Participants connected to each other through meetings
+- Entity notes (issues, topics) connected to meetings
+- The project note (Cadence) connected to meetings
+
+**Voiceover:**
+> "Every meeting adds new nodes. Every participant becomes a hub. Every issue, every topic—"
+
+**Action:** Zoom out to show the full graph structure
+
+> "—all connected. Your knowledge graph builds itself, visually."
+
+**Action:** Hover over a node to show it highlights connections
+
+> "Click any node, see everything connected. Your meetings aren't isolated—they're part of a living network."
+
+---
+
+### Scene 6: The Big Picture (8-10 seconds)
+
+**Show:** Pull back to show vault structure - meetings folder, people folder, entity folders
+
+**Voiceover:**
+> "Four meetings. Different types, different people, different lengths."
+
+**Action:** Show file explorer with all the generated notes
+
+> "But look what you get—"
+
+**Action:** Count or highlight: multiple meeting notes, participant notes with histories, entity notes tracking issues and topics
+
+> "A complete knowledge graph. Meetings that actually connect—and build—your vault."
 
 **Text overlay:** 
 ```
@@ -182,6 +279,7 @@ Free core • $39 Pro (one-time)
 - **Navigation**: Use Obsidian's back button or click the meeting note tab to return. Don't use browser-style navigation
 - **Entity filenames**: Check actual filenames after import - AI might name them slightly differently than expected
 - **Practice Scene 5**: Entity extraction is the "wow" moment - practice opening entity notes smoothly
+- **Graph View**: Practice navigating the graph view smoothly - pan, zoom, and hover to show connections. This is a powerful visual moment
 
 ---
 
@@ -208,6 +306,8 @@ Free core • $39 Pro (one-time)
 | Scene 4 (Actions) | `✅ Action items with owners` |
 | Scene 5 (Entities) | `📊 Entity extraction (Pro)` |
 | Scene 5 (Folders) | `Issues • Updates • Topics` |
+| Scene 5b (Graph) | `🕸️ Watch your graph grow` |
+| Scene 5b (Graph) | `Every meeting adds connections` |
 | Scene 6 (Close) | `Your knowledge graph builds itself` |
 
 ---
@@ -238,29 +338,58 @@ Read this naturally—don't rush. Pauses are your friend.
 
 [0:16] This takes about 10 seconds...
 
-[0:26] Now watch this.
+[0:26] Let me import a few more meetings to show you how it builds...
 
-[0:28] The meeting automatically links to your project note.
+[0:30] Different meeting types, different lengths, different people...
 
-[0:32] And your people notes...
+[0:35] Watch what happens.
 
-[0:36] All connected. Your meetings become part of your knowledge graph.
+[0:38] Now watch this.
 
-[0:40] You get summaries, action items, decisions—
+[0:40] Each meeting automatically links to participant notes.
 
-[0:44] —all extracted automatically.
+[0:45] And look - Maya's note shows all her meetings. Monday standup, 
+       feature discussion, Wednesday standup...
 
-[0:48] But here's what makes it powerful—
+[0:52] Your people notes track their entire meeting history.
 
-[0:52] It doesn't just link to existing notes. It creates new ones.
+[0:56] Different meetings, different combinations of people -
 
-[0:58] Issues, updates, topics mentioned in meetings—
+[1:00] But everyone's connected. Your knowledge graph builds itself.
 
-[1:03] —automatically become part of your vault. 
+[1:05] You get summaries, action items, decisions—
 
-[1:08] Your knowledge graph builds itself.
+[1:09] —all extracted automatically.
 
-[1:13] That's MeetingMind. Meetings that actually connect—and build—your vault.
+[1:12] Works for quick standups—
+
+[1:15] —and deep dives. The AI adapts to the meeting type.
+
+[1:20] But here's what makes it powerful—
+
+[1:24] It doesn't just link to existing notes. It creates new ones.
+
+[1:30] Issues mentioned across different meetings—
+
+[1:34] —get tracked automatically. Same issue, different meetings, all connected.
+
+[1:40] Topics evolve across meetings. Your knowledge graph builds itself.
+
+[1:45] But here's the best part—
+
+[1:48] Watch your graph grow.
+
+[1:51] Every meeting adds new nodes. Every participant becomes a hub. Every issue, every topic—
+
+[1:57] —all connected. Your knowledge graph builds itself, visually.
+
+[2:02] Click any node, see everything connected. Your meetings aren't isolated—they're part of a living network.
+
+[2:08] Four meetings. Different types, different people, different lengths.
+
+[2:12] But look what you get—
+
+[2:15] A complete knowledge graph. Meetings that actually connect—and build—your vault.
 ```
 
 **Tips for natural delivery:**
@@ -278,19 +407,32 @@ Read this naturally—don't rush. Pauses are your friend.
 1. ☐ Test vault set up with sample notes
 2. ☐ MeetingMind configured and tested
 3. ☐ Entity extraction enabled in settings (Pro feature)
-4. ☐ Use `transcript-with-entities.json` for demo
+4. ☐ All 4 demo transcripts ready in `test-files/demo/`
 5. ☐ Screen recorder ready
 6. ☐ Obsidian theme clean and fonts readable
 7. ☐ Read through script once
-8. ☐ Do a practice run (especially Scene 5 - entity extraction)
-9. ☐ Hit record!
+8. ☐ Do a practice run (especially Scene 3 - participant connections, Scene 5 - entity extraction, and Scene 5b - graph view)
+9. ☐ Practice the import sequence - you'll want to speed this up in post-production
+10. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
+11. ☐ Hit record!
 
 **Pro Tips:**
-- Make sure entity extraction creates at least 2-3 entity notes so the demo looks impressive
-- The `transcript-with-entities.json` should generate multiple entities
-- **Before recording:** Do a test import and note the actual entity filenames so you know what to click
-- **Processing time:** Either acknowledge it in voiceover or plan to edit it out (speeding up or cutting)
-- **Navigation practice:** Practice clicking through links and using Obsidian's back button smoothly
+- **Import sequence:** Import all 4 meetings before recording, or plan to speed up the import sequence significantly in post-production
+- **Entity extraction:** Make sure entity extraction creates multiple entity notes across the different meetings so the demo looks impressive
+- **Participant notes:** Before recording, verify that participant notes show multiple meetings linked (especially Maya and Chris who appear in multiple meetings)
+- **Graph view:** Practice navigating the graph view smoothly:
+  - Know how to switch to graph view quickly (Cmd+G)
+  - Practice panning and zooming to show different parts of the graph
+  - Test hovering over nodes to highlight connections
+  - Consider using graph view filters to highlight specific node types (meetings, people, entities)
+- **Before recording:** Do a test import of all 4 meetings and note:
+  - Actual entity filenames so you know what to click
+  - Which participants appear in which meetings
+  - Which entities are mentioned across multiple meetings
+  - How the graph looks after all imports - identify good nodes to hover/click
+- **Processing time:** Plan to edit out or speed up the import sequence - showing 4 imports in real-time would be too long
+- **Navigation practice:** Practice clicking through participant links and entity notes smoothly - this is the key demo moment
+- **Graph view timing:** The graph view scene (5b) is a powerful visual moment - make sure it's smooth and shows the connections clearly
 
 Good luck! 🎬
 

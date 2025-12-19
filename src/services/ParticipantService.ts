@@ -358,4 +358,127 @@ tags: [person]
       }
     }
   }
+  
+  /**
+   * Clean up orphaned meeting references from participant notes
+   * Removes references to meeting files that no longer exist
+   */
+  async cleanupOrphanedReferences(): Promise<{ cleaned: number; removed: number; deleted: number }> {
+    let cleaned = 0;
+    let removed = 0;
+    let deleted = 0;
+    
+    if (!this.peopleFolder) {
+      return { cleaned, removed, deleted };
+    }
+    
+    try {
+      const folder = this.app.vault.getAbstractFileByPath(this.peopleFolder);
+      if (!folder) {
+        return { cleaned, removed, deleted };
+      }
+      
+      // Get all markdown files in the people folder
+      const files = this.app.vault.getMarkdownFiles().filter(file => 
+        file.path.startsWith(this.peopleFolder + '/')
+      );
+      
+      for (const file of files) {
+        let content = await this.app.vault.read(file);
+        const originalContent = content;
+        
+        // Find the Meetings section
+        const meetingsHeaderRegex = /^## Meetings\s*$/m;
+        if (!meetingsHeaderRegex.test(content)) {
+          continue;
+        }
+        
+        // Extract meeting entries (lines starting with ### [[link|title]] (date))
+        const meetingEntryRegex = /^### \[\[([^\]]+)\|([^\]]+)\]\] \(([^)]+)\)\s*$/gm;
+        const meetingEntries: Array<{ fullMatch: string; link: string; title: string; date: string }> = [];
+        let match;
+        
+        while ((match = meetingEntryRegex.exec(content)) !== null) {
+          meetingEntries.push({
+            fullMatch: match[0],
+            link: match[1],
+            title: match[2],
+            date: match[3],
+          });
+        }
+        
+        // Check each meeting reference (in reverse order to preserve indices)
+        let hasChanges = false;
+        for (let i = meetingEntries.length - 1; i >= 0; i--) {
+          const entry = meetingEntries[i];
+          // Try to find the meeting file
+          const meetingPath = entry.link.endsWith('.md') ? entry.link : `${entry.link}.md`;
+          const meetingFile = this.app.vault.getAbstractFileByPath(meetingPath);
+          
+          if (!meetingFile) {
+            // Meeting file doesn't exist - find and remove the entire entry block
+            // Entry format: ### [[link|title]] (date)\n\n[optional content]\n\n
+            // Find from the header line to the next ### or ## section
+            const escapedLink = entry.link.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const escapedTitle = entry.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const escapedDate = entry.date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            
+            // Match from the header to the next meeting entry or section
+            const entryBlockRegex = new RegExp(
+              `^### \\[\\[${escapedLink}\\|${escapedTitle}\\]\\] \\(${escapedDate}\\)\\s*\\n(?:[^#]|\\n)*?(?=\\n### |\\n## |$)`,
+              'gm'
+            );
+            
+            content = content.replace(entryBlockRegex, '');
+            removed++;
+            hasChanges = true;
+          }
+        }
+        
+        // Also check action items that reference meetings
+        const actionItemRegex = /- \[ \] (.+?) — from \[\[([^\]]+)\|([^\]]+)\]\]/g;
+        let actionItemMatch;
+        while ((actionItemMatch = actionItemRegex.exec(content)) !== null) {
+          const meetingLink = actionItemMatch[2];
+          const meetingPath = meetingLink.endsWith('.md') ? meetingLink : `${meetingLink}.md`;
+          const meetingFile = this.app.vault.getAbstractFileByPath(meetingPath);
+          
+          if (!meetingFile) {
+            // Remove the action item line
+            content = content.replace(actionItemMatch[0] + '\n', '');
+            removed++;
+            hasChanges = true;
+          }
+        }
+        
+        // Clean up empty Meetings section
+        if (hasChanges) {
+          const meetingsSectionRegex = /^## Meetings\s*$\n\n(?:(?:###|-) .*\n?)*/m;
+          const meetingsSection = content.match(meetingsSectionRegex);
+          if (meetingsSection && meetingsSection[0].trim() === '## Meetings') {
+            // Section is empty, remove it
+            content = content.replace(meetingsSectionRegex, '');
+          }
+          
+          // Clean up empty Action Items section
+          const actionItemsSectionRegex = /^## Action Items\s*$\n\n(?:\*No action items yet\*|(?:(?:- \[ \]|-) .*\n?)*)/m;
+          const actionItemsSection = content.match(actionItemsSectionRegex);
+          if (actionItemsSection && (actionItemsSection[0].includes('*No action items yet*') || actionItemsSection[0].trim() === '## Action Items')) {
+            // Section is empty, remove it
+            content = content.replace(actionItemsSectionRegex, '');
+          }
+          
+          if (content !== originalContent) {
+            await this.app.vault.modify(file, content);
+            cleaned++;
+          }
+        }
+      }
+      
+      return { cleaned, removed, deleted };
+    } catch (error) {
+      console.error('MeetingMind: Failed to cleanup participant references', error);
+      return { cleaned, removed, deleted };
+    }
+  }
 }

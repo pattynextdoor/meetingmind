@@ -222,6 +222,13 @@ export default class MeetingMindPlugin extends Plugin {
       callback: () => this.clearImportHistory(),
     });
     
+    // Cleanup orphaned references
+    this.addCommand({
+      id: 'cleanup-orphaned-references',
+      name: 'Cleanup orphaned references',
+      callback: () => this.cleanupOrphanedReferences(),
+    });
+    
     // Generate meeting dashboard
     this.addCommand({
       id: 'generate-dashboard',
@@ -617,6 +624,43 @@ export default class MeetingMindPlugin extends Plugin {
     } catch (error: any) {
       console.error('MeetingMind: Dashboard generation failed', error);
       new Notice(`Dashboard failed: ${error.message}`);
+    }
+  }
+  
+  /**
+   * Clean up orphaned references to deleted meeting files
+   * Removes references from participant notes and entity notes
+   */
+  async cleanupOrphanedReferences(): Promise<void> {
+    try {
+      new Notice('Cleaning up orphaned references...');
+      this.updateStatusBar('syncing', 'Cleaning up...');
+      
+      // Cleanup participant notes
+      const participantResult = await this.participantService.cleanupOrphanedReferences();
+      
+      // Cleanup entity notes
+      const entityResult = await this.entityService.cleanupOrphanedReferences();
+      
+      const totalCleaned = participantResult.cleaned + entityResult.cleaned;
+      const totalRemoved = participantResult.removed + entityResult.removed;
+      const totalDeleted = participantResult.deleted + entityResult.deleted;
+      
+      this.updateStatusBar('idle');
+      
+      if (totalRemoved > 0 || totalDeleted > 0) {
+        let message = `Cleaned up ${totalRemoved} orphaned reference(s) from ${totalCleaned} note(s)`;
+        if (totalDeleted > 0) {
+          message += `. ${totalDeleted} empty entity note(s) deleted.`;
+        }
+        new Notice(message);
+      } else {
+        new Notice('No orphaned references found');
+      }
+    } catch (error: any) {
+      console.error('MeetingMind: Cleanup failed', error);
+      new Notice(`Cleanup failed: ${error.message}`);
+      this.updateStatusBar('error', error.message);
     }
   }
   

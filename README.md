@@ -116,6 +116,7 @@ Team decided to maintain backward compatibility through Q1.
 | `MeetingMind: Generate meeting dashboard` | Create/update a visual stats dashboard with meeting insights, recent meetings, and open action items |
 | `MeetingMind: Update dashboard` | Refresh the meeting dashboard |
 | `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
+| `MeetingMind: Cleanup orphaned references` | Remove references to deleted meeting files from participant and entity notes |
 | `MeetingMind: View sync log` | Show recent sync activity |
 | `MeetingMind: Clear import history` | Allow re-importing transcripts |
 

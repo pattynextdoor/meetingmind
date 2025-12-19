@@ -1,0 +1,75 @@
+{
+  "title": "Wednesday Standup",
+  "created_at": "2025-01-22T09:00:00Z",
+  "duration": 780,
+  "speakers": ["Maya Rodriguez", "Chris Park", "Aisha Patel", "Derek Nguyen"],
+  "transcripts": [
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 0,
+      "end_time": 20,
+      "text": "Morning everyone. We're 10 days out from launch. Let's go around - what's everyone working on?"
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 20,
+      "end_time": 50,
+      "text": "Payment flow is about 80% done. I hit a snag with the Stripe webhook handling yesterday - their test mode was acting weird. But I figured it out, should finish today. Also, I've got the search prototype ready for review."
+    },
+    {
+      "speaker": "Aisha Patel",
+      "start_time": 50,
+      "end_time": 85,
+      "text": "Settings screens are done. I'm now working on the error states and loading animations. Also, I reviewed Chris's search prototype - looks good, but I have some UI suggestions for the results display."
+    },
+    {
+      "speaker": "Derek Nguyen",
+      "start_time": 85,
+      "end_time": 115,
+      "text": "Marketing page is live and getting good traffic. We're at about 600 people on the waitlist now. I'm preparing the launch email sequence and social media posts. Also need final screenshots from Aisha for the App Store listing."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 115,
+      "end_time": 140,
+      "text": "Great progress. Aisha, can you prioritize those screenshots? App Store submission deadline is Friday. Chris, when can you have payment flow fully tested?"
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 140,
+      "end_time": 165,
+      "text": "I'll finish coding today, then do full testing tomorrow. Should be ready for QA by Thursday morning."
+    },
+    {
+      "speaker": "Aisha Patel",
+      "start_time": 165,
+      "end_time": 190,
+      "text": "I'll have the screenshots ready by end of day tomorrow. I'll send them to Derek directly."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 190,
+      "end_time": 215,
+      "text": "Perfect. Any blockers?"
+    },
+    {
+      "speaker": "Derek Nguyen",
+      "start_time": 215,
+      "end_time": 235,
+      "text": "I need the final app icon from Aisha too - the one we're using is still a placeholder."
+    },
+    {
+      "speaker": "Aisha Patel",
+      "start_time": 235,
+      "end_time": 255,
+      "text": "Oh right, I'll include that with the screenshots. It's basically done, just needs final polish."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 255,
+      "end_time": 275,
+      "text": "Excellent. We're in good shape. Let's keep pushing - launch is right around the corner."
+    }
+  ]
+}
+

@@ -57,6 +57,15 @@ The vault index updates automatically when notes change. To force a rebuild:
 1. `Cmd/Ctrl + P`
 2. Run "MeetingMind: Rebuild vault index"
 
+## Cleaning Up Orphaned References
+
+If you delete meeting notes, you may want to clean up references to them in participant and entity notes:
+
+1. `Cmd/Ctrl + P`
+2. Run "MeetingMind: Cleanup orphaned references"
+
+This removes broken links from participant notes and entity notes, keeping your vault clean.
+
 ## Tips
 
 - **Add aliases** to frequently-mentioned notes for better matching

@@ -1,0 +1,51 @@
+{
+  "title": "Monday Morning Standup",
+  "created_at": "2025-01-20T09:00:00Z",
+  "duration": 420,
+  "speakers": ["Maya Rodriguez", "Chris Park", "Aisha Patel"],
+  "transcripts": [
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 0,
+      "end_time": 15,
+      "text": "Good morning team. Quick standup - let's keep it tight. Chris, what did you finish over the weekend?"
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 15,
+      "end_time": 35,
+      "text": "Got the OAuth integration working finally. The refresh token issue is resolved. I'll open a PR this morning. Today I'm starting on the payment flow."
+    },
+    {
+      "speaker": "Aisha Patel",
+      "start_time": 35,
+      "end_time": 55,
+      "text": "Nice work Chris. I finished the onboarding tutorial designs - sent them over last night. Today I'm polishing the empty states and then moving on to the settings screens."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 55,
+      "end_time": 75,
+      "text": "Perfect. Any blockers?"
+    },
+    {
+      "speaker": "Chris Park",
+      "start_time": 75,
+      "end_time": 90,
+      "text": "Not really. I might need Aisha's input on the payment UI flow later this week, but nothing urgent."
+    },
+    {
+      "speaker": "Aisha Patel",
+      "start_time": 90,
+      "end_time": 105,
+      "text": "I'm good. Waiting on feedback from Derek about the marketing page designs, but that's not blocking anything."
+    },
+    {
+      "speaker": "Maya Rodriguez",
+      "start_time": 105,
+      "end_time": 120,
+      "text": "Alright, let's ship. We're two weeks out from launch - keep the momentum going."
+    }
+  ]
+}
+

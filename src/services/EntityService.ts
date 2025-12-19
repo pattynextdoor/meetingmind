@@ -349,5 +349,120 @@ created: ${date}
       }
     }
   }
+  
+  /**
+   * Clean up orphaned meeting references from entity notes
+   * Removes references to meeting files that no longer exist
+   */
+  async cleanupOrphanedReferences(): Promise<{ cleaned: number; removed: number; deleted: number }> {
+    let cleaned = 0;
+    let removed = 0;
+    let deleted = 0;
+    
+    const folders = [];
+    if (this.enableIssues && this.issuesFolder) folders.push(this.issuesFolder);
+    if (this.enableUpdates && this.updatesFolder) folders.push(this.updatesFolder);
+    if (this.enableTopics && this.topicsFolder) folders.push(this.topicsFolder);
+    
+    for (const folderPath of folders) {
+      try {
+        const folder = this.app.vault.getAbstractFileByPath(folderPath);
+        if (!folder) continue;
+        
+        // Get all markdown files in this folder
+        const files = this.app.vault.getMarkdownFiles().filter(file => 
+          file.path.startsWith(folderPath + '/')
+        );
+        
+        for (const file of files) {
+          let content = await this.app.vault.read(file);
+          const originalContent = content;
+          
+          // Find the Related Meetings section
+          const meetingsHeaderRegex = /^## Related Meetings\s*$/m;
+          if (!meetingsHeaderRegex.test(content)) {
+            continue;
+          }
+          
+          // Extract meeting entries (lines starting with - [[link|title]] (date))
+          const meetingEntryRegex = /^- \[\[([^\]]+)\|([^\]]+)\]\] \(([^)]+)\)\s*$/gm;
+          const meetingEntries: Array<{ fullMatch: string; link: string; title: string; date: string }> = [];
+          let match;
+          
+          while ((match = meetingEntryRegex.exec(content)) !== null) {
+            meetingEntries.push({
+              fullMatch: match[0],
+              link: match[1],
+              title: match[2],
+              date: match[3],
+            });
+          }
+          
+          // Check each meeting reference
+          let hasChanges = false;
+          for (const entry of meetingEntries) {
+            // Try to find the meeting file
+            const meetingPath = entry.link.endsWith('.md') ? entry.link : `${entry.link}.md`;
+            const meetingFile = this.app.vault.getAbstractFileByPath(meetingPath);
+            
+            if (!meetingFile) {
+              // Meeting file doesn't exist - remove this entry
+              content = content.replace(new RegExp(`^- \\[\\[${entry.link.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\|${entry.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]\\] \\(${entry.date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\)\\s*$`, 'gm'), '');
+              removed++;
+              hasChanges = true;
+            }
+          }
+          
+          // Clean up empty Related Meetings section
+          if (hasChanges) {
+            const meetingsSectionRegex = /^## Related Meetings\s*$\n\n(?:(?:- \[\[.*?\]\] \(.*?\)\s*)*)/m;
+            const meetingsSection = content.match(meetingsSectionRegex);
+            if (meetingsSection && meetingsSection[0].trim() === '## Related Meetings') {
+              // Section is empty, remove it
+              content = content.replace(meetingsSectionRegex, '');
+            }
+            
+            // Check if we should delete the entire entity note
+            // Delete if: no meeting references left AND Notes section is empty
+            const notesSectionMatch = content.match(/^## Notes\s*$\n\n([\s\S]*?)(?=\n## |$)/);
+            const notesContent = notesSectionMatch ? notesSectionMatch[1].trim() : '';
+            const hasNotesContent = notesContent.length > 0;
+            
+            // Check if there are any other meaningful sections beyond frontmatter and title
+            const descMatch = content.match(/^## Description\s*$\n\n([\s\S]+?)(?=\n## |$)/);
+            const hasDescription = descMatch && descMatch[1].trim().length > 0;
+            
+            const statusMatch = content.match(/^## Status\s*$\n\n([\s\S]+?)(?=\n## |$)/);
+            const hasStatus = statusMatch && statusMatch[1].trim().length > 0;
+            
+            const hasRelatedTo = /^## Related To\s*$/m.test(content);
+            
+            const categoryMatch = content.match(/^## Category\s*$\n\n([\s\S]+?)(?=\n## |$)/);
+            const hasCategory = categoryMatch && categoryMatch[1].trim().length > 0;
+            
+            const hasMentionedBy = /\*\*Mentioned by\*\*:/.test(content);
+            
+            const hasOtherContent = !!(hasDescription || hasStatus || hasRelatedTo || hasCategory || hasMentionedBy || hasNotesContent);
+            
+            // If no meetings left and no other meaningful content, delete the file
+            if (!hasOtherContent && !meetingsHeaderRegex.test(content)) {
+              await this.app.vault.delete(file);
+              deleted++;
+              continue; // Skip to next file
+            }
+            
+            if (content !== originalContent) {
+              await this.app.vault.modify(file, content);
+              cleaned++;
+            }
+          }
+        }
+      } catch (error) {
+        console.error(`MeetingMind: Failed to cleanup entity references in ${folderPath}`, error);
+      }
+    }
+    
+    return { cleaned, removed, deleted };
+  }
 }
 
