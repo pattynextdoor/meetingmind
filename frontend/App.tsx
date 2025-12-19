@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icons } from './components/Icons';
-import { AutoLinkVisual, AIExtractionVisual, DataviewVisual } from './components/Visuals';
+import { AutoLinkVisual, AIExtractionVisual, DataviewVisual, GraphViewVisual, MacWindow } from './components/Visuals';
 import { PricingTier } from './types';
 
 // --- Components ---
@@ -32,39 +32,155 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section className="pt-24 pb-20 border-b border-stone-200">
-      <div className="max-w-4xl mx-auto px-6 text-center">
+    <section className="relative pt-24 pb-32 border-b border-stone-200 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-stone-100/50 via-[#faf9f7] to-[#faf9f7]">
+      <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <div className="mb-8 animate-fade-up" style={{ animationDelay: '0ms' }}>
-          <img src="/logo.svg" alt="MeetingMind" className="w-20 h-20 mx-auto" />
+          <img src="/logo.svg" alt="MeetingMind" className="w-20 h-20 mx-auto drop-shadow-sm" />
         </div>
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-medium tracking-wide uppercase mb-8 animate-fade-up" style={{ animationDelay: '100ms' }}>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+        
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 shadow-sm text-stone-600 text-xs font-medium tracking-wide uppercase mb-8 animate-fade-up" style={{ animationDelay: '100ms' }}>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           Obsidian Plugin for Meeting Transcripts
         </div>
         
-        <h1 className="font-serif text-5xl md:text-7xl leading-[1.1] text-stone-900 mb-8 animate-fade-up" style={{ animationDelay: '200ms' }}>
-          Meeting transcripts that <br/>
-          <em className="text-emerald-800 italic">actually connect</em>
+        <h1 className="font-serif text-5xl md:text-7xl leading-[1.1] text-stone-900 mb-8 animate-fade-up tracking-tight" style={{ animationDelay: '200ms' }}>
+          Turn meeting chatter into <br/>
+          <em className="text-emerald-800 italic">connected knowledge</em>
         </h1>
         
         <p className="font-sans text-lg md:text-xl text-stone-500 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-up" style={{ animationDelay: '300ms' }}>
-          Sync transcripts from Fireflies.ai or import from Otter, Fathom, Zoom, and more. 
-          Get AI summaries, action items, and automatic links to your existing notes—without lifting a finger.
+          Automatically import transcripts from Fireflies, Otter, and Zoom. 
+          Generate AI summaries, extract action items, and link mentions to your Obsidian vault—instantly.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: '400ms' }}>
-          <button className="px-8 py-3.5 bg-stone-900 text-[#faf9f7] font-medium rounded-lg hover:bg-stone-800 hover:scale-[1.02] transition-all shadow-lg shadow-stone-900/10 flex items-center gap-2">
-            Install from Community Plugins
-            <Icons.ArrowRight size={16} />
-          </button>
-          <a href="https://github.com/pattynextdoor/meetingmind" className="px-8 py-3.5 bg-transparent border border-stone-300 text-stone-900 font-medium rounded-lg hover:bg-stone-50 transition-all hover:border-stone-400">
-            View on GitHub
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up mb-20" style={{ animationDelay: '400ms' }}>
+          <a href="https://docs.meetingmind.me/guide/installation" className="px-8 py-4 bg-stone-900 text-[#faf9f7] font-medium rounded-xl hover:bg-stone-800 hover:-translate-y-0.5 transition-all shadow-xl shadow-stone-900/10 flex items-center gap-2 text-lg">
+            Get Started
+            <Icons.ArrowRight size={18} />
+          </a>
+          <a href="obsidian://show-plugin?id=meetingmind" className="px-8 py-4 bg-emerald-800 text-white font-medium rounded-xl hover:bg-emerald-900 hover:-translate-y-0.5 transition-all shadow-xl shadow-emerald-800/10 flex items-center gap-2 text-lg">
+            Install in Obsidian
+            <Icons.ArrowRight size={18} />
           </a>
         </div>
-        
-        <p className="mt-4 text-xs text-stone-400 font-sans animate-fade-up" style={{ animationDelay: '500ms' }}>
-          Free core features • Pro AI features $25 one-time
-        </p>
+
+        {/* Hero Visual */}
+        <div className="relative animate-fade-up" style={{ animationDelay: '500ms' }}>
+          <div className="absolute inset-0 bg-emerald-500/5 blur-3xl rounded-full transform scale-150 opacity-50"></div>
+          <div className="relative transform hover:scale-[1.01] transition-transform duration-700 ease-out">
+             <MacWindow title="Project_Phoenix_Sync.md" className="max-w-4xl mx-auto h-[400px] md:h-[500px] shadow-2xl border-stone-200/80">
+               <div className="flex h-full font-sans">
+                 {/* Sidebar (Navigation) */}
+                 <div className="w-56 bg-[#f5f5f5] border-r border-stone-200 p-3 hidden md:block text-left text-xs text-stone-600 overflow-y-auto">
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex items-center gap-1 font-medium mb-1 text-stone-400 hover:text-stone-600 cursor-pointer">
+                          <Icons.Folder size={12} fill="currentColor" className="text-stone-400" />
+                          <span>Issues</span>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex items-center gap-1 font-medium mb-1 text-stone-400 hover:text-stone-600 cursor-pointer">
+                          <Icons.Folder size={12} fill="currentColor" className="text-stone-400" />
+                          <span>Meetings</span>
+                        </div>
+                        <div className="pl-4 space-y-1 border-l border-stone-200 ml-1.5">
+                           <div className="text-stone-900 font-medium bg-[#e4e4e4] -ml-2 pl-2 py-0.5 rounded cursor-pointer">2025-10-24 Project Phoenix</div>
+                           <div className="hover:text-stone-900 cursor-pointer">2025-10-22 Team Sync</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex items-center gap-1 font-medium mb-1 text-stone-400 hover:text-stone-600 cursor-pointer">
+                          <Icons.Folder size={12} fill="currentColor" className="text-stone-400" />
+                          <span>People</span>
+                        </div>
+                        <div className="pl-4 space-y-1 border-l border-stone-200 ml-1.5 text-stone-500">
+                           <div className="hover:text-stone-900 cursor-pointer">Aisha Patel</div>
+                           <div className="hover:text-stone-900 cursor-pointer">Chris Park</div>
+                           <div className="hover:text-stone-900 cursor-pointer">Derek Nguyen</div>
+                           <div className="hover:text-stone-900 cursor-pointer">Maya Rodriguez</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex items-center gap-1 font-medium mb-1 text-stone-400 hover:text-stone-600 cursor-pointer">
+                          <Icons.Folder size={12} fill="currentColor" className="text-stone-400" />
+                          <span>Topics</span>
+                        </div>
+                        <div className="pl-4 space-y-1 border-l border-stone-200 ml-1.5 text-stone-500">
+                           <div className="hover:text-stone-900 cursor-pointer">App store submission</div>
+                           <div className="hover:text-stone-900 cursor-pointer">Freemium model</div>
+                           <div className="hover:text-stone-900 cursor-pointer">Marketing campaign</div>
+                        </div>
+                      </div>
+
+                      <div>
+                         <div className="flex items-center gap-1 font-medium mb-1 text-stone-400 hover:text-stone-600 cursor-pointer">
+                          <Icons.Folder size={12} fill="currentColor" className="text-stone-400" />
+                          <span>Updates</span>
+                         </div>
+                      </div>
+                    </div>
+                 </div>
+
+                 {/* Main Editor Area */}
+                 <div className="flex-1 bg-white p-8 text-left overflow-hidden relative font-serif">
+                    {/* Floating Connection Lines Animation (Decorative) */}
+                    <div className="absolute top-20 right-10 w-32 h-32 opacity-10 pointer-events-none">
+                       <svg viewBox="0 0 100 100" className="w-full h-full animate-spin-slow">
+                          <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="1" fill="none" className="text-emerald-600" strokeDasharray="4 4" />
+                          <circle cx="50" cy="50" r="20" stroke="currentColor" strokeWidth="1" fill="none" className="text-stone-400" />
+                       </svg>
+                    </div>
+
+                    <div className="max-w-2xl mx-auto space-y-6">
+                      <div className="space-y-4 border-b border-stone-100 pb-6">
+                        <h1 className="text-3xl font-bold text-stone-900">Project Phoenix Sync</h1>
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500 font-sans">
+                           <span className="px-1.5 py-0.5 rounded bg-stone-100 border border-stone-200 text-stone-600">#meeting</span>
+                           <span className="px-1.5 py-0.5 rounded bg-stone-100 border border-stone-200 text-stone-600">#phoenix</span>
+                        </div>
+                        <div className="flex items-center gap-6 text-sm text-stone-400 font-sans">
+                           <span className="flex items-center gap-1.5"><Icons.Calendar size={14}/> Oct 24, 2025</span>
+                           <span className="flex items-center gap-1.5"><Icons.Clock size={14}/> 45m</span>
+                           <span className="flex items-center gap-1.5 text-emerald-600 font-medium"><Icons.Check size={14}/> Processed</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 font-sans">
+                         <div className="flex items-center gap-2 text-xs font-bold text-stone-400 uppercase tracking-wider">
+                            <Icons.Zap size={12} className="text-amber-500" /> AI Summary
+                         </div>
+                         <p className="text-stone-800 text-sm leading-relaxed">
+                            Team discussed the <span className="text-purple-700 font-medium hover:underline decoration-purple-300 cursor-pointer">[[Phoenix Launch]]</span> timeline. 
+                            <span className="text-purple-700 font-medium hover:underline decoration-purple-300 cursor-pointer">[[Maya Rodriguez]]</span> raised concerns about API latency. 
+                            Agreed to delay public beta by one week to fix critical <span className="text-purple-700 font-medium hover:underline decoration-purple-300 cursor-pointer">[[Issues/OAuth Integration]]</span>.
+                         </p>
+                      </div>
+
+                      <div className="font-sans">
+                        <div className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                           <Icons.Check size={12} className="text-emerald-600" /> Action Items
+                        </div>
+                        <ul className="space-y-2 text-sm text-stone-600">
+                           <li className="flex items-start gap-2 group cursor-pointer hover:bg-stone-50 p-1.5 -ml-1.5 rounded transition-colors">
+                              <input type="checkbox" className="mt-1 rounded border-stone-300 text-emerald-600 focus:ring-emerald-500" />
+                              <span><span className="text-purple-700 font-medium hover:underline decoration-purple-300">[[Chris Park]]</span> to run load tests on new endpoints</span>
+                           </li>
+                           <li className="flex items-start gap-2 group cursor-pointer hover:bg-stone-50 p-1.5 -ml-1.5 rounded transition-colors">
+                              <input type="checkbox" className="mt-1 rounded border-stone-300 text-emerald-600 focus:ring-emerald-500" />
+                              <span><span className="text-purple-700 font-medium hover:underline decoration-purple-300">[[Aisha Patel]]</span> to update documentation</span>
+                           </li>
+                        </ul>
+                      </div>
+                    </div>
+                 </div>
+               </div>
+             </MacWindow>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -93,38 +209,37 @@ const Features = () => {
     <section id="features" className="py-24">
       <div className="max-w-6xl mx-auto px-6 space-y-32">
         
-        {/* Feature 1 */}
+        {/* Feature 1: Auto-linking - The Foundation */}
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1">
              <div className="relative group perspective-1000">
                 <div className="absolute -inset-4 bg-purple-100/50 rounded-xl rotate-2 group-hover:rotate-1 transition-transform duration-500"></div>
                 <div className="relative transform transition-transform duration-500 group-hover:-translate-y-2">
-                   <AutoLinkVisual />
+                   <GraphViewVisual />
                 </div>
              </div>
           </div>
           <div className="order-1 md:order-2 space-y-6">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 mb-4">
-              <Icons.Link size={24} />
+              <Icons.Network size={24} />
             </div>
-            <h2 className="font-serif text-4xl text-stone-900">Auto-linking that works</h2>
+            <h2 className="font-serif text-4xl text-stone-900">Auto-linking that connects everything</h2>
             <p className="font-sans text-lg text-stone-600 leading-relaxed">
-              MeetingMind indexes your entire vault and intelligently links transcript mentions 
-              to existing notes. It handles aliases, partial matches, and disambiguates when 
-              multiple notes could match.
+              Automatically connects meeting content to your existing notes—no manual linking required. 
+              Every meeting connects your team, projects, and ideas. MeetingMind visualizes these connections in your graph view, turning isolated notes into a navigable network of knowledge.
             </p>
             <ul className="space-y-3 text-stone-600 font-sans text-sm">
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Respects frontmatter aliases</span>
+                <span>Intelligent linking: "Sarah mentioned the Phoenix Project" → <code className="text-xs bg-stone-100 px-1 rounded">[[Sarah]] mentioned the [[Phoenix Project]]</code></span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Implicit aliases from multi-word names</span>
+                <span>Matches note titles, aliases, and implicit references</span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Suggests links for ambiguous terms</span>
+                <span>See how topics evolve over time in your graph view</span>
               </li>
             </ul>
             <div className="inline-block px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded">
@@ -133,80 +248,7 @@ const Features = () => {
           </div>
         </div>
 
-        {/* Feature 2 */}
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
-            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-800 mb-4">
-              <Icons.Brain size={24} />
-            </div>
-            <h2 className="font-serif text-4xl text-stone-900">AI that extracts value</h2>
-            <p className="font-sans text-lg text-stone-600 leading-relaxed">
-              Transform unstructured rambling into clear summaries and actionable tasks. 
-              Bring your own API key—works with Claude (Anthropic) or GPT-4 (OpenAI).
-            </p>
-            <ul className="space-y-3 text-stone-600 font-sans text-sm">
-              <li className="flex items-center gap-3">
-                <Icons.Check className="text-emerald-700" size={16} />
-                <span>2-4 sentence meeting summaries</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Icons.Check className="text-emerald-700" size={16} />
-                <span>Action items with assigned owners</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Icons.Check className="text-emerald-700" size={16} />
-                <span>Decision tracking & smart tag suggestions</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Icons.Check className="text-emerald-700" size={16} />
-                <span>AI-powered participant insights</span>
-              </li>
-            </ul>
-            <div className="inline-block px-2 py-1 bg-amber-50 text-amber-700 text-xs font-medium rounded">
-              ⭐ Pro License Required
-            </div>
-          </div>
-          <div className="relative group">
-              <div className="absolute -inset-4 bg-emerald-100/50 rounded-xl -rotate-2 group-hover:-rotate-1 transition-transform duration-500"></div>
-              <div className="relative transform transition-transform duration-500 group-hover:-translate-y-2">
-                 <AIExtractionVisual />
-              </div>
-          </div>
-        </div>
-
-        {/* Feature 3 */}
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div className="order-2 md:order-1">
-             <div className="relative group">
-                <div className="absolute -inset-4 bg-amber-100/50 rounded-xl rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
-                <div className="relative transform transition-transform duration-500 group-hover:-translate-y-2">
-                   <DataviewVisual />
-                </div>
-             </div>
-          </div>
-          <div className="order-1 md:order-2 space-y-6">
-             <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 mb-4">
-              <Icons.Database size={24} />
-            </div>
-            <h2 className="font-serif text-4xl text-stone-900">Dataview-ready metadata</h2>
-            <p className="font-sans text-lg text-stone-600 leading-relaxed">
-              Every meeting is saved with structured YAML frontmatter: participants, duration, 
-              source, and tags. Build powerful dashboards to track who you meet with and what you decide.
-            </p>
-            <div className="flex gap-2 flex-wrap">
-               {['date', 'participants', 'source', 'duration', 'tags'].map(tag => (
-                 <span key={tag} className="px-2 py-1 bg-stone-100 text-stone-500 text-xs font-mono rounded border border-stone-200">
-                   {tag}
-                 </span>
-               ))}
-            </div>
-            <div className="inline-block px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded">
-              ✓ Included in Free
-            </div>
-          </div>
-        </div>
-
-        {/* Feature 4: Participants */}
+        {/* Feature 2: Participant Tracking - Organize People */}
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-6">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 mb-4">
@@ -256,32 +298,55 @@ const Features = () => {
           </div>
         </div>
 
-        {/* Feature 5: Entity Extraction */}
+        {/* Feature 3: AI Enrichment - Add Intelligence */}
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="order-2 md:order-1">
-            <div className="relative group">
-              <div className="absolute -inset-4 bg-purple-100/50 rounded-xl rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
-              <div className="relative bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden p-6">
-                <div className="text-stone-300 text-xs font-mono mb-3">---<br/>type: issue<br/>---</div>
-                <div className="text-xl font-serif text-stone-900 mb-4"># OAuth Integration Blocker</div>
-                <div className="space-y-3 text-sm">
-                  <div className="text-stone-500">## Description</div>
-                  <div className="pl-4 text-stone-600">Refresh token handling issue with Google API</div>
-                  <div className="text-stone-500 mt-4">## Status</div>
-                  <div className="pl-4 text-stone-600">blocked</div>
-                  <div className="text-stone-500 mt-4">## Related Meetings</div>
-                  <div className="pl-4 space-y-1 text-stone-600">
-                    <div>• [[2025-01-15 Cadence App Launch Planning]]</div>
-                  </div>
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-emerald-100/50 rounded-xl rotate-2 group-hover:rotate-1 transition-transform duration-500"></div>
+                <div className="relative transform transition-transform duration-500 group-hover:-translate-y-2">
+                   <AIExtractionVisual />
                 </div>
               </div>
-            </div>
           </div>
           <div className="order-1 md:order-2 space-y-6">
+            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-800 mb-4">
+              <Icons.Brain size={24} />
+            </div>
+            <h2 className="font-serif text-4xl text-stone-900">Context-aware AI that understands your vault</h2>
+            <p className="font-sans text-lg text-stone-600 leading-relaxed">
+              MeetingMind's AI understands your vault structure and creates notes that integrate seamlessly with your existing knowledge base.
+            </p>
+            <ul className="space-y-3 text-stone-600 font-sans text-sm">
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Vault-aware summaries that reference your existing notes</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Action items with assigned owners</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Smart tag suggestions that learn from your tagging patterns</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>AI-powered participant insights, automatically linked to their notes</span>
+              </li>
+            </ul>
+            <div className="inline-block px-2 py-1 bg-amber-50 text-amber-700 text-xs font-medium rounded">
+              ⭐ Pro License Required
+            </div>
+          </div>
+        </div>
+
+        {/* Feature 4: Entity Extraction - Grow Knowledge Graph */}
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="space-y-6">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 mb-4">
               <Icons.Network size={24} />
             </div>
-            <h2 className="font-serif text-4xl text-stone-900">Build your knowledge graph automatically</h2>
+            <h2 className="font-serif text-4xl text-stone-900">Grow your knowledge graph</h2>
             <p className="font-sans text-lg text-stone-600 leading-relaxed">
               MeetingMind doesn't just link to existing notes—it creates new ones. 
               Issues, progress updates, and topics mentioned in meetings automatically 
@@ -303,6 +368,142 @@ const Features = () => {
             </ul>
             <div className="inline-block px-2 py-1 bg-amber-50 text-amber-700 text-xs font-medium rounded">
               ⭐ Pro License Required
+            </div>
+          </div>
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-purple-100/50 rounded-xl -rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
+            <div className="relative bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden p-6">
+              <div className="text-stone-300 text-xs font-mono mb-3">---<br/>type: issue<br/>---</div>
+              <div className="text-xl font-serif text-stone-900 mb-4"># OAuth Integration Blocker</div>
+              <div className="space-y-3 text-sm">
+                <div className="text-stone-500">## Description</div>
+                <div className="pl-4 text-stone-600">Refresh token handling issue with Google API</div>
+                <div className="text-stone-500 mt-4">## Status</div>
+                <div className="pl-4 text-stone-600">blocked</div>
+                <div className="text-stone-500 mt-4">## Related Meetings</div>
+                <div className="pl-4 space-y-1 text-stone-600">
+                  <div>• [[2025-01-15 Cadence App Launch Planning]]</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Feature 5: Structured Metadata - Organize for Analysis */}
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="order-2 md:order-1">
+             <div className="relative group">
+                <div className="absolute -inset-4 bg-amber-100/50 rounded-xl rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
+                <div className="relative transform transition-transform duration-500 group-hover:-translate-y-2">
+                   <DataviewVisual />
+                </div>
+             </div>
+          </div>
+          <div className="order-1 md:order-2 space-y-6">
+             <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 mb-4">
+              <Icons.Database size={24} />
+            </div>
+            <h2 className="font-serif text-4xl text-stone-900">Dataview-ready metadata</h2>
+            <p className="font-sans text-lg text-stone-600 leading-relaxed">
+              Every meeting is saved with structured YAML frontmatter: participants, duration, 
+              source, and tags. Build powerful dashboards to track who you meet with and what you decide.
+            </p>
+            <div className="flex gap-2 flex-wrap">
+               {['date', 'participants', 'source', 'duration', 'tags'].map(tag => (
+                 <span key={tag} className="px-2 py-1 bg-stone-100 text-stone-500 text-xs font-mono rounded border border-stone-200">
+                   {tag}
+                 </span>
+               ))}
+            </div>
+            <div className="inline-block px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded">
+              ✓ Included in Free
+            </div>
+          </div>
+        </div>
+
+        {/* Feature 6: Dashboard Insights - See the Big Picture */}
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="space-y-6">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 mb-4">
+              <Icons.Database size={24} />
+            </div>
+            <h2 className="font-serif text-4xl text-stone-900">Meeting dashboard with insights</h2>
+            <p className="font-sans text-lg text-stone-600 leading-relaxed">
+              Generate a comprehensive statistics dashboard to understand your meeting patterns. Track time investment, top collaborators, meeting frequency, and trends—all in one place.
+            </p>
+            <ul className="space-y-3 text-stone-600 font-sans text-sm">
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Overview metrics: total meetings, this month/week/today</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Time investment tracking: total hours, average duration, longest meetings</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Top collaborators: see who you meet with most frequently</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Meeting patterns: busiest days, monthly trends, source breakdown</span>
+              </li>
+            </ul>
+            <div className="inline-block px-2 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded">
+              ✓ Included in Free
+            </div>
+          </div>
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-blue-100/50 rounded-xl -rotate-1 group-hover:rotate-0 transition-transform duration-500"></div>
+            <div className="relative bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden p-6">
+              <div className="text-stone-300 text-xs font-mono mb-3"># 📊 Meeting Dashboard</div>
+              <div className="space-y-4 text-sm">
+                <div>
+                  <div className="text-stone-500 mb-2">## Overview</div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-stone-50 p-2 rounded">
+                      <div className="text-stone-400 text-[10px]">Total Meetings</div>
+                      <div className="text-stone-900 font-semibold">147</div>
+                    </div>
+                    <div className="bg-stone-50 p-2 rounded">
+                      <div className="text-stone-400 text-[10px]">This Month</div>
+                      <div className="text-stone-900 font-semibold">23</div>
+                    </div>
+                    <div className="bg-stone-50 p-2 rounded">
+                      <div className="text-stone-400 text-[10px]">This Week</div>
+                      <div className="text-stone-900 font-semibold">6</div>
+                    </div>
+                    <div className="bg-stone-50 p-2 rounded">
+                      <div className="text-stone-400 text-[10px]">Total Time</div>
+                      <div className="text-stone-900 font-semibold">89h 30m</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-stone-500 mb-2">## 👥 Top Collaborators</div>
+                  <div className="space-y-1 text-xs">
+                    <div className="flex justify-between text-stone-600">
+                      <span className="text-purple-700 font-medium">[[Sarah Chen]]</span>
+                      <span>12 meetings</span>
+                    </div>
+                    <div className="flex justify-between text-stone-600">
+                      <span className="text-purple-700 font-medium">[[Marcus Webb]]</span>
+                      <span>8 meetings</span>
+                    </div>
+                    <div className="flex justify-between text-stone-600">
+                      <span className="text-purple-700 font-medium">[[Engineering Team]]</span>
+                      <span>6 meetings</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-stone-500 mb-2">## 📅 Meeting Patterns</div>
+                  <div className="text-xs text-stone-600">
+                    <div>Busiest: <strong>Tuesday</strong> (34 meetings)</div>
+                    <div>Quietest: <strong>Friday</strong> (12 meetings)</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -423,16 +624,16 @@ const Pricing = () => {
       name: "Pro License",
       price: "$25",
       period: "once",
-      description: "Unlock AI-powered features. Pay once, use forever.",
+      description: "Unlock context-aware AI features. Pay once, use forever.",
       features: [
         "Everything in Free",
-        "AI summaries (2-4 sentences)",
+        "Vault-aware AI summaries (2-4 sentences)",
         "Action item extraction with owners",
         "Decision tracking",
-        "Smart tag suggestions",
+        "Smart tag suggestions that learn from your vault",
         "AI-powered participant insights",
         "Entity extraction (issues, updates, topics)",
-        "Bring your own API key (Claude/OpenAI)"
+        "Your data, your keys—full privacy control (Claude/OpenAI)"
       ],
       cta: "Get Pro License",
       href: "https://tumbucon.gumroad.com/l/meetingmind-pro",
@@ -455,7 +656,71 @@ const Pricing = () => {
         </div>
 
         <div className="text-center mt-12 text-stone-500 text-sm">
-          <p>🔑 Pro requires your own Claude or OpenAI API key • No subscription, no recurring fees</p>
+          <p>🔑 Pro uses your own API keys for full privacy control • No subscription, no recurring fees • Your vault stays private</p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FAQ = () => {
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "Do I need an API key for the Free version?",
+      answer: "No! The Free version works completely offline. Auto-linking, participant tracking, folder watcher, and all core features work without any API keys. Only Pro features (AI summaries, action items, etc.) require your own API key."
+    },
+    {
+      question: "How much do API calls cost?",
+      answer: "Typical meeting processing costs ~$0.01-0.05 per transcript, depending on length and which AI provider you use (Claude or OpenAI). You pay directly to the AI provider—MeetingMind doesn't charge any usage fees."
+    },
+    {
+      question: "Can I use this on mobile?",
+      answer: "No, MeetingMind is desktop-only (macOS, Windows, Linux). This is because it requires file system access for folder watching and vault indexing. Mobile Obsidian apps don't support these features."
+    },
+    {
+      question: "What transcript formats are supported?",
+      answer: "MeetingMind supports VTT, SRT, TXT, and JSON formats. You can import from Otter.ai, Fathom, Zoom, Fireflies.ai, or any tool that exports transcripts in these formats."
+    },
+    {
+      question: "How does the Fireflies.ai sync work?",
+      answer: "With Fireflies.ai API sync enabled, MeetingMind automatically imports new transcripts as they're created in your Fireflies account. Just set up your API key once, and new meetings appear in your vault automatically."
+    },
+    {
+      question: "Can I try Pro before buying?",
+      answer: "Yes! You can test Pro features with your own API key. If you're not satisfied, the Free version includes all core functionality—auto-linking, participant tracking, and meeting dashboard—so you'll still have a fully functional plugin."
+    }
+  ];
+
+  return (
+    <section className="py-24 bg-white border-y border-stone-200">
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="font-serif text-4xl text-stone-900 mb-4">Frequently Asked Questions</h2>
+          <p className="text-stone-600 text-lg">Everything you need to know about MeetingMind</p>
+        </div>
+        
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border border-stone-200 rounded-lg overflow-hidden">
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-stone-50 transition-colors"
+              >
+                <span className="font-medium text-stone-900 pr-4">{faq.question}</span>
+                <Icons.ChevronDown 
+                  size={20} 
+                  className={`text-stone-400 transition-transform flex-shrink-0 ${openIndex === index ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {openIndex === index && (
+                <div className="px-6 pb-4 text-stone-600 leading-relaxed">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -492,6 +757,7 @@ const App = () => {
       <Features />
       <HowItWorks />
       <Pricing />
+      <FAQ />
       <section className="py-24 text-center">
         <div className="max-w-2xl mx-auto px-6">
           <h2 className="font-serif text-5xl text-stone-900 mb-6">Your meetings deserve better</h2>

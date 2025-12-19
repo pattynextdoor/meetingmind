@@ -10,7 +10,12 @@ import {
   Menu,
   MoreHorizontal,
   Users,
-  Network
+  Network,
+  Github,
+  Folder,
+  Calendar,
+  Clock,
+  ChevronDown
 } from 'lucide-react';
 
 export const Icons = {
@@ -25,5 +30,10 @@ export const Icons = {
   Menu,
   MoreHorizontal,
   Users,
-  Network
+  Network,
+  Github,
+  Folder,
+  Calendar,
+  Clock,
+  ChevronDown
 };

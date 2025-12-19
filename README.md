@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.svg" alt="MeetingMind Logo" width="120" height="120" />
   <h1>MeetingMind for Obsidian</h1>
-  <p><strong>Transform meeting transcripts into connected knowledge.</strong></p>
+  <p><strong>Stop copy-pasting transcripts. MeetingMind turns your raw meeting transcripts into linked, actionable Obsidian notes automatically.</strong></p>
 </div>
 
 MeetingMind is an Obsidian plugin that automatically imports meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking. Bridge the gap between meeting recording tools and personal knowledge management.
@@ -15,20 +15,25 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 - **Manual Import**: Import individual files via command palette
 - **Supported Formats**: VTT, SRT, TXT, JSON
 
-### 🤖 AI Enrichment (Pro)
-- **Summary Generation**: 2-4 sentence meeting summaries
-- **Action Item Extraction**: Automatic task detection with assigned owners
+### 🤖 Context-Aware AI Enrichment (Pro)
+*MeetingMind's AI understands your vault structure and creates notes that integrate seamlessly with your existing knowledge base.*
+
+- **Vault-Aware Summaries**: 2-4 sentence meeting summaries that reference your existing notes (e.g., "Discussed timeline for the [[Enrollment API]] v2 migration")
+- **Action Item Extraction**: Automatic task detection with assigned owners, ready for task management plugins
 - **Decision Extraction**: Capture key decisions made during meetings
-- **Tag Suggestions**: AI-recommended tags based on your existing vault tags
-- **Participant Insights**: AI-generated insights per participant
-- **Entity Extraction**: Auto-create notes for issues, updates, and topics mentioned
-- **BYOK**: Bring your own Claude or OpenAI API key
+- **Smart Tag Suggestions**: AI-recommended tags based on your existing vault tags—learns from your tagging patterns
+- **Participant Insights**: AI-generated insights per participant, automatically linked to their notes
+- **Entity Extraction**: Auto-create notes for issues, updates, and topics mentioned—builds your knowledge graph automatically
+- **Your Data, Your Keys**: Use your own API keys (Claude or OpenAI) for full privacy control
 
 ### 🔗 Auto-Linking
-- **Intelligent Linking**: Automatically create `[[wiki-links]]` to existing notes
-- **Alias Support**: Match note titles, explicit aliases, and implicit aliases
-- **Disambiguation**: Handle ambiguous references gracefully
-- **Suggested Links**: Surface potential links for manual resolution
+*Automatically connects meeting content to your existing notes—no manual linking required.*
+
+- **Intelligent Linking**: Automatically creates `[[wiki-links]]` to existing notes in your vault
+  - *Example*: "Sarah mentioned the Phoenix Project" → `[[Sarah]] mentioned the [[Phoenix Project]]` (if those notes exist)
+- **Alias Support**: Matches note titles, explicit aliases, and implicit aliases
+- **Disambiguation**: Handles ambiguous references gracefully
+- **Suggested Links**: Surfaces potential links for manual resolution when confidence is low
 
 ### 👥 Participant Tracking
 - **Auto-Create Notes**: Automatically create notes for meeting participants
@@ -39,6 +44,10 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 - **Structured Output**: Clean Markdown with YAML frontmatter
 - **Collapsible Transcripts**: Full transcript in expandable callout
 - **Dataview Compatible**: Frontmatter works with Dataview queries
+
+### 📊 Meeting Dashboard
+- **Visual Insights**: Generate a stats dashboard showing meeting frequency, participant activity, and open action items
+- **At-a-Glance Overview**: See your meeting patterns and track follow-ups across all meetings
 
 ## Installation
 
@@ -104,7 +113,7 @@ Team decided to maintain backward compatibility through Q1.
 |---------|-------------|
 | `MeetingMind: Import file` | Import a transcript file manually |
 | `MeetingMind: Reprocess current note` | Re-run AI enrichment and auto-linking on the active meeting note |
-| `MeetingMind: Generate meeting dashboard` | Create/update a stats dashboard with meeting insights |
+| `MeetingMind: Generate meeting dashboard` | Create/update a visual stats dashboard with meeting insights, recent meetings, and open action items |
 | `MeetingMind: Update dashboard` | Refresh the meeting dashboard |
 | `MeetingMind: Rebuild vault index` | Re-index notes for auto-linking |
 | `MeetingMind: View sync log` | Show recent sync activity |
@@ -115,7 +124,7 @@ Team decided to maintain backward compatibility through Q1.
 | Tier | Price | Features |
 |------|-------|----------|
 | **Free** | $0 | Multi-format parsing, auto-linking, folder watcher, participant tracking, meeting dashboard, Dataview-ready output |
-| **Pro** | $25 one-time | + AI summaries, action items, decisions, tag suggestions, participant insights, entity extraction (BYOK) |
+| **Pro** | $25 one-time | + Context-aware AI summaries, action items, decisions, vault-aware tag suggestions, participant insights, entity extraction. Uses your own API keys for full privacy control. |
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
 
@@ -143,7 +152,7 @@ This plugin connects to the following external services:
 | **Anthropic API** | `api.anthropic.com` | AI processing when Claude is selected (Pro) |
 | **OpenAI API** | `api.openai.com` | AI processing when GPT-4 is selected (Pro) |
 
-Your transcript content is sent to AI providers only when AI enrichment is enabled. No data is collected or stored by MeetingMind itself.
+**Privacy First**: Your transcript content is sent to AI providers (OpenAI/Anthropic) only when AI enrichment is enabled, and only using your own API keys. No data is collected or stored by MeetingMind itself—your vault stays private.
 
 ## Requirements
 
