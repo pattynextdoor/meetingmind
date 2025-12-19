@@ -9,7 +9,8 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-[#faf9f7]/95 backdrop-blur-sm border-b border-stone-200 py-4">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <a href="#" className="font-serif text-2xl tracking-tight text-stone-900 group">
+        <a href="#" className="flex items-center gap-3 font-serif text-2xl tracking-tight text-stone-900 group">
+          <img src="/logo.svg" alt="MeetingMind" className="w-8 h-8" />
           Meeting<span className="text-emerald-800 group-hover:text-emerald-600 transition-colors">Mind</span>
         </a>
         
@@ -33,22 +34,25 @@ const Hero = () => {
   return (
     <section className="pt-24 pb-20 border-b border-stone-200">
       <div className="max-w-4xl mx-auto px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-medium tracking-wide uppercase mb-8 animate-fade-up" style={{ animationDelay: '0ms' }}>
+        <div className="mb-8 animate-fade-up" style={{ animationDelay: '0ms' }}>
+          <img src="/logo.svg" alt="MeetingMind" className="w-20 h-20 mx-auto" />
+        </div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-medium tracking-wide uppercase mb-8 animate-fade-up" style={{ animationDelay: '100ms' }}>
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
           Obsidian Plugin for Meeting Transcripts
         </div>
         
-        <h1 className="font-serif text-5xl md:text-7xl leading-[1.1] text-stone-900 mb-8 animate-fade-up" style={{ animationDelay: '100ms' }}>
+        <h1 className="font-serif text-5xl md:text-7xl leading-[1.1] text-stone-900 mb-8 animate-fade-up" style={{ animationDelay: '200ms' }}>
           Meeting transcripts that <br/>
           <em className="text-emerald-800 italic">actually connect</em>
         </h1>
         
-        <p className="font-sans text-lg md:text-xl text-stone-500 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-up" style={{ animationDelay: '200ms' }}>
+        <p className="font-sans text-lg md:text-xl text-stone-500 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-up" style={{ animationDelay: '300ms' }}>
           Sync transcripts from Fireflies.ai or import from Otter, Fathom, Zoom, and more. 
           Get AI summaries, action items, and automatic links to your existing notes—without lifting a finger.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: '300ms' }}>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: '400ms' }}>
           <button className="px-8 py-3.5 bg-stone-900 text-[#faf9f7] font-medium rounded-lg hover:bg-stone-800 hover:scale-[1.02] transition-all shadow-lg shadow-stone-900/10 flex items-center gap-2">
             Install from Community Plugins
             <Icons.ArrowRight size={16} />
@@ -58,7 +62,7 @@ const Hero = () => {
           </a>
         </div>
         
-        <p className="mt-4 text-xs text-stone-400 font-sans animate-fade-up" style={{ animationDelay: '400ms' }}>
+        <p className="mt-4 text-xs text-stone-400 font-sans animate-fade-up" style={{ animationDelay: '500ms' }}>
           Free core features • Pro AI features $25 one-time
         </p>
       </div>
@@ -462,7 +466,10 @@ const Footer = () => (
   <footer className="bg-white py-12 border-t border-stone-200">
     <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
       <div className="flex items-center gap-8">
-        <a href="#" className="font-serif text-xl text-stone-900">Meeting<span className="text-emerald-800">Mind</span></a>
+        <a href="#" className="flex items-center gap-2 font-serif text-xl text-stone-900">
+          <img src="/logo.svg" alt="MeetingMind" className="w-6 h-6" />
+          Meeting<span className="text-emerald-800">Mind</span>
+        </a>
         <div className="hidden md:flex gap-6 text-sm text-stone-500">
           <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
           <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>

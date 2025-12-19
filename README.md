@@ -1,6 +1,8 @@
-# MeetingMind for Obsidian
-
-**Transform meeting transcripts into connected knowledge.**
+<div align="center">
+  <img src="logo.svg" alt="MeetingMind Logo" width="120" height="120" />
+  <h1>MeetingMind for Obsidian</h1>
+  <p><strong>Transform meeting transcripts into connected knowledge.</strong></p>
+</div>
 
 MeetingMind is an Obsidian plugin that automatically imports meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking. Bridge the gap between meeting recording tools and personal knowledge management.
 
