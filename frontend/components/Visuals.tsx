@@ -2,27 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Icons } from './Icons';
 
 // --- Shared Window Shell ---
-interface MacWindowProps {
+export interface MacWindowProps {
   title: string;
   children?: React.ReactNode;
   className?: string;
 }
 
-const MacWindow = ({ title, children, className = "" }: MacWindowProps) => (
-  <div className={`bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden flex flex-col ${className}`}>
-    <div className="bg-stone-50 border-b border-stone-200 px-4 py-2 flex items-center gap-3">
-      <div className="flex gap-1.5">
-        <div className="w-3 h-3 rounded-full bg-red-400/80"></div>
-        <div className="w-3 h-3 rounded-full bg-amber-400/80"></div>
-        <div className="w-3 h-3 rounded-full bg-emerald-400/80"></div>
+export function MacWindow({ title, children, className = "" }: MacWindowProps) {
+  return (
+    <div className={`bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden flex flex-col ${className}`}>
+      <div className="bg-stone-50 border-b border-stone-200 px-4 py-2 flex items-center gap-3">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-400/80"></div>
+          <div className="w-3 h-3 rounded-full bg-amber-400/80"></div>
+          <div className="w-3 h-3 rounded-full bg-emerald-400/80"></div>
+        </div>
+        <div className="text-xs text-stone-400 font-sans font-medium ml-2">{title}</div>
       </div>
-      <div className="text-xs text-stone-400 font-sans font-medium ml-2">{title}</div>
+      <div className="flex-1 relative font-mono text-xs md:text-sm leading-relaxed">
+        {children}
+      </div>
     </div>
-    <div className="flex-1 relative font-mono text-xs md:text-sm leading-relaxed">
-      {children}
-    </div>
-  </div>
-);
+  );
+}
 
 // --- Feature 1: Auto-Link Animation ---
 export const AutoLinkVisual = () => {
@@ -134,6 +136,84 @@ export const AIExtractionVisual = () => {
                </div>
              </div>
            </div>
+        </div>
+      </div>
+    </MacWindow>
+  );
+};
+
+// --- Feature 4: Graph View Visual ---
+export const GraphViewVisual = () => {
+  const [nodes, setNodes] = useState([
+    { id: 'center', x: 50, y: 15, r: 2, label: 'Project Phoenix', color: '#10b981' }, // Emerald
+    { id: '1', x: 30, y: -5, r: 2, label: 'Sarah Chen', color: '#a855f7' }, // Purple
+    { id: '2', x: 70, y: -5, r: 2, label: 'API Migration', color: '#a855f7' },
+    { id: '3', x: 20, y: 25, r: 2, label: 'Q1 Roadmap', color: '#64748b' },
+    { id: '4', x: 80, y: 25, r: 2, label: 'Launch Plan', color: '#64748b' },
+    { id: '5', x: 50, y: 45, r: 2, label: 'Marketing', color: '#a855f7' },
+  ]);
+
+  const [edges, setEdges] = useState([
+    { from: 'center', to: '1' },
+    { from: 'center', to: '2' },
+    { from: 'center', to: '5' },
+    { from: '1', to: '3' },
+    { from: '2', to: '4' },
+    { from: '5', to: '4' },
+  ]);
+
+  return (
+    <MacWindow title="Graph View" className="h-64 bg-[#1e1e1e]">
+      <div className="relative w-full h-full overflow-hidden bg-[#1e1e1e]">
+        <svg className="w-full h-full" viewBox="-20 -20 140 140" preserveAspectRatio="xMidYMid meet">
+          {/* Edges */}
+          {edges.map((edge, i) => {
+            const fromNode = nodes.find(n => n.id === edge.from);
+            const toNode = nodes.find(n => n.id === edge.to);
+            if (!fromNode || !toNode) return null;
+            return (
+              <line
+                key={i}
+                x1={fromNode.x}
+                y1={fromNode.y}
+                x2={toNode.x}
+                y2={toNode.y}
+                stroke="#4b5563"
+                strokeWidth="0.5"
+                className="opacity-40"
+              />
+            );
+          })}
+
+          {/* Nodes */}
+          {nodes.map((node, i) => (
+            <g key={node.id} className="cursor-pointer group">
+              <circle
+                cx={node.x}
+                cy={node.y}
+                r={node.r}
+                fill={node.color}
+                className="transition-transform duration-300 group-hover:scale-125 origin-center"
+                style={{ transformBox: 'fill-box' }}
+              />
+              <text
+                x={node.x + node.r + 2}
+                y={node.y + 1}
+                fill="#d1d5db"
+                fontSize="4"
+                className="font-sans opacity-60 group-hover:opacity-100 transition-opacity"
+              >
+                {node.label}
+              </text>
+            </g>
+          ))}
+        </svg>
+        
+        {/* Controls Overlay */}
+        <div className="absolute top-2 left-2 flex gap-1">
+           <div className="w-2 h-2 rounded-full bg-stone-700"></div>
+           <div className="w-2 h-2 rounded-full bg-stone-700"></div>
+           <div className="w-2 h-2 rounded-full bg-stone-700"></div>
         </div>
       </div>
     </MacWindow>
