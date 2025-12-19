@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit --project tsconfig.json && node esbuild.config.mjs production",
+    "type-check": "tsc -noEmit --project tsconfig.json",
+    "build": "npm run type-check && node esbuild.config.mjs production",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
