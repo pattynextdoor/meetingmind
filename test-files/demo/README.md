@@ -4,14 +4,14 @@ This folder contains everything needed to record the MeetingMind demo video.
 
 ## Scenario: "The New Hire"
 
-You're Alex, a senior software engineer starting at a new company. Your team has a lot of moving parts—projects, issues, and people you haven't met yet. You have recordings from your first week of meetings.
+You're Patrick, a senior software engineer starting at a new company. Your team has a lot of moving parts—projects, issues, and people you haven't met yet. You have recordings from your first week of meetings.
 
 ## The Cast
 
 | Name | Role |
 |------|------|
-| **You (Alex)** | New Senior Engineer |
-| **Jordan Kim** | Engineering Manager |
+| **You (Patrick Tumbucon)** | New Senior Engineer |
+| **Michael Kim** | Engineering Manager |
 | **Sam Chen** | Tech Lead |
 | **Priya Sharma** | Frontend Engineer |
 | **Marcus Williams** | Backend Engineer |
@@ -24,7 +24,7 @@ You're Alex, a senior software engineer starting at a new company. Your team has
 | `01-monday-standup.json` | Daily Standup | 12 min | Sam, Priya, Marcus, Riley |
 | `02-architecture-review.json` | Technical Review | 35 min | Sam, Marcus, Riley |
 | `03-wednesday-standup.json` | Daily Standup | 10 min | Sam, Priya, Marcus |
-| `04-manager-1on1.json` | 1:1 | 28 min | Jordan |
+| `04-manager-1on1.json` | 1:1 | 28 min | Michael, Patrick |
 
 ## Key Content Across Meetings
 
@@ -86,13 +86,15 @@ Demo Vault/
 │   ├── Monday Standup.md
 │   ├── Architecture Review - Checkout Service.md
 │   ├── Wednesday Standup.md
-│   └── 1-1 with Jordan.md
+│   └── 1-1 with Michael.md
 ├── People/
-│   ├── Jordan Kim.md
+│   ├── Michael Kim.md
+│   ├── Patrick Tumbucon.md
 │   ├── Sam Chen.md
 │   ├── Priya Sharma.md
 │   ├── Marcus Williams.md
-│   └── Riley O'Brien.md
+│   ├── Riley O'Brien.md
+│   └── Patrick Tumbucon.md
 ├── Issues/
 │   ├── Auth Token Refresh Bug.md
 │   └── CI Pipeline Slowdown.md

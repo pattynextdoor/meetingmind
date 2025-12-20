@@ -1,7 +1,7 @@
 # MeetingMind Demo Recording Script
 
 > **📝 Scenario: The New Hire**  
-> You're Alex, a senior software engineer starting at a new company. Your team has a lot of moving parts—ongoing projects, open issues, and people you haven't met yet. You have recordings from your first week: 2 standups, an architecture review, and your 1:1 with your new manager. Let's see how MeetingMind helps you get up to speed.
+> You're Patrick, a senior software engineer starting at a new company. Your team has a lot of moving parts—ongoing projects, open issues, and people you haven't met yet. You have recordings from your first week: 2 standups, an architecture review, and your 1:1 with your new manager. Let's see how MeetingMind helps you get up to speed.
 
 ## Overview
 
@@ -16,8 +16,8 @@
 
 | Name | Role | Notes |
 |------|------|-------|
-| **You (Alex)** | New Senior Engineer | The viewer's POV |
-| **Jordan Kim** | Engineering Manager | Your new manager |
+| **You (Patrick Tumbucon)** | New Senior Engineer | The viewer's POV |
+| **Michael Kim** | Engineering Manager | Your new manager |
 | **Sam Chen** | Tech Lead | Leads the Platform Migration |
 | **Priya Sharma** | Frontend Engineer | Owns the Metrics Dashboard |
 | **Marcus Williams** | Backend Engineer | Working on Checkout Service |
@@ -30,7 +30,7 @@
 | `monday-standup.json` | Daily Standup | 12 min | Sam, Priya, Marcus, Riley | Platform Migration status, CI slowdown issue |
 | `architecture-review.json` | Technical Review | 35 min | Sam, Marcus, Riley | Checkout Service redesign, Auth Service issues |
 | `wednesday-standup.json` | Daily Standup | 10 min | Sam, Priya, Marcus | Metrics Dashboard progress, blockers |
-| `manager-1on1.json` | 1:1 | 28 min | Jordan | Onboarding, team context, expectations |
+| `manager-1on1.json` | 1:1 | 28 min | Michael, Patrick | Onboarding, team context, expectations |
 
 ---
 
@@ -128,11 +128,11 @@ Record these actions—no voiceover needed. Take your time; you'll edit in post.
 **What you're showing:** MeetingMind auto-creates participant notes.
 
 **Actions:**
-1. Open the `1:1 with Jordan` meeting note
+1. Open the `1:1 with Michael` meeting note
 2. Scroll to show AI-generated summary—it mentions the Platform Migration and your role
-3. Show participant link: `[[Jordan Kim]]`
-4. Click `[[Jordan Kim]]` → Jordan's participant note opens
-5. Show Jordan's note structure:
+3. Show participant links: `[[Michael Kim]]` and `[[Patrick Tumbucon]]`
+4. Click `[[Michael Kim]]` → Michael's participant note opens
+5. Show Michael's note structure:
    - "Meetings" section with the 1:1 linked
 6. Click back, open `Monday Standup` meeting note
 7. Show participants: `[[Sam Chen]]`, `[[Priya Sharma]]`, `[[Marcus Williams]]`, `[[Riley O'Brien]]`
@@ -198,7 +198,7 @@ Record these actions—no voiceover needed. Take your time; you'll edit in post.
 1. Switch back to note view
 2. In file explorer, collapse/expand folders to show structure:
    - `Meetings/` (4 notes)
-   - `People/` (5 notes: Jordan, Sam, Priya, Marcus, Riley)
+   - `People/` (6 notes: Michael, Patrick, Sam, Priya, Marcus, Riley)
    - `Issues/` (2 notes)
    - `Topics/` (several notes)
 3. Quick visual scan showing all the auto-generated notes
@@ -234,9 +234,9 @@ Record this separately and sync to edited video.
 
 ### Scene 3: Understanding the Team
 
-> "My manager Jordan explains the team structure—"
+> "My manager Michael explains the team structure—"
 
-[When showing Jordan's note]
+[When showing Michael's note]
 
 > "—and MeetingMind links everything automatically."
 
@@ -340,7 +340,7 @@ Record this separately and sync to edited video.
 
 [0:12] Standups, architecture reviews, my 1:1—all in.
 
-[0:16] My manager Jordan explains the team structure—
+[0:16] My manager Michael explains the team structure—
 
 [0:19] —and MeetingMind links everything automatically.
 
