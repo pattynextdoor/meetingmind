@@ -187,7 +187,7 @@ export class TranscriptParser {
     try {
       const data = JSON.parse(content);
       
-      // Handle Otter.ai export format
+      // Handle Otter.ai export format (transcripts plural)
       if (data.transcripts && Array.isArray(data.transcripts)) {
         for (const t of data.transcripts) {
           segments.push({
@@ -199,6 +199,17 @@ export class TranscriptParser {
         }
         if (data.speakers) {
           participants.push(...data.speakers);
+        }
+      }
+      // Handle simple transcript format (transcript singular - common export format)
+      else if (data.transcript && Array.isArray(data.transcript)) {
+        for (const t of data.transcript) {
+          segments.push({
+            speaker: t.speaker || '',
+            timestamp: t.start_time || t.start || t.timestamp || 0,
+            endTimestamp: t.end_time || t.end,
+            text: t.text || '',
+          });
         }
       }
       // Handle array of segments directly
@@ -222,9 +233,15 @@ export class TranscriptParser {
             text: seg.text || '',
           });
         }
-        if (data.participants) {
-          participants.push(...data.participants);
-        }
+      }
+      
+      // Extract participants from various possible locations
+      if (data.participants && Array.isArray(data.participants)) {
+        participants.push(...data.participants);
+      } else if (data.speakers && Array.isArray(data.speakers)) {
+        participants.push(...data.speakers);
+      } else if (data.attendees && Array.isArray(data.attendees)) {
+        participants.push(...data.attendees);
       }
     } catch (e) {
       console.error('Failed to parse JSON transcript:', e);

@@ -691,17 +691,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           })
         );
       
-      new Setting(containerEl)
-        .setName('Updates folder')
-        .setDesc('Folder where update notes are created')
-        .addText(text => text
-          .setPlaceholder('Updates')
-          .setValue(this.plugin.settings.entityUpdatesFolder)
-          .onChange(async (value) => {
-            this.plugin.settings.entityUpdatesFolder = value || 'Updates';
-            debouncedFolderUpdate();
-          })
-        );
+      // Note: Updates are no longer created as separate notes - they appear in People notes
       
       new Setting(containerEl)
         .setName('Topics folder')
