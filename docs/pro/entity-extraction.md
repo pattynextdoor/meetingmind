@@ -78,6 +78,7 @@ blocked
 - **Description**: Context from the meeting
 - **Raised by**: Wiki-link to the person who raised it
 - **Status**: Current status (in-progress, blocked, resolved)
+- **Updates**: Accumulated context from subsequent meetings (NEW)
 - **Related Meetings**: All meetings where this issue was discussed
 - **Notes**: Your personal notes section
 
@@ -86,8 +87,22 @@ blocked
 - **Frontmatter**: Type, creation date, category
 - **Description**: What this topic is about
 - **Owner**: Wiki-link to the person who leads/owns it
+- **Updates**: Accumulated context from subsequent meetings (NEW)
 - **Related Meetings**: All meetings where this topic was discussed
 - **Notes**: Your personal notes section
+
+## Accumulated Context (NEW)
+
+Entity notes grow richer over time as more meetings reference them. Each time an entity is mentioned in a new meeting, the AI extracts new context and adds it to the **Updates** section:
+
+```markdown
+## Updates
+
+- **2025-01-20** (from [[Architecture Review]]): Decided to use Redis for caching
+- **2025-01-15** (from [[Monday Standup]]): Initial discussion about performance concerns
+```
+
+This creates a timeline of how topics and issues evolve across meetings, making your notes increasingly valuable as context accumulates.
 
 ### Updates (No Separate Notes)
 

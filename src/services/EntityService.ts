@@ -375,7 +375,7 @@ created: ${date}`;
   }
   
   /**
-   * Update an existing entity note with new meeting info
+   * Update an existing entity note with new meeting info and accumulated context
    */
   private async updateEntityNote(
     notePath: string,
@@ -459,6 +459,36 @@ created: ${date}`;
         }
       }
       
+      // Add new context/description from this meeting to the Updates section
+      if (entity.description) {
+        const updateEntry = `- **${meetingDateStr}** (from [[${meetingLink}|${meetingTitle}]]): ${entity.description}\n`;
+        
+        const updatesHeaderRegex = /^## Updates\s*$/m;
+        if (updatesHeaderRegex.test(content)) {
+          // Add to existing Updates section (prepend to keep most recent first)
+          content = content.replace(
+            updatesHeaderRegex,
+            `## Updates\n\n${updateEntry}`
+          );
+        } else {
+          // Create new Updates section before Related Meetings
+          const relatedMeetingsIndex = content.indexOf('## Related Meetings');
+          const notesIndex = content.indexOf('## Notes');
+          
+          if (relatedMeetingsIndex !== -1) {
+            content = content.slice(0, relatedMeetingsIndex) + 
+              `## Updates\n\n${updateEntry}\n` + 
+              content.slice(relatedMeetingsIndex);
+          } else if (notesIndex !== -1) {
+            content = content.slice(0, notesIndex) + 
+              `## Updates\n\n${updateEntry}\n` + 
+              content.slice(notesIndex);
+          } else {
+            content = content.trimEnd() + `\n\n## Updates\n\n${updateEntry}\n`;
+          }
+        }
+      }
+      
       // Add meeting to Related Meetings section
       const meetingsHeaderRegex = /^## Related Meetings\s*$/m;
       const meetingEntry = `- [[${meetingLink}|${meetingTitle}]] (${meetingDateStr})\n`;
@@ -482,7 +512,7 @@ created: ${date}`;
       }
       
       await this.app.vault.modify(file, content);
-      console.debug(`MeetingMind: Updated ${entity.type} note ${notePath}`);
+      console.debug(`MeetingMind: Updated ${entity.type} note ${notePath} with new context`);
       
     } catch (error) {
       console.error(`MeetingMind: Failed to update ${notePath}`, error);
