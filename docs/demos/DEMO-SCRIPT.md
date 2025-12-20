@@ -125,10 +125,12 @@ Record these actions first—**no voiceover needed**. Focus on smooth, deliberat
 1. Open one of the meeting notes (maybe the feature discussion)
 2. Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links
 3. Click `[[Maya Rodriguez]]` → participant note opens
-4. Scroll to show the "Related Meetings" section in Maya's note
-5. Click back (or use Obsidian back button), open another meeting note (maybe the retrospective)
-6. Show participants section again, click `[[Derek Nguyen]]`
-7. Show Derek's participant note briefly
+4. **NEW: Scroll to show the "Top of Mind" section with "Owns" subsection** - show topics/updates Maya owns
+5. **NEW: Scroll to "Raised Issues" section** - show issues Maya raised (linked)
+6. Scroll to show the "Meetings" section showing multiple meetings
+7. Click back (or use Obsidian back button), open another meeting note (maybe the retrospective)
+8. Show participants section again, click `[[Derek Nguyen]]`
+9. Show Derek's participant note briefly - show his "Top of Mind" and any owned items
 
 **Text overlay to add in post:** `🔗 Auto-linked to your vault`
 
@@ -153,17 +155,20 @@ Record these actions first—**no voiceover needed**. Focus on smooth, deliberat
 ### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
 
 **Actions to Record:**
-1. Show file explorer, scroll to show entity folders (`Issues/`, `Updates/`, `Topics/`)
+1. Show file explorer, scroll to show entity folders (`Issues/`, `Topics/`) - **NOTE: No `Updates/` folder anymore**
 2. Expand `Issues/` folder to show notes inside
 3. Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
-4. Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
-5. Go back to file explorer
-6. Open `Topics/` folder, click on a topic note (e.g., "Search Feature")
-7. Show topic note with related meetings
+4. **NEW: Show "Raised by: [[Person Name]]" field** - emphasize bidirectional linking
+5. Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
+6. Go back to file explorer
+7. Open `Topics/` folder, click on a topic note (e.g., "Search Feature" or "Payment flow")
+8. **NEW: Show "Owner: [[Person Name]]" field** - show who owns this topic
+9. Show topic note with related meetings
+10. **Optional: Click the owner link** to show it loops back to participant's "Owns" section
 
 **Text overlays to add in post:**
 - `📊 Entity extraction (Pro)` (when showing entity folders)
-- `Issues • Updates • Topics` (when expanding folders)
+- `Issues & Topics linked to people` (when showing "Raised by" or "Owner" fields)
 
 ---
 
@@ -235,19 +240,23 @@ Match these voiceover lines to the recorded actions. Read naturally—don't rush
 
 [When showing participant links]
 
-> "Watch—it automatically links to participant notes."
+> "It automatically links to participant notes."
 
-[When showing Maya's note]
+[When showing Maya's note - NEW: focus on Top of Mind section]
 
-> "Maya's note shows all her meetings—Monday standup, feature discussion, Wednesday standup..."
+> "Maya's note shows what she owns—topics she leads, updates she's working on—"
 
-[When scrolling through meetings]
+[When scrolling to Raised Issues]
 
-> "Your people notes track their entire meeting history automatically."
+> "—and issues she's raised. Everything's connected."
+
+[When showing Meetings section]
+
+> "All her meetings tracked automatically—Monday standup, feature discussion, retrospective..."
 
 [When showing Derek's note]
 
-> "Different meetings, different people—but everyone's connected. Your knowledge graph builds itself."
+> "Different people, different responsibilities—but everyone's knowledge is organized."
 
 ### Scene 4: The AI Value - Pro Features (8-10 seconds)
 
@@ -269,19 +278,27 @@ Match these voiceover lines to the recorded actions. Read naturally—don't rush
 ### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
 
 **Voiceover:**
-> "But here's the magic—MeetingMind doesn't just link to existing notes. It creates new ones."
+> "But here's the magic—MeetingMind doesn't just link to existing notes. It creates new ones—and connects them to people."
 
 [When showing entity folders]
 
-> "Issues mentioned across different meetings—"
+> "Issues mentioned across meetings—"
 
-[When showing issue note with related meetings]
+[When showing issue note with "Raised by" field - NEW]
 
-> "—get tracked automatically. Same issue, different meetings, all connected."
+> "—get their own notes, linked to who raised them."
 
-[When showing topic note]
+[When showing issue's related meetings]
 
-> "Topics evolve across meetings. Your knowledge graph builds itself automatically."
+> "Same issue, different meetings, all tracked."
+
+[When showing topic note with "Owner" field - NEW]
+
+> "Topics show who owns them—"
+
+[When clicking owner link - Optional]
+
+> "—and loop back to that person's note. Your knowledge graph builds itself with accountability built in."
 
 ### Scene 5b: The Graph View - Visual Climax (12-15 seconds)
 
@@ -530,28 +547,37 @@ Use this as a reference when recording voiceover. **Don't follow timings exactly
 
 **Practice:**
 8. ☐ Read through action script once
-9. ☐ Do a practice run (especially Scene 3 - participant connections, Scene 5 - entity extraction, and Scene 5b - graph view)
+9. ☐ Do a practice run - Focus on:
+   - **Scene 3**: Participant notes now have "Top of Mind" → "Owns" → "Raised Issues" sections
+   - **Scene 5**: Entity extraction showing "Raised by" and "Owner" fields
+   - **Scene 5b**: Graph view navigation
 10. ☐ Practice the import sequence - record at normal speed, you'll speed this up in post-production
-11. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
+11. ☐ Practice bidirectional linking - Show Issue → "Raised by" → Person → "Raised Issues" loop
+12. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
 
 **Recording:**
-12. ☐ Hit record! (Record actions only - no voiceover needed)
-13. ☐ Record all scenes in one take if possible (or multiple takes, you'll edit later)
+13. ☐ Hit record! (Record actions only - no voiceover needed)
+14. ☐ Record all scenes in one take if possible (or multiple takes, you'll edit later)
 14. ☐ After recording actions, record voiceover separately (match to edited video)
 
 **Pro Tips:**
 
 **Pre-Recording Setup:**
 - **Import all 4 meetings BEFORE recording** - This way you can focus on showing results, not waiting for processing
-- **Test entity extraction** - Make sure entity extraction creates multiple entity notes across different meetings
-- **Verify participant notes** - Check that participant notes show multiple meetings linked (especially Maya and Chris)
+- **Test entity extraction** - Make sure entity extraction creates multiple entity notes (Issues and Topics only - Updates are now tracked on participant notes)
+- **Verify participant notes** - Check that participant notes show:
+  - Multiple meetings linked in "Meetings" section
+  - "Top of Mind" section with "Owns" subsection showing topics/updates
+  - "Raised Issues" section linking to issue notes (if they raised any)
 - **Practice graph navigation** - Know how to switch to graph view quickly (Cmd+G), practice panning/zooming smoothly
 - **Document actual filenames** - Note actual entity filenames after import so you know what to click during recording
+- **Practice bidirectional linking** - Know how to show: Issue → "Raised by" → Person → "Raised Issues" → back to Issue
 
 **Action Recording Tips:**
 - **Move slowly** - Viewers need time to read. Don't rush through key moments.
-- **Pause on key moments** - Let important sections sit for 1-2 seconds
+- **Pause on key moments** - Let important sections sit for 1-2 seconds (especially "Owns", "Raised Issues", "Raised by", "Owner" fields)
 - **Smooth navigation** - Practice clicking through participant links and entity notes smoothly
+- **Show the loop** - Optionally demonstrate: Person → Topic they own → Click "Owner" link → Back to Person (shows bidirectional linking)
 - **Record processing time** - You'll cut it out later, but record it so you have options
 - **Take multiple takes** - It's easier to edit if you have options
 
