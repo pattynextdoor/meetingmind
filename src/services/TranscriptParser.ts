@@ -182,7 +182,7 @@ export class TranscriptParser {
    */
   private parseJSON(content: string): { segments: TranscriptSegment[]; participants: string[] } {
     const segments: TranscriptSegment[] = [];
-    const participants: string[] = [];
+    let participants: string[] = [];
     
     try {
       const data = JSON.parse(content);
@@ -197,8 +197,9 @@ export class TranscriptParser {
             text: t.text || t.transcript || '',
           });
         }
-        if (data.speakers) {
-          participants.push(...data.speakers);
+        // Use explicit speakers list if provided (preferred for Otter format)
+        if (data.speakers && Array.isArray(data.speakers)) {
+          participants = data.speakers;
         }
       }
       // Handle simple transcript format (transcript singular - common export format)
@@ -235,13 +236,15 @@ export class TranscriptParser {
         }
       }
       
-      // Extract participants from various possible locations
-      if (data.participants && Array.isArray(data.participants)) {
-        participants.push(...data.participants);
-      } else if (data.speakers && Array.isArray(data.speakers)) {
-        participants.push(...data.speakers);
-      } else if (data.attendees && Array.isArray(data.attendees)) {
-        participants.push(...data.attendees);
+      // Extract participants from explicit fields if not already set
+      if (participants.length === 0) {
+        if (data.participants && Array.isArray(data.participants)) {
+          participants = data.participants;
+        } else if (data.speakers && Array.isArray(data.speakers)) {
+          participants = data.speakers;
+        } else if (data.attendees && Array.isArray(data.attendees)) {
+          participants = data.attendees;
+        }
       }
     } catch (e) {
       console.error('Failed to parse JSON transcript:', e);
