@@ -110,29 +110,36 @@ Record these actions first—**no voiceover needed**. Focus on smooth, deliberat
 
 **Actions to Record:**
 1. Show file explorer with the first meeting note created
-2. Import `02-feature-discussion.json` (wait for processing - you'll speed this up in post)
-3. Import `03-wednesday-standup.json` (wait for processing - you'll speed this up in post)
-4. Import `04-launch-retrospective.json` (wait for processing - you'll speed this up in post)
-5. Show meetings folder filling up with notes
+2. Open command palette, type "MeetingMind: Import file", select `02-feature-discussion.json`
+3. **Immediately cut** (don't wait for processing)
+4. Show file explorer now has 2 meeting notes
+5. Repeat: Command palette → Import `03-wednesday-standup.json` → Cut → Show 3 meetings
+6. Repeat: Command palette → Import `04-launch-retrospective.json` → Cut → Show 4 meetings
+7. Final view: Meetings folder with all 4 notes visible
 
-**Note:** Record at normal speed. In post-production, speed up these imports significantly (time-lapse effect). Total time should be 5-7 seconds max after editing.
+**Note:** In post-production, these should feel like rapid-fire imports with instant results. Cut out ALL processing time. Use quick transitions (0.5 second fade or jump cut). The sequence should feel like: Click → Result → Click → Result → Click → Result. Total time: 5-7 seconds after editing.
+
+**Alternative approach (easier):** Import all 4 meetings BEFORE recording Scene 2b. During recording, just show the command palette opening for each import (don't actually import), then cut to the file explorer showing all 4 meetings. This saves you from timing issues during recording.
 
 ---
 
 ### Scene 3: The Connection - Auto-Linking (12-15 seconds)
 
 **Actions to Record:**
-1. Open one of the meeting notes (maybe the feature discussion)
-2. Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links
+1. Open one of the meeting notes (recommend: `02-feature-discussion.json` - it has Maya and Chris)
+2. Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links in the note
 3. Click `[[Maya Rodriguez]]` → participant note opens
-4. **NEW: Scroll to show the "Top of Mind" section with "Owns" subsection** - show topics/updates Maya owns
-5. **NEW: Scroll to "Raised Issues" section** - show issues Maya raised (linked)
-6. Scroll to show the "Meetings" section showing multiple meetings
-7. Click back (or use Obsidian back button), open another meeting note (maybe the retrospective)
-8. Show participants section again, click `[[Derek Nguyen]]`
-9. Show Derek's participant note briefly - show his "Top of Mind" and any owned items
+4. **NEW: Scroll to show the "Top of Mind" section with "Owns" subsection** - show topics/updates Maya owns (with links)
+5. **NEW: Scroll to "Raised Issues" section** - show issues Maya raised (linked to issue notes)
+6. Scroll down to show the "Meetings" section - show multiple meetings linked (Monday standup, feature discussion, etc.)
+7. Click back (Alt+Left or click the meeting note tab) to return to the feature discussion meeting
+8. Scroll to participants section again, click `[[Chris Park]]`
+9. Show Chris's participant note briefly - scroll through his "Top of Mind" (Owns subsection) and any "Raised Issues"
+10. Show his "Meetings" section - different meetings than Maya (some overlap)
 
 **Text overlay to add in post:** `🔗 Auto-linked to your vault`
+
+**Why this flow:** This demonstrates that a single meeting connects multiple people, and each person has their own view of topics they own, issues they raised, and meetings they've attended. Shows both the "hub" (meeting) and "spokes" (participants) of the knowledge graph.
 
 ---
 
@@ -160,15 +167,22 @@ Record these actions first—**no voiceover needed**. Focus on smooth, deliberat
 3. Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
 4. **NEW: Show "Raised by: [[Person Name]]" field** - emphasize bidirectional linking
 5. Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
-6. Go back to file explorer
-7. Open `Topics/` folder, click on a topic note (e.g., "Search Feature" or "Payment flow")
-8. **NEW: Show "Owner: [[Person Name]]" field** - show who owns this topic
-9. Show topic note with related meetings
-10. **Optional: Click the owner link** to show it loops back to participant's "Owns" section
+6. **Click the "Raised by" link** to jump to that person's participant note
+7. Scroll to their "Raised Issues" section - show the issue you just came from is listed here
+8. Click back to return to the issue note
+9. Go back to file explorer (or click back again)
+10. Open `Topics/` folder, click on a topic note (e.g., "Search Feature" or "Payment flow")
+11. **NEW: Show "Owner: [[Person Name]]" field** - show who owns this topic
+12. **Click the "Owner" link** to jump to that person's participant note
+13. Scroll to their "Top of Mind" → "Owns" subsection - show the topic you just came from is listed here
+14. **Optional:** Click the topic link from the "Owns" section to complete the loop back to the topic note
 
 **Text overlays to add in post:**
 - `📊 Entity extraction (Pro)` (when showing entity folders)
 - `Issues & Topics linked to people` (when showing "Raised by" or "Owner" fields)
+- `Bidirectional connections` (when clicking back and forth between entities and people)
+
+**Why this flow:** This demonstrates the bidirectional linking - entities know who owns/raised them, and people know what entities they're connected to. The loop-back (Entity → Person → Entity) is the "aha" moment that shows the knowledge graph is truly interconnected, not just one-way links.
 
 ---
 
@@ -194,8 +208,11 @@ Record these actions first—**no voiceover needed**. Focus on smooth, deliberat
 ### Scene 6: The Big Picture - Call to Action (5-7 seconds)
 
 **Actions to Record:**
-1. Pull back to show vault structure - meetings folder, people folder, entity folders
-2. Show file explorer with all the generated notes (quick pan)
+1. Switch back from Graph View to regular note view
+2. In the file explorer (left sidebar), collapse any open folders
+3. Expand the main folders to show the structure: `Meetings/`, `People/`, `Issues/`, `Topics/`
+4. Quick visual scan showing all the auto-generated notes in each folder
+5. **Optional:** Quickly expand/collapse folders to show the volume of content created
 
 **Text overlay to add in post:**
 ```
@@ -229,34 +246,38 @@ Match these voiceover lines to the recorded actions. Read naturally—don't rush
 **Voiceover:**
 > "Let me import a few more meetings..."
 
-[While showing imports]
+[During rapid-fire import sequence]
 
-> "Different meeting types, different lengths, different people..."
+> "Different meetings, different people..."
+
+[When showing all 4 meetings in folder]
+
+> "...all processed in one click each."
 
 ### Scene 3: The Connection - Auto-Linking (12-15 seconds)
 
 **Voiceover:**
 > "Now watch this."
 
-[When showing participant links]
+[When showing participant links in meeting]
 
 > "It automatically links to participant notes."
 
-[When showing Maya's note - NEW: focus on Top of Mind section]
+[When clicking Maya's link and showing her note]
 
 > "Maya's note shows what she owns—topics she leads, updates she's working on—"
 
 [When scrolling to Raised Issues]
 
-> "—and issues she's raised. Everything's connected."
+> "—and issues she's raised."
 
-[When showing Meetings section]
+[When scrolling to Meetings section]
 
-> "All her meetings tracked automatically—Monday standup, feature discussion, retrospective..."
+> "All her meetings, tracked automatically."
 
-[When showing Derek's note]
+[When clicking back and showing Chris]
 
-> "Different people, different responsibilities—but everyone's knowledge is organized."
+> "Chris has his own view—different topics, different issues—but the same meetings connect them."
 
 ### Scene 4: The AI Value - Pro Features (8-10 seconds)
 
@@ -284,19 +305,23 @@ Match these voiceover lines to the recorded actions. Read naturally—don't rush
 
 > "Issues mentioned across meetings—"
 
-[When showing issue note with "Raised by" field - NEW]
+[When showing issue note with "Raised by" field]
 
 > "—get their own notes, linked to who raised them."
 
-[When showing issue's related meetings]
+[When clicking "Raised by" link to person]
 
-> "Same issue, different meetings, all tracked."
+> "Click through—"
 
-[When showing topic note with "Owner" field - NEW]
+[When showing person's "Raised Issues" section]
+
+> "—and you see it from their perspective. The connection goes both ways."
+
+[When going to Topics folder and showing topic with "Owner"]
 
 > "Topics show who owns them—"
 
-[When clicking owner link - Optional]
+[When clicking "Owner" link and showing person's "Owns" section]
 
 > "—and loop back to that person's note. Your knowledge graph builds itself with accountability built in."
 
@@ -548,11 +573,16 @@ Use this as a reference when recording voiceover. **Don't follow timings exactly
 **Practice:**
 8. ☐ Read through action script once
 9. ☐ Do a practice run - Focus on:
+   - **Scene 2b**: Decide on approach - real imports (cut out processing) OR pre-import all (just show command palette)
    - **Scene 3**: Participant notes now have "Top of Mind" → "Owns" → "Raised Issues" sections
-   - **Scene 5**: Entity extraction showing "Raised by" and "Owner" fields
+   - **Scene 5**: Bidirectional linking - Issue → "Raised by" → Person → "Raised Issues" → back to Issue
    - **Scene 5b**: Graph view navigation
-10. ☐ Practice the import sequence - record at normal speed, you'll speed this up in post-production
-11. ☐ Practice bidirectional linking - Show Issue → "Raised by" → Person → "Raised Issues" loop
+10. ☐ Practice the import sequence:
+   - **Option A (Recommended)**: Import all 4 meetings BEFORE recording, then just show command palette for each during recording
+   - **Option B**: Actually import during recording, cut out processing time in post (more editing work)
+11. ☐ Practice bidirectional linking flows:
+   - Issue → "Raised by" → Person's "Raised Issues" section → back to Issue
+   - Topic → "Owner" → Person's "Owns" section → back to Topic
 12. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
 
 **Recording:**
@@ -563,7 +593,9 @@ Use this as a reference when recording voiceover. **Don't follow timings exactly
 **Pro Tips:**
 
 **Pre-Recording Setup:**
-- **Import all 4 meetings BEFORE recording** - This way you can focus on showing results, not waiting for processing
+- **RECOMMENDED: Import all 4 meetings BEFORE recording Scene 2b** - This gives you two options:
+  - **Option A (Easier)**: During Scene 2b recording, just open the command palette and show the import command for each meeting (don't actually import), then cut to file explorer showing all 4 meetings. This is much easier to edit and time.
+  - **Option B (More work)**: Actually do fresh imports during recording, then cut out all processing time in post-production. This shows the "real" flow but requires more editing.
 - **Test entity extraction** - Make sure entity extraction creates multiple entity notes (Issues and Topics only - Updates are now tracked on participant notes)
 - **Verify participant notes** - Check that participant notes show:
   - Multiple meetings linked in "Meetings" section
@@ -571,14 +603,18 @@ Use this as a reference when recording voiceover. **Don't follow timings exactly
   - "Raised Issues" section linking to issue notes (if they raised any)
 - **Practice graph navigation** - Know how to switch to graph view quickly (Cmd+G), practice panning/zooming smoothly
 - **Document actual filenames** - Note actual entity filenames after import so you know what to click during recording
-- **Practice bidirectional linking** - Know how to show: Issue → "Raised by" → Person → "Raised Issues" → back to Issue
+- **Practice bidirectional linking flows** - Know how to show both:
+  - Issue → "Raised by" → Person's "Raised Issues" section → back to Issue
+  - Topic → "Owner" → Person's "Owns" section → back to Topic
 
 **Action Recording Tips:**
 - **Move slowly** - Viewers need time to read. Don't rush through key moments.
 - **Pause on key moments** - Let important sections sit for 1-2 seconds (especially "Owns", "Raised Issues", "Raised by", "Owner" fields)
 - **Smooth navigation** - Practice clicking through participant links and entity notes smoothly
-- **Show the loop** - Optionally demonstrate: Person → Topic they own → Click "Owner" link → Back to Person (shows bidirectional linking)
-- **Record processing time** - You'll cut it out later, but record it so you have options
+- **Show the bidirectional loops** - The "aha" moments are:
+  - **Scene 3**: Same meeting → Multiple participants (shows meeting as a hub)
+  - **Scene 5**: Entity → Person → back to Entity (shows bidirectional linking)
+- **Scene 2b import strategy**: Choose Option A (pre-import, show command palette) OR Option B (real imports, cut processing). Don't mix approaches.
 - **Take multiple takes** - It's easier to edit if you have options
 
 **Voiceover Recording Tips:**
