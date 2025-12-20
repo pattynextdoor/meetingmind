@@ -378,6 +378,113 @@ ${transcriptText}`;
   }
   
   /**
+   * Synthesize a new description by combining existing content with new information
+   * Used to update entity and participant notes with accumulated context
+   */
+  async synthesizeDescription(
+    entityName: string,
+    entityType: 'issue' | 'topic' | 'person',
+    existingDescription: string,
+    newContext: string,
+    meetingTitle: string
+  ): Promise<string | null> {
+    if (!this.isEnabled()) {
+      return null;
+    }
+    
+    const prompt = `You are updating a knowledge base entry. Synthesize the existing description with new information from a recent meeting.
+
+ENTITY: ${entityName}
+TYPE: ${entityType}
+
+EXISTING DESCRIPTION:
+${existingDescription || '(No existing description)'}
+
+NEW CONTEXT FROM "${meetingTitle}":
+${newContext}
+
+INSTRUCTIONS:
+1. Create a comprehensive, synthesized description that incorporates both the existing information and new context
+2. Keep the most important and relevant details from both sources
+3. Remove redundancy - don't repeat the same information
+4. Maintain a professional, concise tone
+5. For people: focus on their role, responsibilities, current projects, and expertise
+6. For issues: focus on the problem, impact, current status, and any progress
+7. For topics: focus on what it is, why it matters, and current state
+8. Keep it to 2-4 sentences maximum
+9. Write in present tense
+
+Return ONLY the synthesized description text, no JSON or extra formatting.`;
+
+    try {
+      let response: string;
+      if (this.provider === 'claude') {
+        response = await this.callClaude(prompt);
+      } else if (this.provider === 'openai') {
+        response = await this.callOpenAI(prompt);
+      } else {
+        return null;
+      }
+      
+      // Clean up the response - remove any quotes or extra whitespace
+      return response.trim().replace(/^["']|["']$/g, '');
+    } catch (error) {
+      console.error('MeetingMind: Failed to synthesize description', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Synthesize a person's "About" section based on accumulated meeting context
+   */
+  async synthesizePersonAbout(
+    personName: string,
+    existingAbout: string,
+    recentMeetingContext: string,
+    meetingTitle: string
+  ): Promise<string | null> {
+    if (!this.isEnabled()) {
+      return null;
+    }
+    
+    const prompt = `You are updating a person's profile in a knowledge base. Synthesize what we know about them.
+
+PERSON: ${personName}
+
+EXISTING "ABOUT" SECTION:
+${existingAbout || '(No existing information)'}
+
+NEW CONTEXT FROM "${meetingTitle}":
+${recentMeetingContext}
+
+INSTRUCTIONS:
+1. Create a comprehensive "About" section that captures who this person is professionally
+2. Include: their role, what they're working on, their expertise, and responsibilities
+3. Incorporate new information without losing important existing context
+4. Write in third person (e.g., "Sarah leads the frontend team...")
+5. Keep it concise: 2-4 sentences
+6. Focus on actionable, useful information for someone who needs to work with them
+
+Return ONLY the synthesized "About" text, no JSON or extra formatting.`;
+
+    try {
+      let response: string;
+      if (this.provider === 'claude') {
+        response = await this.callClaude(prompt);
+      } else if (this.provider === 'openai') {
+        response = await this.callOpenAI(prompt);
+      } else {
+        return null;
+      }
+      
+      return response.trim().replace(/^["']|["']$/g, '');
+    } catch (error) {
+      console.error('MeetingMind: Failed to synthesize person about', error);
+      return null;
+    }
+  }
+  
+  /**
    * Process a long transcript by chunking
    */
   private async processLongTranscript(transcript: RawTranscript, _fullText: string): Promise<AIEnrichment> {

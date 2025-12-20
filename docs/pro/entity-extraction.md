@@ -78,7 +78,7 @@ blocked
 - **Description**: Context from the meeting
 - **Raised by**: Wiki-link to the person who raised it
 - **Status**: Current status (in-progress, blocked, resolved)
-- **Updates**: Accumulated context from subsequent meetings (NEW)
+- **Updates**: Accumulated context from subsequent meetings
 - **Related Meetings**: All meetings where this issue was discussed
 - **Notes**: Your personal notes section
 
@@ -87,13 +87,35 @@ blocked
 - **Frontmatter**: Type, creation date, category
 - **Description**: What this topic is about
 - **Owner**: Wiki-link to the person who leads/owns it
-- **Updates**: Accumulated context from subsequent meetings (NEW)
+- **Updates**: Accumulated context from subsequent meetings
 - **Related Meetings**: All meetings where this topic was discussed
 - **Notes**: Your personal notes section
 
-## Accumulated Context (NEW)
+## Living Descriptions
 
-Entity notes grow richer over time as more meetings reference them. Each time an entity is mentioned in a new meeting, the AI extracts new context and adds it to the **Updates** section:
+Entity notes have **living descriptions** that evolve as more meetings reference them. Each time an entity is mentioned:
+
+1. **AI synthesizes** the existing description with new context
+2. **Description updates** to reflect the latest understanding
+3. **Updates log** captures the raw context from each meeting
+
+### Example Evolution
+
+**After first meeting:**
+```markdown
+## Description
+Dashboard project with real-time charts using websocket connections.
+```
+
+**After second meeting (AI synthesizes):**
+```markdown
+## Description
+Dashboard project with real-time charts using websocket connections. Now includes auth-related metrics. Priya is leading the implementation with a focus on performance optimization.
+```
+
+### Updates Log
+
+In addition to the synthesized description, a chronological **Updates** section captures context from each meeting:
 
 ```markdown
 ## Updates
@@ -102,7 +124,7 @@ Entity notes grow richer over time as more meetings reference them. Each time an
 - **2025-01-15** (from [[Monday Standup]]): Initial discussion about performance concerns
 ```
 
-This creates a timeline of how topics and issues evolve across meetings, making your notes increasingly valuable as context accumulates.
+This gives you both a **current summary** (Description) and a **historical timeline** (Updates).
 
 ### Updates (No Separate Notes)
 
@@ -117,7 +139,7 @@ Updates are tracked on participant notes in the "Owns" section:
 - **AI Enrichment enabled** in settings
 - **Valid API key** (Claude or OpenAI)
 
-## Auto-Archive (NEW)
+## Auto-Archive
 
 Resolved issues are automatically archived to keep your workspace clean:
 

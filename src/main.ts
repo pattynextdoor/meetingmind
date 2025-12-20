@@ -119,8 +119,8 @@ export default class MeetingMindPlugin extends Plugin {
     this.otterService = new OtterService();
     this.firefliesService = new FirefliesService();
     this.noteGenerator = new NoteGenerator(this.app);
-    this.participantService = new ParticipantService(this.app);
-    this.entityService = new EntityService(this.app);
+    this.participantService = new ParticipantService(this.app, this.aiService);
+    this.entityService = new EntityService(this.app, this.aiService);
     this.licenseService = new LicenseService();
     this.statsService = new StatsService(this.app);
     

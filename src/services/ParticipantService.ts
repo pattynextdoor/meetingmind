@@ -4,6 +4,7 @@
 
 import { App, TFile, normalizePath } from 'obsidian';
 import { ParticipantInsight } from '../types';
+import { AIService } from './AIService';
 
 export interface ParticipantInfo {
   name: string;
@@ -13,11 +14,20 @@ export interface ParticipantInfo {
 
 export class ParticipantService {
   private app: App;
+  private aiService: AIService | null;
   private peopleFolder: string;
   
-  constructor(app: App) {
+  constructor(app: App, aiService?: AIService) {
     this.app = app;
+    this.aiService = aiService || null;
     this.peopleFolder = '';
+  }
+  
+  /**
+   * Set the AI service for synthesis operations
+   */
+  setAIService(aiService: AIService): void {
+    this.aiService = aiService;
   }
   
   /**
@@ -298,6 +308,73 @@ tags: [person]
       if (content.includes(meetingLink)) {
         console.debug(`MeetingMind: Meeting already referenced in ${notePath}`);
         return;
+      }
+      
+      // Extract person name from file path
+      const personName = file.basename;
+      
+      // Synthesize the About section with new context from this meeting
+      if (this.aiService && insight) {
+        // Extract existing About section content
+        const aboutMatch = content.match(/## About\s*\n\n([\s\S]*?)(?=\n\n##|$)/);
+        const existingAbout = aboutMatch ? aboutMatch[1].trim() : '';
+        
+        // Build context from insight
+        const contextParts: string[] = [];
+        if (insight.role) contextParts.push(`Role: ${insight.role}`);
+        if (insight.keyPoints && insight.keyPoints.length > 0) {
+          contextParts.push(`Key contributions: ${insight.keyPoints.join('; ')}`);
+        }
+        if (insight.actionItems && insight.actionItems.length > 0) {
+          contextParts.push(`Working on: ${insight.actionItems.map(a => a.task).join('; ')}`);
+        }
+        if (insight.ownedTopics && insight.ownedTopics.length > 0) {
+          contextParts.push(`Owns topics: ${insight.ownedTopics.join(', ')}`);
+        }
+        if (insight.wins && insight.wins.length > 0) {
+          contextParts.push(`Recent wins: ${insight.wins.join('; ')}`);
+        }
+        
+        if (contextParts.length > 0) {
+          const newContext = contextParts.join('. ');
+          const synthesizedAbout = await this.aiService.synthesizePersonAbout(
+            personName,
+            existingAbout,
+            newContext,
+            meetingTitle
+          );
+          
+          if (synthesizedAbout) {
+            // Update the About section
+            if (content.includes('## About')) {
+              content = content.replace(
+                /## About\s*\n\n[\s\S]*?(?=\n\n##|$)/,
+                `## About\n\n${synthesizedAbout}`
+              );
+            } else {
+              // Add About section after role or at the start
+              const roleIndex = content.indexOf('**Role**:');
+              if (roleIndex !== -1) {
+                const roleEndIndex = content.indexOf('\n\n', roleIndex);
+                if (roleEndIndex !== -1) {
+                  content = content.slice(0, roleEndIndex + 2) + 
+                    `## About\n\n${synthesizedAbout}\n\n` + 
+                    content.slice(roleEndIndex + 2);
+                }
+              } else {
+                // Add after frontmatter/title
+                const titleMatch = content.match(/^# .+\n\n/m);
+                if (titleMatch) {
+                  const insertPos = content.indexOf(titleMatch[0]) + titleMatch[0].length;
+                  content = content.slice(0, insertPos) + 
+                    `## About\n\n${synthesizedAbout}\n\n` + 
+                    content.slice(insertPos);
+                }
+              }
+            }
+            console.debug(`MeetingMind: Synthesized About section for ${personName}`);
+          }
+        }
       }
       
       // Update role if we have one and there's no existing role

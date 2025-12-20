@@ -4,6 +4,7 @@
 
 import { App, TFile, normalizePath } from 'obsidian';
 import { Entity, EntityExtraction } from '../types';
+import { AIService } from './AIService';
 
 export interface EntityInfo {
   entity: Entity;
@@ -13,6 +14,7 @@ export interface EntityInfo {
 
 export class EntityService {
   private app: App;
+  private aiService: AIService | null;
   private issuesFolder: string;
   private updatesFolder: string;
   private topicsFolder: string;
@@ -20,14 +22,22 @@ export class EntityService {
   private enableUpdates: boolean;
   private enableTopics: boolean;
   
-  constructor(app: App) {
+  constructor(app: App, aiService?: AIService) {
     this.app = app;
+    this.aiService = aiService || null;
     this.issuesFolder = 'Issues';
     this.updatesFolder = 'Updates';
     this.topicsFolder = 'Topics';
     this.enableIssues = true;
     this.enableUpdates = true;
     this.enableTopics = true;
+  }
+  
+  /**
+   * Set the AI service for synthesis operations
+   */
+  setAIService(aiService: AIService): void {
+    this.aiService = aiService;
   }
   
   /**
@@ -398,6 +408,42 @@ created: ${date}`;
         return;
       }
       
+      // Extract existing description for synthesis
+      const descriptionMatch = content.match(/## Description\s*\n\n([\s\S]*?)(?=\n\n(?:\*\*|##)|$)/);
+      const existingDescription = descriptionMatch ? descriptionMatch[1].trim() : '';
+      
+      // Synthesize new description using AI if available
+      if (this.aiService && entity.description) {
+        const entityType = entity.type === 'issue' ? 'issue' : 'topic';
+        const synthesizedDescription = await this.aiService.synthesizeDescription(
+          entity.name,
+          entityType,
+          existingDescription,
+          entity.description,
+          meetingTitle
+        );
+        
+        if (synthesizedDescription) {
+          // Update the description section with synthesized content
+          if (content.includes('## Description')) {
+            content = content.replace(
+              /## Description\s*\n\n[\s\S]*?(?=\n\n(?:\*\*|##)|$)/,
+              `## Description\n\n${synthesizedDescription}`
+            );
+          } else {
+            // Add description section after the title
+            const titleMatch = content.match(/^# .+\n\n/m);
+            if (titleMatch) {
+              const insertPos = content.indexOf(titleMatch[0]) + titleMatch[0].length;
+              content = content.slice(0, insertPos) + 
+                `## Description\n\n${synthesizedDescription}\n\n` + 
+                content.slice(insertPos);
+            }
+          }
+          console.debug(`MeetingMind: Synthesized description for ${entity.name}`);
+        }
+      }
+      
       // Update status if provided and different
       if (entity.status) {
         const cache = this.app.metadataCache.getFileCache(file);
@@ -459,7 +505,7 @@ created: ${date}`;
         }
       }
       
-      // Add new context/description from this meeting to the Updates section
+      // Add new context/description from this meeting to the Updates section (changelog)
       if (entity.description) {
         const updateEntry = `- **${meetingDateStr}** (from [[${meetingLink}|${meetingTitle}]]): ${entity.description}\n`;
         

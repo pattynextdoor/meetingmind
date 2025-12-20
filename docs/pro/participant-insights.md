@@ -48,8 +48,29 @@ Participant notes include rich, structured insights with automatic linking:
 3. **Tracks issues**: Notes which issues they raise
 4. **Creates links**: Automatically links to related entity notes (topics, issues)
 5. **Enriches notes**: Adds structured insights to participant notes
+6. **Synthesizes About section**: AI combines new meeting context with existing knowledge to create a living profile
 
-## Entity Linking (NEW)
+## Living Profile
+
+Participant notes now have an **About** section that evolves over time. Each meeting adds context about what someone is working on, and AI synthesizes this into a comprehensive profile:
+
+### Example Evolution
+
+**After first meeting:**
+```markdown
+## About
+Sam is a backend engineer working on the authentication system.
+```
+
+**After second meeting (AI synthesizes):**
+```markdown
+## About
+Sam Chen is a senior backend engineer specializing in authentication and security. Currently leading the OAuth integration project and mentoring junior developers on the team.
+```
+
+This creates a **living profile** that captures who someone is professionally, based on accumulated meeting context.
+
+## Entity Linking
 
 Participant insights now automatically connect people to their work:
 
