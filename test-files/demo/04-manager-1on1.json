@@ -1,0 +1,20 @@
+{
+  "title": "1:1 with Jordan",
+  "date": "2025-01-15T15:00:00Z",
+  "duration": 28,
+  "participants": ["Jordan Kim"],
+  "transcript": [
+    {"speaker": "Jordan Kim", "text": "Hey Alex! Welcome to the team. How's your first week going?"},
+    {"speaker": "Alex", "text": "It's been a lot to take in, but everyone's been helpful. Trying to understand all the moving pieces."},
+    {"speaker": "Jordan Kim", "text": "Yeah, there's a lot going on. The big thing right now is the Platform Migration. Sam Chen is leading that—he's the tech lead. You'll be working closely with him."},
+    {"speaker": "Alex", "text": "I've seen Sam in the standups. What's my role in the migration?"},
+    {"speaker": "Jordan Kim", "text": "We want you to focus on the Checkout Service. Marcus Williams has been leading that, but he could use a second senior engineer. The goal is to have the new architecture ready by Q2."},
+    {"speaker": "Alex", "text": "Got it. I noticed there's an Auth Token Refresh Bug that keeps coming up. Is that related?"},
+    {"speaker": "Jordan Kim", "text": "Yes, it's a blocker. The auth flow between services is fragile. We need someone with your experience to help untangle it. Marcus can bring you up to speed."},
+    {"speaker": "Alex", "text": "Makes sense. What about Priya and Riley?"},
+    {"speaker": "Jordan Kim", "text": "Priya Sharma is our frontend expert—she owns the Metrics Dashboard. Riley O'Brien handles DevOps and CI/CD. You'll want to sync with Riley on deployment stuff for Checkout."},
+    {"speaker": "Alex", "text": "This is really helpful. Any advice for ramping up?"},
+    {"speaker": "Jordan Kim", "text": "Honestly, just absorb as much context as you can. Sit in on the standups, read the ADRs, and don't be afraid to ask questions. The team is great about knowledge sharing."}
+  ]
+}
+

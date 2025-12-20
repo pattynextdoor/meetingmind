@@ -1,0 +1,19 @@
+{
+  "title": "Architecture Review - Checkout Service",
+  "date": "2025-01-14T14:00:00Z",
+  "duration": 35,
+  "participants": ["Sam Chen", "Marcus Williams", "Riley O'Brien"],
+  "transcript": [
+    {"speaker": "Sam Chen", "text": "Okay, let's walk through the Checkout Service redesign. Marcus, take us through the new architecture."},
+    {"speaker": "Marcus Williams", "text": "So the main change is decoupling the payment processing from the cart logic. We're introducing a new Payment Gateway service that handles all the Stripe integration."},
+    {"speaker": "Riley O'Brien", "text": "How does this affect deployment? Can we deploy them independently?"},
+    {"speaker": "Marcus Williams", "text": "Yes, that's the goal. The Payment Gateway will be a separate service. We'll use async messaging for the handoff."},
+    {"speaker": "Sam Chen", "text": "What about the Auth Service? I know there's been an issue with the Auth Token Refresh Bug."},
+    {"speaker": "Marcus Williams", "text": "Good point. The Auth Token Refresh Bug is still open. When tokens expire during checkout, users get logged out. It's been causing cart abandonment."},
+    {"speaker": "Riley O'Brien", "text": "That's a priority fix. I can help with that once the CI Pipeline Slowdown is resolved."},
+    {"speaker": "Sam Chen", "text": "Let's make sure the new architecture accounts for token refresh. Marcus, can you document the auth flow in the ADR?"},
+    {"speaker": "Marcus Williams", "text": "Will do. I'll have the Architecture Decision Record updated by Thursday."},
+    {"speaker": "Sam Chen", "text": "Great. This all feeds into the Platform Migration. Let's make sure we're aligned on timelines."}
+  ]
+}
+

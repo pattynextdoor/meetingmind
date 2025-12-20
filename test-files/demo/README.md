@@ -1,68 +1,109 @@
-# Demo Assets
+# Demo Files
 
-Ready-to-use artifacts for recording the MeetingMind demo video.
+This folder contains everything needed to record the MeetingMind demo video.
 
-## Scenario
+## Scenario: "The New Hire"
 
-A small startup team planning the launch of **Cadence**, a mobile productivity app. The meeting covers:
-- Feature status updates
-- Blocker discussion (OAuth integration)
-- New feature proposal (onboarding tutorial)
-- Marketing/waitlist update
-- Pricing decision (freemium model)
-- Action item assignment
+You're Alex, a senior software engineer starting at a new company. Your team has a lot of moving parts—projects, issues, and people you haven't met yet. You have recordings from your first week of meetings.
 
-## Files
+## The Cast
+
+| Name | Role |
+|------|------|
+| **You (Alex)** | New Senior Engineer |
+| **Jordan Kim** | Engineering Manager |
+| **Sam Chen** | Tech Lead |
+| **Priya Sharma** | Frontend Engineer |
+| **Marcus Williams** | Backend Engineer |
+| **Riley O'Brien** | DevOps |
+
+## Transcript Files
+
+| File | Meeting Type | Duration | Attendees |
+|------|--------------|----------|-----------|
+| `01-monday-standup.json` | Daily Standup | 12 min | Sam, Priya, Marcus, Riley |
+| `02-architecture-review.json` | Technical Review | 35 min | Sam, Marcus, Riley |
+| `03-wednesday-standup.json` | Daily Standup | 10 min | Sam, Priya, Marcus |
+| `04-manager-1on1.json` | 1:1 | 28 min | Jordan |
+
+## Key Content Across Meetings
+
+**Projects/Topics:**
+- Platform Migration (the big Q2 initiative)
+- Checkout Service (being redesigned)
+- Metrics Dashboard (Priya's domain)
+- Auth Service (has issues)
+
+**Issues:**
+- Auth Token Refresh Bug (causes cart abandonment)
+- CI Pipeline Slowdown (Riley is fixing)
+
+## Vault Structure
+
+The `vault/` folder contains the initial state for the demo:
 
 ```
-demo/
-├── transcript.json          # The meeting transcript to import
-├── vault/                   # Pre-made vault notes
-│   ├── Cadence.md           # Project note (will be auto-linked)
-│   └── People/              # Participant notes
-│       ├── Maya Rodriguez.md    # Product Lead
-│       ├── Chris Park.md        # Lead Developer
-│       ├── Aisha Patel.md       # Product Designer
-│       └── Derek Nguyen.md      # Marketing Lead
-└── README.md                # This file
+vault/
+├── Platform Migration.md    # Project stub
+└── People/                  # Empty (populated by MeetingMind)
 ```
 
-## Setup
+## Usage
 
-1. Create a fresh Obsidian vault for the demo
-2. Copy everything from `vault/` into the vault:
-   ```bash
-   cp -r vault/* /path/to/demo-vault/
-   ```
-   This will copy:
-   - `Cadence.md` to the vault root
-   - `People/` folder with all participant notes
-3. Install and configure MeetingMind
-4. Import `transcript.json`
+### 1. Reset the Demo Vault
 
-## What the AI Should Extract
+```bash
+# Reset to a specific path
+./reset-vault.sh /path/to/your/demo-vault
 
-**Summary:** Team meeting to plan Cadence app launch in 3 weeks. Discussed feature progress, OAuth blocker, adding an onboarding tutorial, marketing waitlist traction, and decided on freemium pricing model.
+# Or use default path
+./reset-vault.sh
+```
 
-**Action Items:**
-- Chris: Finish OAuth by Friday
-- Chris: Tutorial feature by Wednesday
-- Chris: Release candidate by Tuesday
-- Chris: Set up in-app purchases
-- Aisha: Tutorial designs by Monday
-- Aisha: Press kit by Thursday
-- Aisha: App store screenshots by Friday
-- Derek: Ramp up ads next week
-- Derek: Start reviewer outreach
+### 2. Configure MeetingMind
 
-**Decisions:**
-- Freemium model: free basic tier, $5/month or $40/year for premium
-- Tutorial overlay will be added for first-time users
-- Press kit to be created for reviewer outreach
+In Obsidian settings:
+- **Output folder:** `Meetings`
+- **People folder:** `People`
+- **AI enrichment:** Enabled
+- **Entity extraction:** Enabled
 
-## Auto-Link Targets
+### 3. Import Transcripts
 
-The transcript mentions these, which should link to vault notes:
-- "Cadence app" → `[[Cadence]]`
-- All four participant names → their respective notes
+Use `MeetingMind: Import file` command to import each transcript:
+1. `01-monday-standup.json`
+2. `02-architecture-review.json`
+3. `03-wednesday-standup.json`
+4. `04-manager-1on1.json`
 
+### 4. Expected Results
+
+After importing all 4 meetings, you should have:
+
+```
+Demo Vault/
+├── Meetings/
+│   ├── Monday Standup.md
+│   ├── Architecture Review - Checkout Service.md
+│   ├── Wednesday Standup.md
+│   └── 1-1 with Jordan.md
+├── People/
+│   ├── Jordan Kim.md
+│   ├── Sam Chen.md
+│   ├── Priya Sharma.md
+│   ├── Marcus Williams.md
+│   └── Riley O'Brien.md
+├── Issues/
+│   ├── Auth Token Refresh Bug.md
+│   └── CI Pipeline Slowdown.md
+├── Topics/
+│   ├── Checkout Service.md
+│   ├── Metrics Dashboard.md
+│   ├── Platform Migration.md (or linked to existing)
+│   └── ...
+└── Platform Migration.md
+```
+
+## Demo Script
+
+See `DEMO-SCRIPT.md` in the `docs/demos/` folder for the full recording script.

@@ -1,559 +1,440 @@
 # MeetingMind Demo Recording Script
 
-> **📝 Marketing-Optimized Version**  
-> This script has been optimized for marketing effectiveness with stronger hooks, clearer value props, and better pacing. Key changes: problem-first hook, cut processing time, emphasize "automatically", stronger CTA.
+> **📝 Scenario: The New Hire**  
+> You're Alex, a senior software engineer starting at a new company. Your team has a lot of moving parts—ongoing projects, open issues, and people you haven't met yet. You have recordings from your first week: 2 standups, an architecture review, and your 1:1 with your new manager. Let's see how MeetingMind helps you get up to speed.
 
 ## Overview
-**Target length:** 60-90 seconds (optimized for social media sharing)  
-**Actual length:** 70-80 seconds (after editing out wait times)  
-**Format:** Two-step process: Record actions first, add voiceover in post-production  
-**Vibe:** Casual, like showing a friend—not a sales pitch  
-**Tools needed:** Screen recorder (OBS, QuickTime, or Loom), Obsidian, MeetingMind installed, video editor (DaVinci Resolve, Final Cut, Premiere, or CapCut)
 
-## Recording Workflow
+**Target length:** 60-90 seconds  
+**Format:** Record actions first, add voiceover in post-production  
+**Vibe:** "Getting up to speed on a new team"—relatable, practical  
+**Tools needed:** Screen recorder, Obsidian, MeetingMind installed, video editor
 
-**Step 1: Record Actions (No Voice)**  
-Record all screen actions first—no voiceover needed. Focus on smooth, deliberate movements. Take your time; you can speed up in post-production.
+---
 
-**Step 2: Add Voiceover (Post-Production)**  
-After recording, add the voiceover script in your video editor. Match voiceover timing to the recorded actions.
+## The Cast
 
-**Note:** AI processing takes 10-30 seconds per meeting. **Edit out processing time in post-production** (recommended - speed up or cut the import sequence entirely). The demo should feel fast and effortless.
+| Name | Role | Notes |
+|------|------|-------|
+| **You (Alex)** | New Senior Engineer | The viewer's POV |
+| **Jordan Kim** | Engineering Manager | Your new manager |
+| **Sam Chen** | Tech Lead | Leads the Platform Migration |
+| **Priya Sharma** | Frontend Engineer | Owns the Metrics Dashboard |
+| **Marcus Williams** | Backend Engineer | Working on Checkout Service |
+| **Riley O'Brien** | DevOps | Handles CI/CD, deployment |
+
+## The Meetings
+
+| File | Type | Duration | Attendees | Key Content |
+|------|------|----------|-----------|-------------|
+| `monday-standup.json` | Daily Standup | 12 min | Sam, Priya, Marcus, Riley | Platform Migration status, CI slowdown issue |
+| `architecture-review.json` | Technical Review | 35 min | Sam, Marcus, Riley | Checkout Service redesign, Auth Service issues |
+| `wednesday-standup.json` | Daily Standup | 10 min | Sam, Priya, Marcus | Metrics Dashboard progress, blockers |
+| `manager-1on1.json` | 1:1 | 28 min | Jordan | Onboarding, team context, expectations |
 
 ---
 
 ## Pre-Recording Setup
 
-### 1. Prepare Your Test Vault
+### 1. Prepare Your Demo Vault
 
-Create a fresh vault or use a dedicated demo vault. Copy the demo assets:
+Create a fresh vault with minimal existing notes:
 
-```bash
-# Copy the vault notes
-cp -r test-files/demo/vault/* /path/to/your/demo-vault/
-```
-
-Your vault should look like:
 ```
 Demo Vault/
-├── Cadence.md              # Project note
+├── Platform Migration.md     # Project note (just a stub)
 └── People/
-    ├── Maya Rodriguez.md    # Product Lead
-    ├── Chris Park.md        # Lead Developer
-    ├── Aisha Patel.md       # Product Designer
-    └── Derek Nguyen.md      # Marketing Lead
+    └── (empty - will be created by MeetingMind)
 ```
 
-**Note:** The `Meetings/` and `People/` folders will be auto-created when you import your first transcript.
+**Note:** Keep the vault minimal to show the "before" state clearly.
 
-**Demo transcripts:** Series of 4 meetings in `test-files/demo/`:
-- `01-monday-standup.json` - Short standup (7 min, 3 people: Maya, Chris, Aisha)
-- `02-feature-discussion.json` - Feature deep dive (27 min, 2 people: Maya, Chris)
-- `03-wednesday-standup.json` - Longer standup (13 min, 4 people: Maya, Chris, Aisha, Derek)
-- `04-launch-retrospective.json` - Retrospective (40 min, 4 people: Maya, Chris, Aisha, Derek)
+### 2. Demo Transcript Files
 
-**Note:** These transcripts show varying meeting types, lengths, and attendee combinations to demonstrate how MeetingMind builds connections across different contexts.
+The transcript files are in `test-files/demo/`:
 
-### 2. MeetingMind Settings
+| File | Meeting Type |
+|------|--------------|
+| `01-monday-standup.json` | Monday standup with the team |
+| `02-architecture-review.json` | Checkout Service architecture review |
+| `03-wednesday-standup.json` | Wednesday standup |
+| `04-manager-1on1.json` | 1:1 with your new manager |
 
-Before recording, configure these settings:
-- **Output folder:** `Meetings` (will be auto-created on first import)
-- **People folder:** `People` (default, will be auto-created on first import)
-- **AI enrichment:** Enabled (with your API key)
+To reset the demo vault to a clean state:
+
+```bash
+cd test-files/demo
+./reset-vault.sh /path/to/your/demo-vault
+```
+
+### 3. MeetingMind Settings
+
+- **Output folder:** `Meetings`
+- **People folder:** `People`
+- **AI enrichment:** Enabled
 - **Auto-linking:** Enabled
-- **Participant notes:** Enabled
-- **Entity extraction:** Enabled (Pro feature - use `transcript-with-entities.json` for demo)
+- **Entity extraction:** Enabled
 
-### 3. Screen Setup
+### 4. Screen Setup
 
-- **Resolution:** 1920×1080 or 2560×1440 (crisp on YouTube)
-- **Obsidian theme:** Use a clean theme (default light or Minimal)
-- **Font size:** Bump up slightly for readability
-- **Hide:** Distracting plugins, status bar clutter
-- **Show:** File explorer, one note open
+- **Resolution:** 1920×1080 or higher
+- **Obsidian theme:** Clean theme (Minimal or default)
+- **Font size:** Slightly larger for readability
+- **File explorer:** Visible on left
 
 ---
 
 ## Part 1: Action Recording Script
 
-Record these actions first—**no voiceover needed**. Focus on smooth, deliberate movements. Take your time; you can speed up or trim in post-production.
+Record these actions—no voiceover needed. Take your time; you'll edit in post.
 
-### Scene 1: The Hook - Problem Statement (5-7 seconds)
+### Scene 1: The Problem (5-7 seconds)
 
-**Actions to Record:**
-1. Show Obsidian vault with existing notes visible in file explorer (quick pan):
-   - `Cadence.md` (project note)
-   - `People/` folder with participant notes
-2. Quick visual - show sparse graph view (Cmd+G) for 1-2 seconds, then return to file explorer
-3. Pause briefly (you'll add voiceover here)
+**What you're showing:** A new hire overwhelmed by lack of context.
 
-**Text overlay to add in post:** `Stop copy-pasting transcripts`
+**Actions:**
+1. Show an empty/sparse Obsidian vault in the file explorer
+   - Just `Platform Migration.md` and empty `People/` folder visible
+2. Open `Platform Migration.md`—it's just a stub with minimal info
+3. Pause briefly (you'll add voiceover here about being lost)
 
----
-
-### Scene 2: The Import - One Click (6-8 seconds)
-
-**Actions to Record:**
-1. Show command palette (Cmd+P)
-2. Type "MeetingMind: Import file" and select it
-3. Select `01-monday-standup.json` from file picker
-4. **Wait for processing to complete** (you'll cut this out in post)
-5. Show file explorer with the first meeting note created
-
-**Note:** In post-production, **cut out all processing time**. Jump directly from file selection to the result. The demo should feel instant and effortless.
-
-**Text overlay to add in post:** `📥 Import from Otter, Fireflies, Zoom...`
+**Text overlay to add in post:** `Week 1 at a new job...`
 
 ---
 
-### Scene 2b: Building the Series (5-7 seconds)
+### Scene 2: The Import (8-10 seconds)
 
-**Actions to Record:**
-1. Show file explorer with the first meeting note created
-2. Open command palette, type "MeetingMind: Import file", select `02-feature-discussion.json`
-3. **Immediately cut** (don't wait for processing)
-4. Show file explorer now has 2 meeting notes
-5. Repeat: Command palette → Import `03-wednesday-standup.json` → Cut → Show 3 meetings
-6. Repeat: Command palette → Import `04-launch-retrospective.json` → Cut → Show 4 meetings
-7. Final view: Meetings folder with all 4 notes visible
+**What you're showing:** Bulk importing your first week of meetings.
 
-**Note:** In post-production, these should feel like rapid-fire imports with instant results. Cut out ALL processing time. Use quick transitions (0.5 second fade or jump cut). The sequence should feel like: Click → Result → Click → Result → Click → Result. Total time: 5-7 seconds after editing.
-
-**Alternative approach (easier):** Import all 4 meetings BEFORE recording Scene 2b. During recording, just show the command palette opening for each import (don't actually import), then cut to the file explorer showing all 4 meetings. This saves you from timing issues during recording.
-
----
-
-### Scene 3: The Connection - Auto-Linking (12-15 seconds)
-
-**Actions to Record:**
-1. Open one of the meeting notes (recommend: `02-feature-discussion.json` - it has Maya and Chris)
-2. Scroll to participant section, show `[[Maya Rodriguez]]` and `[[Chris Park]]` links in the note
-3. Click `[[Maya Rodriguez]]` → participant note opens
-4. **NEW: Scroll to show the "Top of Mind" section with "Owns" subsection** - show topics/updates Maya owns (with links)
-5. **NEW: Scroll to "Raised Issues" section** - show issues Maya raised (linked to issue notes)
-6. Scroll down to show the "Meetings" section - show multiple meetings linked (Monday standup, feature discussion, etc.)
-7. Click back (Alt+Left or click the meeting note tab) to return to the feature discussion meeting
-8. Scroll to participants section again, click `[[Chris Park]]`
-9. Show Chris's participant note briefly - scroll through his "Top of Mind" (Owns subsection) and any "Raised Issues"
-10. Show his "Meetings" section - different meetings than Maya (some overlap)
-
-**Text overlay to add in post:** `🔗 Auto-linked to your vault`
-
-**Why this flow:** This demonstrates that a single meeting connects multiple people, and each person has their own view of topics they own, issues they raised, and meetings they've attended. Shows both the "hub" (meeting) and "spokes" (participants) of the knowledge graph.
-
----
-
-### Scene 4: The AI Value - Pro Features (8-10 seconds)
-
-**Actions to Record:**
-1. Scroll through one of the meeting notes (maybe the retrospective)
-2. Show summary section
-3. Show action items section
-4. Show decisions section
-5. Open a different meeting note (standup) - show it's shorter but still has AI extraction
-6. Open the feature discussion - show more detailed extraction
+**Actions:**
+1. Open command palette (Cmd+P)
+2. Type "MeetingMind: Import file"
+3. Navigate to `test-files/demo/` and select all 4 meeting files (or import them rapidly one-by-one):
+   - `01-monday-standup.json`
+   - `02-architecture-review.json`
+   - `03-wednesday-standup.json`
+   - `04-manager-1on1.json`
+4. **Cut out processing time** in post—jump to results
+5. Show file explorer: `Meetings/` folder now has 4 notes
 
 **Text overlays to add in post:**
-- `🤖 AI-powered summaries (Pro)` (when showing AI features)
-- `✅ Action items with owners` (when showing action items)
+- `📥 Import your meetings`
+- `Otter • Fireflies • Zoom • Fathom`
 
 ---
 
-### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
+### Scene 3: Understanding the Team (12-15 seconds)
 
-**Actions to Record:**
-1. Show file explorer, scroll to show entity folders (`Issues/`, `Topics/`) - **NOTE: No `Updates/` folder anymore**
-2. Expand `Issues/` folder to show notes inside
-3. Click on an issue note (e.g., "OAuth Integration" or "Payment Flow UX Issue")
-4. **NEW: Show "Raised by: [[Person Name]]" field** - emphasize bidirectional linking
-5. Show the entity note, scroll to "Related Meetings" section showing multiple meeting links
-6. **Click the "Raised by" link** to jump to that person's participant note
-7. Scroll to their "Raised Issues" section - show the issue you just came from is listed here
-8. Click back to return to the issue note
-9. Go back to file explorer (or click back again)
-10. Open `Topics/` folder, click on a topic note (e.g., "Search Feature" or "Payment flow")
-11. **NEW: Show "Owner: [[Person Name]]" field** - show who owns this topic
-12. **Click the "Owner" link** to jump to that person's participant note
-13. Scroll to their "Top of Mind" → "Owns" subsection - show the topic you just came from is listed here
-14. **Optional:** Click the topic link from the "Owns" section to complete the loop back to the topic note
+**What you're showing:** MeetingMind auto-creates participant notes.
+
+**Actions:**
+1. Open the `1:1 with Jordan` meeting note
+2. Scroll to show AI-generated summary—it mentions the Platform Migration and your role
+3. Show participant link: `[[Jordan Kim]]`
+4. Click `[[Jordan Kim]]` → Jordan's participant note opens
+5. Show Jordan's note structure:
+   - "Meetings" section with the 1:1 linked
+6. Click back, open `Monday Standup` meeting note
+7. Show participants: `[[Sam Chen]]`, `[[Priya Sharma]]`, `[[Marcus Williams]]`, `[[Riley O'Brien]]`
+8. Click `[[Sam Chen]]` → Sam's participant note opens
+9. Scroll to show "Meetings" section—multiple standups and the architecture review
+
+**Text overlay to add in post:** `👥 Know your team instantly`
+
+---
+
+### Scene 4: Tracking Issues (15-18 seconds)
+
+**What you're showing:** Entity extraction finds issues mentioned across meetings.
+
+**Actions:**
+1. Show file explorer—scroll to reveal `Issues/` folder
+2. Expand `Issues/` folder—show notes inside:
+   - `Auth Token Refresh Bug.md`
+   - `CI Pipeline Slowdown.md`
+3. Click `Auth Token Refresh Bug.md`
+4. Show the issue note:
+   - "Raised by" field linking to `[[Marcus Williams]]`
+   - "Related Meetings" section showing multiple meetings where it was discussed
+5. **Click `[[Marcus Williams]]`** to jump to his participant note
+6. Scroll to "Raised Issues" section—show the Auth Token Refresh Bug is listed
+7. Click back to the issue note
+8. Go back to file explorer
+9. Open `Topics/` folder, click a topic (e.g., `Checkout Service.md` or `Platform Migration.md`)
+10. Show "Owner" field and related meetings
 
 **Text overlays to add in post:**
-- `📊 Entity extraction (Pro)` (when showing entity folders)
-- `Issues & Topics linked to people` (when showing "Raised by" or "Owner" fields)
-- `Bidirectional connections` (when clicking back and forth between entities and people)
-
-**Why this flow:** This demonstrates the bidirectional linking - entities know who owns/raised them, and people know what entities they're connected to. The loop-back (Entity → Person → Entity) is the "aha" moment that shows the knowledge graph is truly interconnected, not just one-way links.
+- `📊 Issues tracked automatically`
+- `Bidirectional links to people`
 
 ---
 
-### Scene 5b: The Graph View - Visual Climax (12-15 seconds)
+### Scene 5: The Knowledge Graph (12-15 seconds)
 
-**Actions to Record:**
-1. Switch to Obsidian's Graph View (Cmd+G or click graph icon)
-2. **PAUSE for 2 seconds** - Let the graph view sit and make visual impact
-3. Pan/zoom slowly to show the network of connections:
-   - Meeting notes connected to participant notes
-   - Participants connected to each other through meetings
-   - Entity notes (issues, topics) connected to meetings
-   - The project note (Cadence) connected to meetings
-4. Zoom out to show the full graph structure
-5. Hover over a node to show it highlights connections
+**What you're showing:** The visual payoff—a connected knowledge graph.
+
+**Actions:**
+1. Open Graph View (Cmd+G)
+2. **PAUSE for 2 seconds**—let the graph sit
+3. Pan/zoom slowly to show the network:
+   - Meeting notes at the center
+   - Participant notes clustered around meetings
+   - Issue and topic notes connected to both
+   - The `Platform Migration.md` note connected to multiple meetings
+4. Hover over a node to highlight its connections
+5. Zoom out to show the full structure
 
 **Text overlays to add in post:**
-- `🕸️ Watch your graph grow` (when graph appears)
-- `Every meeting adds connections` (during zoom out)
+- `🕸️ Your context, visualized`
+- `Built from 4 meetings`
 
 ---
 
-### Scene 6: The Big Picture - Call to Action (5-7 seconds)
+### Scene 6: The Payoff (5-7 seconds)
 
-**Actions to Record:**
-1. Switch back from Graph View to regular note view
-2. In the file explorer (left sidebar), collapse any open folders
-3. Expand the main folders to show the structure: `Meetings/`, `People/`, `Issues/`, `Topics/`
-4. Quick visual scan showing all the auto-generated notes in each folder
-5. **Optional:** Quickly expand/collapse folders to show the volume of content created
+**What you're showing:** You now understand the team.
+
+**Actions:**
+1. Switch back to note view
+2. In file explorer, collapse/expand folders to show structure:
+   - `Meetings/` (4 notes)
+   - `People/` (5 notes: Jordan, Sam, Priya, Marcus, Riley)
+   - `Issues/` (2 notes)
+   - `Topics/` (several notes)
+3. Quick visual scan showing all the auto-generated notes
+4. End on a clean view of the organized vault
 
 **Text overlay to add in post:**
 ```
 MeetingMind for Obsidian
-Free core features • $39 Pro (one-time)
-Try it free in Obsidian Community Plugins
+Free core • $39 Pro (one-time)
 ```
 
 ---
 
-## Part 2: Voiceover Script (Add in Post-Production)
+## Part 2: Voiceover Script
 
-Match these voiceover lines to the recorded actions. Read naturally—don't rush. Pauses are your friend.
+Record this separately and sync to edited video.
 
-### Scene 1: The Hook - Problem Statement (5-7 seconds)
+### Scene 1: The Problem
 
-**Voiceover:**
-> "Your meetings are full of insights. But they're stuck in Otter or Fireflies, disconnected from your notes."
+> "First week at a new job. There's a platform migration, something called the Checkout Service, and a bug everyone keeps mentioning."
 
-[Pause while showing graph view]
+[Pause while showing sparse vault]
 
-> "MeetingMind fixes that—automatically."
+> "I have four meetings recorded. Let's see what I can learn."
 
-### Scene 2: The Import - One Click (6-8 seconds)
+### Scene 2: The Import
 
-**Voiceover:**
-> "One click, and MeetingMind brings them into your vault."
+> "One click to import."
 
-### Scene 2b: Building the Series (5-7 seconds)
+[During import sequence]
 
-**Voiceover:**
-> "Let me import a few more meetings..."
+> "Standups, architecture reviews, my 1:1—all in."
 
-[During rapid-fire import sequence]
+### Scene 3: Understanding the Team
 
-> "Different meetings, different people..."
+> "My manager Jordan explains the team structure—"
 
-[When showing all 4 meetings in folder]
+[When showing Jordan's note]
 
-> "...all processed in one click each."
+> "—and MeetingMind links everything automatically."
 
-### Scene 3: The Connection - Auto-Linking (12-15 seconds)
+[When showing Sam's note with multiple meetings]
 
-**Voiceover:**
-> "Now watch this."
+> "Sam's the tech lead. He's in every meeting. Now I know who to ask."
 
-[When showing participant links in meeting]
+### Scene 4: Tracking Issues
 
-> "It automatically links to participant notes."
+> "But here's what I really needed—"
 
-[When clicking Maya's link and showing her note]
+[When showing Issues folder]
 
-> "Maya's note shows what she owns—topics she leads, updates she's working on—"
+> "Every issue mentioned across my meetings, pulled out automatically."
 
-[When scrolling to Raised Issues]
+[When showing Auth Token Refresh Bug]
 
-> "—and issues she's raised."
+> "The auth bug everyone's talking about. Marcus raised it—"
 
-[When scrolling to Meetings section]
+[When clicking to Marcus's note]
 
-> "All her meetings, tracked automatically."
+> "—and I can see it from his perspective too. The links go both ways."
 
-[When clicking back and showing Chris]
+[When showing Topics]
 
-> "Chris has his own view—different topics, different issues—but the same meetings connect them."
+> "Topics, owners, all connected."
 
-### Scene 4: The AI Value - Pro Features (8-10 seconds)
+### Scene 5: The Knowledge Graph
 
-**Voiceover:**
-> "You get summaries, action items, decisions—"
+> "And here's the best part—"
 
-[When showing AI sections]
+[PAUSE while graph appears]
 
-> "—all extracted automatically."
-
-[When showing standup]
-
-> "Quick standups get quick summaries—"
-
-[When showing feature discussion]
-
-> "—and deep dives get detailed analysis. The AI adapts to the meeting type."
-
-### Scene 5: Entity Extraction - The Magic Moment (15-18 seconds)
-
-**Voiceover:**
-> "But here's the magic—MeetingMind doesn't just link to existing notes. It creates new ones—and connects them to people."
-
-[When showing entity folders]
-
-> "Issues mentioned across meetings—"
-
-[When showing issue note with "Raised by" field]
-
-> "—get their own notes, linked to who raised them."
-
-[When clicking "Raised by" link to person]
-
-> "Click through—"
-
-[When showing person's "Raised Issues" section]
-
-> "—and you see it from their perspective. The connection goes both ways."
-
-[When going to Topics folder and showing topic with "Owner"]
-
-> "Topics show who owns them—"
-
-[When clicking "Owner" link and showing person's "Owns" section]
-
-> "—and loop back to that person's note. Your knowledge graph builds itself with accountability built in."
-
-### Scene 5b: The Graph View - Visual Climax (12-15 seconds)
-
-**Voiceover:**
-> "But here's the best part—"
-
-[PAUSE for 2 seconds - let graph view sit]
-
-> "Watch your graph grow."
+> "Four meetings. One week. And I already have a map of the team."
 
 [While panning/zooming]
 
-> "Every meeting adds new nodes. Every participant becomes a hub. Every issue, every topic—"
+> "Who's working on what. What issues are open. How everything connects."
 
-[When zooming out]
+### Scene 6: The Payoff
 
-> "—all connected. Your knowledge graph builds itself, visually."
+> "I went from lost—"
 
-[When hovering over nodes]
+[When showing organized vault]
 
-> "Your meetings aren't isolated—they're part of a living network."
+> "—to knowing my team in one afternoon."
 
-### Scene 6: The Big Picture - Call to Action (5-7 seconds)
-
-**Voiceover:**
-> "Four meetings. One click each. A complete knowledge graph."
-
-[When showing vault structure]
+[Final beat]
 
 > "That's MeetingMind."
 
-[Optional, if time allows]
-
-> "Get MeetingMind free in Obsidian Community Plugins. Upgrade to Pro for AI features—$39 one-time."
-
 ---
 
-## Recording Tips
+## Part 3: Post-Production
 
-### Action Recording Tips ✓
-- **Move slowly and deliberately** - viewers need time to read
-- **Pause on key moments** - let important sections sit for 1-2 seconds
-- **Use smooth scrolling** - not jerky mouse movements
-- **Record at 60fps** if possible for smooth playback
-- **Take your time** - you can speed up or trim in post-production
-- **Record processing time** - you'll cut it out later, but record it so you have options
+### Editing Checklist
 
-### Don'ts ✗
-- Don't rush through actions - record at comfortable pace
-- Don't worry about timing - you'll sync voiceover in post
-- Don't include mistakes/retakes - do multiple takes if needed
-- Don't use a cluttered vault with distracting notes
+1. **Cut all processing time**—imports should feel instant
+2. **Add text overlays** at each scene
+3. **Smooth transitions** between scenes
+4. **Sync voiceover** to edited actions
+5. **Add subtle background music** (optional)
 
-### Important Notes ⚠️
-- **Processing time**: Record it, but **MUST edit out in post-production** - AI takes 10-30 seconds. Cut or speed up all import sequences. The demo should feel instant and effortless.
-- **Target length**: Aim for 60-90 seconds total after editing. Shorter = better for social media sharing.
-- **Navigation**: Use Obsidian's back button or click the meeting note tab to return. Don't use browser-style navigation
-- **Entity filenames**: Check actual filenames after import - AI might name them slightly differently than expected
-- **Practice Scene 5**: Entity extraction is the "wow" moment - practice opening entity notes smoothly
-- **Graph View**: Practice navigating the graph view smoothly - pan, zoom, and hover to show connections. This is the visual climax—let it breathe.
+### Text Overlays
 
----
+| Scene | Overlay | Timing |
+|-------|---------|--------|
+| 1 | `Week 1 at a new job...` | Opening |
+| 2 | `📥 Import your meetings` | During import |
+| 2 | `Otter • Fireflies • Zoom • Fathom` | Under import |
+| 3 | `👥 Know your team instantly` | When showing participants |
+| 4 | `📊 Issues tracked automatically` | When showing Issues folder |
+| 4 | `Bidirectional links to people` | When clicking through |
+| 5 | `🕸️ Your context, visualized` | When graph appears |
+| 5 | `Built from 4 meetings` | During zoom out |
+| 6 | CTA: `Free core • $39 Pro` | Final screen |
 
-## Post-Production Workflow
+### Timing Guide
 
-### Step 1: Edit Actions (Video Editing)
-
-**Must-Have Edits:**
-1. **Cut all processing time** - Speed up or cut import sequences entirely. Demo should feel instant.
-2. **Smooth transitions** - No jarring cuts between scenes
-3. **Add cursor highlight** - Make clicks visible (use cursor highlight effect)
-4. **Optimize length** - Trim to 60-90 seconds total
-
-**Should-Have:**
-5. **Add zoom effects** - Subtle zoom to highlight important sections
-6. **Color correction** - Ensure consistent brightness/contrast
-7. **Stabilize shaky movements** - Smooth out any jerky mouse movements
-
-### Step 2: Add Voiceover (Audio Editing)
-
-**Voiceover Tips:**
-- Record voiceover separately (use a good microphone)
-- Match voiceover timing to the edited video actions
-- Add pauses where indicated in the script
-- Use noise reduction if needed
-- Normalize audio levels
-
-**Timing Guide:**
-- Total voiceover should be ~70-80 seconds
-- Match voiceover to actions - don't rush
-- Let key moments breathe (especially graph view)
-
-### Step 3: Add Text Overlays & Graphics
-
-**Must-Have Overlays:**
-- Add all text overlays listed in each scene
-- Use clean, readable fonts (SF Pro, Inter, or similar)
-- Keep overlays subtle—don't block content
-- Add subtle animations (fade in/out)
-
-**Should-Have:**
-- Add subtle background music - Upbeat but not distracting (instrumental, low volume)
-- Ensure music doesn't overpower voiceover
-
-**Nice-to-Have:**
-- Before/after comparison - Show sparse graph → connected graph (if time allows)
-- Progress indicators - Show "Step 1 of 4" etc. (optional)
-- Branding - Subtle logo watermark (optional)
-
-### Step 4: Export
-
-**Export formats:**
-- **MP4** (1080p, 60fps) for YouTube/website embed
-- **GIF** (15-20 sec version) for README/Reddit
-- **MP4** (30 sec teaser) for Twitter/X, Instagram
-
-### Text Overlays to Add
-
-**Must-have overlays (add in post-production):**
-
-| Scene | Overlay Text | Timing |
-|-------|--------------|--------|
-| Scene 1 (Hook) | `Stop copy-pasting transcripts` | 0-3 seconds |
-| Scene 2 (Import) | `📥 Import from Otter, Fireflies, Zoom...` | During import |
-| Scene 3 (Links) | `🔗 Auto-linked to your vault` | When showing links |
-| Scene 4 (Summary) | `🤖 AI-powered summaries (Pro)` | When showing AI features |
-| Scene 4 (Actions) | `✅ Action items with owners` | When showing action items |
-| Scene 5 (Entities) | `📊 Entity extraction (Pro)` | When showing entity folders |
-| Scene 5 (Folders) | `Issues • Updates • Topics` | When expanding folders |
-| Scene 5b (Graph) | `🕸️ Watch your graph grow` | When graph appears |
-| Scene 5b (Graph) | `Every meeting adds connections` | During zoom out |
-| Scene 6 (CTA) | `Free core • $39 Pro (one-time)` | Final screen |
-
-**Design notes:**
-- Use clean, readable fonts (SF Pro, Inter, or similar)
-- Keep overlays subtle—don't block content
-- Use consistent positioning (e.g., bottom-right for feature labels)
-- Add subtle animations (fade in/out)
-
----
-
-## Alternative: GIF-Only Demo (15-20 seconds)
-
-If you just want a quick GIF for the README:
-
-1. **Start:** File picker selecting transcript
-2. **Middle:** Processing indicator
-3. **End:** Scroll through generated note showing linked participants and AI sections
-
-Use a tool like [Gifski](https://gif.ski/) or [LICEcap](https://www.cockos.com/licecap/) to record.
+| Scene | Target Length | Notes |
+|-------|--------------|-------|
+| Scene 1 | 5-7 sec | Quick problem setup |
+| Scene 2 | 8-10 sec | Fast imports (cut processing) |
+| Scene 3 | 12-15 sec | Key demo moment—understanding people |
+| Scene 4 | 15-18 sec | Magic moment—issues and bidirectional links |
+| Scene 5 | 12-15 sec | Visual climax—let it breathe |
+| Scene 6 | 5-7 sec | Quick CTA |
+| **Total** | **60-75 sec** | Ideal for social sharing |
 
 ---
 
 ## Complete Voiceover Script (Timing Reference)
 
-Use this as a reference when recording voiceover. **Don't follow timings exactly** - match your voiceover to the edited video actions instead.
-
-**Total target length:** ~70-80 seconds (after editing out processing time)
-
 ```
-[0:00] Your meetings are full of insights. But they're stuck in Otter or Fireflies, 
-       disconnected from your notes.
+[0:00] First week at a new job. There's a platform migration, 
+       something called the Checkout Service, and a bug everyone keeps mentioning.
 
-[0:05] MeetingMind fixes that—automatically.
+[0:07] I have four meetings recorded. Let's see what I can learn.
 
-[0:08] One click, and MeetingMind brings them into your vault.
+[0:10] One click to import.
 
-[0:12] Let me import a few more meetings...
+[0:12] Standups, architecture reviews, my 1:1—all in.
 
-[0:15] Different meeting types, different lengths, different people...
+[0:16] My manager Jordan explains the team structure—
 
-[0:20] Now watch this.
+[0:19] —and MeetingMind links everything automatically.
 
-[0:22] Watch—it automatically links to participant notes.
+[0:22] Sam's the tech lead. He's in every meeting. Now I know who to ask.
 
-[0:26] Maya's note shows all her meetings—Monday standup, feature discussion, 
-       Wednesday standup...
+[0:27] But here's what I really needed—
 
-[0:32] Your people notes track their entire meeting history automatically.
+[0:29] Every issue mentioned across my meetings, pulled out automatically.
 
-[0:37] Different meetings, different people—but everyone's connected. 
-       Your knowledge graph builds itself.
+[0:33] The auth bug everyone's talking about. Marcus raised it—
 
-[0:44] You get summaries, action items, decisions—
+[0:37] —and I can see it from his perspective too. The links go both ways.
 
-[0:47] —all extracted automatically.
+[0:42] Topics, owners, all connected.
 
-[0:50] Quick standups get quick summaries—
+[0:45] And here's the best part—
 
-[0:53] —and deep dives get detailed analysis. The AI adapts to the meeting type.
+[0:48] [PAUSE - let graph sit]
 
-[0:59] But here's the magic—MeetingMind doesn't just link to existing notes. 
-       It creates new ones.
+[0:50] Four meetings. One week. And I already have a map of the team.
 
-[1:05] Issues mentioned across different meetings—
+[0:55] Who's working on what. What issues are open. How everything connects.
 
-[1:09] —get tracked automatically. Same issue, different meetings, all connected.
+[1:00] I went from lost—
 
-[1:14] Topics evolve across meetings. Your knowledge graph builds itself automatically.
+[1:02] —to knowing my team in one afternoon.
 
-[1:20] But here's the best part—
-
-[1:23] [PAUSE - let graph view sit for 2 seconds]
-
-[1:25] Watch your graph grow.
-
-[1:28] Every meeting adds new nodes. Every participant becomes a hub. 
-       Every issue, every topic—
-
-[1:34] —all connected. Your knowledge graph builds itself, visually.
-
-[1:39] Your meetings aren't isolated—they're part of a living network.
-
-[1:44] Four meetings. One click each. A complete knowledge graph.
-
-[1:48] That's MeetingMind.
-
-[1:50] Get MeetingMind free in Obsidian Community Plugins. 
-       Upgrade to Pro for AI features—$39 one-time.
+[1:05] That's MeetingMind.
 ```
 
-**Tips for recording voiceover:**
-- Record in a quiet room with a good microphone
-- Talk like you're showing a friend, not presenting
-- Emphasize "creates new ones" and "builds itself" - that's the magic moment
-- Pause after "But here's the best part" - let it land
-- Let yourself breathe between sentences  
-- It's okay to say "um" once or twice—keeps it human
-- Smile while you talk (it comes through in your voice)
-- Match timing to your edited video, not these timestamps
+---
+
+## Recording Tips
+
+### Before Recording
+
+- [ ] Create demo vault with minimal notes
+- [ ] Create all 4 transcript JSON files
+- [ ] Configure MeetingMind settings
+- [ ] **Pre-import all meetings** (recommended)—record the import action, but have results ready to show
+- [ ] Test entity extraction creates expected notes
+
+### During Recording
+
+- **Move slowly**—viewers need time to read
+- **Pause on key moments**—participant links, issue notes, graph view
+- **Smooth scrolling**—avoid jerky mouse movements
+- **Multiple takes**—it's easier to edit with options
+
+### Voiceover Tips
+
+- **Conversational tone**—like telling a friend about your first week
+- **Emphasize the transformation**—"lost → knowing my team"
+- **Let graph view breathe**—pause for 2 seconds when it appears
+- **Smile while talking**—it comes through in your voice
+
+---
+
+## Why This Scenario Works
+
+1. **Relatable**: Everyone's been the new person on a team
+2. **Practical**: Shows real use case—getting up to speed
+3. **Story arc**: Problem (lost) → Solution (import) → Payoff (understanding)
+4. **Variety**: Different meeting types show MeetingMind's flexibility
+5. **Emotional**: The relief of finally understanding your new team
+6. **Concise**: Four meetings tell a complete story
+
+---
+
+## Alternative: 30-Second Cut
+
+For Twitter/TikTok, cut to essentials:
+
+```
+[0:00] First week at a new job. Four meetings. Let's get up to speed.
+
+[0:05] [Import sequence—rapid fire]
+
+[0:08] MeetingMind builds participant notes automatically.
+
+[0:12] [Show Sam's note with multiple meetings]
+
+[0:15] It finds issues mentioned across meetings—
+
+[0:18] [Show Auth Token Refresh Bug with "Raised by" link]
+
+[0:20] —and connects them to people.
+
+[0:23] [Graph view appears]
+
+[0:25] Four meetings. A complete map of the team.
+
+[0:28] MeetingMind for Obsidian.
+```
 
 ---
 
@@ -562,97 +443,21 @@ Use this as a reference when recording voiceover. **Don't follow timings exactly
 ### Pre-Recording Checklist
 
 **Setup:**
-1. ☐ Test vault set up with sample notes
-2. ☐ MeetingMind configured and tested
-3. ☐ Entity extraction enabled in settings (Pro feature)
-4. ☐ All 4 demo transcripts ready in `test-files/demo/`
-5. ☐ Screen recorder ready (OBS, QuickTime, or Loom)
-6. ☐ Obsidian theme clean and fonts readable
-7. ☐ Video editor ready (DaVinci Resolve, Final Cut, Premiere, or CapCut)
+- [ ] Demo vault created with minimal notes
+- [ ] All 4 transcript files ready
+- [ ] MeetingMind configured (AI, auto-linking, entities)
+- [ ] Screen recorder ready
+- [ ] Obsidian theme clean, fonts readable
 
 **Practice:**
-8. ☐ Read through action script once
-9. ☐ Do a practice run - Focus on:
-   - **Scene 2b**: Decide on approach - real imports (cut out processing) OR pre-import all (just show command palette)
-   - **Scene 3**: Participant notes now have "Top of Mind" → "Owns" → "Raised Issues" sections
-   - **Scene 5**: Bidirectional linking - Issue → "Raised by" → Person → "Raised Issues" → back to Issue
-   - **Scene 5b**: Graph view navigation
-10. ☐ Practice the import sequence:
-   - **Option A (Recommended)**: Import all 4 meetings BEFORE recording, then just show command palette for each during recording
-   - **Option B**: Actually import during recording, cut out processing time in post (more editing work)
-11. ☐ Practice bidirectional linking flows:
-   - Issue → "Raised by" → Person's "Raised Issues" section → back to Issue
-   - Topic → "Owner" → Person's "Owns" section → back to Topic
-12. ☐ Practice graph view navigation - pan, zoom, hover to show connections smoothly
+- [ ] Do a practice run through all 6 scenes
+- [ ] Practice the entity flow: Issue → Person → back to Issue
+- [ ] Practice graph view navigation
+- [ ] Time your practice run (target: 60-75 seconds)
 
 **Recording:**
-13. ☐ Hit record! (Record actions only - no voiceover needed)
-14. ☐ Record all scenes in one take if possible (or multiple takes, you'll edit later)
-14. ☐ After recording actions, record voiceover separately (match to edited video)
-
-**Pro Tips:**
-
-**Pre-Recording Setup:**
-- **RECOMMENDED: Import all 4 meetings BEFORE recording Scene 2b** - This gives you two options:
-  - **Option A (Easier)**: During Scene 2b recording, just open the command palette and show the import command for each meeting (don't actually import), then cut to file explorer showing all 4 meetings. This is much easier to edit and time.
-  - **Option B (More work)**: Actually do fresh imports during recording, then cut out all processing time in post-production. This shows the "real" flow but requires more editing.
-- **Test entity extraction** - Make sure entity extraction creates multiple entity notes (Issues and Topics only - Updates are now tracked on participant notes)
-- **Verify participant notes** - Check that participant notes show:
-  - Multiple meetings linked in "Meetings" section
-  - "Top of Mind" section with "Owns" subsection showing topics/updates
-  - "Raised Issues" section linking to issue notes (if they raised any)
-- **Practice graph navigation** - Know how to switch to graph view quickly (Cmd+G), practice panning/zooming smoothly
-- **Document actual filenames** - Note actual entity filenames after import so you know what to click during recording
-- **Practice bidirectional linking flows** - Know how to show both:
-  - Issue → "Raised by" → Person's "Raised Issues" section → back to Issue
-  - Topic → "Owner" → Person's "Owns" section → back to Topic
-
-**Action Recording Tips:**
-- **Move slowly** - Viewers need time to read. Don't rush through key moments.
-- **Pause on key moments** - Let important sections sit for 1-2 seconds (especially "Owns", "Raised Issues", "Raised by", "Owner" fields)
-- **Smooth navigation** - Practice clicking through participant links and entity notes smoothly
-- **Show the bidirectional loops** - The "aha" moments are:
-  - **Scene 3**: Same meeting → Multiple participants (shows meeting as a hub)
-  - **Scene 5**: Entity → Person → back to Entity (shows bidirectional linking)
-- **Scene 2b import strategy**: Choose Option A (pre-import, show command palette) OR Option B (real imports, cut processing). Don't mix approaches.
-- **Take multiple takes** - It's easier to edit if you have options
-
-**Voiceover Recording Tips:**
-- **Record separately** - Use a good microphone in a quiet room
-- **Match to edited video** - Record voiceover after you've edited the actions
-- **Emphasize "automatically"** - This is your key differentiator. Say it clearly.
-- **Let graph view breathe** - Pause for 2 seconds when graph appears. It's the visual climax.
-- **Natural delivery** - Talk like you're showing a friend, not presenting
-
-**Post-Production:**
-- **Cut ALL processing time** - Import sequences should feel instant (speed up or cut entirely)
-- **Add text overlays** - Essential for marketing effectiveness (see overlay table)
-- **Sync voiceover to actions** - Match voiceover timing to what's happening on screen
-- **Optimize length** - Target 60-90 seconds. Shorter = better for sharing
-- **Test with strangers** - Show to 3-5 people who don't know the product. Can they explain what it does?
+- [ ] Record actions (no voiceover)
+- [ ] Take multiple takes if needed
+- [ ] Record voiceover separately
 
 Good luck! 🎬
-
----
-
-## Key Marketing Improvements Made
-
-This script has been optimized based on marketing best practices:
-
-✅ **Stronger Hook** - Leads with problem statement, not Obsidian context  
-✅ **Faster Pacing** - Target 60-90 seconds (down from 100-110)  
-✅ **Cut Processing Time** - All import waits edited out in post-production  
-✅ **Emphasize "Automatically"** - Key differentiator mentioned throughout  
-✅ **Clearer Value Props** - Text overlays highlight features as they appear  
-✅ **Stronger CTA** - Clear call-to-action with pricing and next steps  
-✅ **Better Flow** - Graph view is the visual climax, entity extraction is the magic moment  
-✅ **Pro Feature Clarity** - Clearly distinguishes Free vs Pro features  
-
-**Next Steps:**
-1. Practice recording with this script
-2. Record 2-3 test runs
-3. Edit in post-production (cut processing time, add overlays)
-4. Test with 3-5 people who don't know the product
-5. Iterate based on feedback
-
-
