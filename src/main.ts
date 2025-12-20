@@ -686,37 +686,82 @@ export default class MeetingMindPlugin extends Plugin {
   
   
   /**
-   * Import a file manually (skips duplicate check for manual imports)
+   * Import files manually (supports multiple file selection)
+   * Skips duplicate check for manual imports
    */
   importFile(): void {
-    // Use Obsidian's file picker
+    // Use Obsidian's file picker with multiple selection
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.vtt,.srt,.txt,.json';
+    input.multiple = true; // Allow multiple file selection
     
     input.onchange = (e: Event) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
+      const files = (e.target as HTMLInputElement).files;
+      if (!files || files.length === 0) return;
       
       void (async () => {
-        try {
-          const content = await file.text();
-          const transcript = await this.transcriptParser.parseFile(content, file.name);
+        const totalFiles = files.length;
+        let successCount = 0;
+        let failCount = 0;
+        let lastCreatedNote: TFile | null = null;
+        
+        // Show initial notice for bulk imports
+        if (totalFiles > 1) {
+          new Notice(`Importing ${totalFiles} files...`);
+        }
+        
+        // Process each file sequentially
+        for (let i = 0; i < totalFiles; i++) {
+          const file = files[i];
           
-          // Manual imports skip duplicate check - user explicitly chose to import
-          new Notice(`Importing ${file.name}...`);
-          const note = await this.processTranscript(transcript, true); // skipDuplicateCheck = true
-          
-          if (note) {
-            new Notice(`Created: ${note.basename}`);
-            // Open the new note
-            await this.app.workspace.openLinkText(note.path, '', false);
+          try {
+            const content = await file.text();
+            const transcript = await this.transcriptParser.parseFile(content, file.name);
+            
+            // Show progress for single file or update for bulk
+            if (totalFiles === 1) {
+              new Notice(`Importing ${file.name}...`);
+            } else {
+              this.updateStatusBar('syncing', `${i + 1}/${totalFiles}`);
+            }
+            
+            // Manual imports skip duplicate check - user explicitly chose to import
+            const note = await this.processTranscript(transcript, true); // skipDuplicateCheck = true
+            
+            if (note) {
+              successCount++;
+              lastCreatedNote = note;
+              
+              if (totalFiles === 1) {
+                new Notice(`Created: ${note.basename}`);
+              }
+            }
+            
+          } catch (error: unknown) {
+            failCount++;
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`MeetingMind: Import failed for ${file.name}`, error);
+            
+            if (totalFiles === 1) {
+              new Notice(`Import failed: ${errorMessage}`);
+            }
           }
-          
-        } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          new Notice(`Import failed: ${errorMessage}`);
-          console.error('MeetingMind: Import failed', error);
+        }
+        
+        // Show summary for bulk imports
+        if (totalFiles > 1) {
+          this.updateStatusBar('idle');
+          if (failCount === 0) {
+            new Notice(`✅ Imported ${successCount} meetings successfully!`);
+          } else {
+            new Notice(`Imported ${successCount}/${totalFiles} meetings (${failCount} failed)`);
+          }
+        }
+        
+        // Open the last created note
+        if (lastCreatedNote) {
+          await this.app.workspace.openLinkText(lastCreatedNote.path, '', false);
         }
       })();
     };
