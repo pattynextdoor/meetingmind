@@ -1,0 +1,319 @@
+---
+description: Always run lint and tests before committing and pushing
+globs:
+alwaysApply: true
+---
+# Pre-Commit Checks Rule
+
+**CRITICAL**: Before running `git commit` or `git push`, you MUST run linting and tests to ensure code quality.
+
+## Required Checks Before Commit
+
+### 1. TypeScript Type Checking
+
+**Always run:**
+```bash
+npm run type-check
+```
+
+**What it does:**
+- Checks TypeScript types across the entire codebase
+- Ensures no type errors are introduced
+- Runs without emitting files (fast check)
+
+**If it fails:**
+- Fix all type errors before committing
+- Read the error messages carefully
+- Use `read_lints` tool to see linting errors if needed
+
+### 2. ESLint
+
+**Always run:**
+```bash
+npm run lint
+```
+
+**What it does:**
+- Checks code style and quality
+- Catches common programming errors
+- Enforces code consistency
+
+**If it fails:**
+- Try auto-fixing: `npm run lint:fix`
+- Manually fix remaining issues
+- Review warnings (they're there for a reason)
+
+**Note:** If there's no `lint` script, run TypeScript check as minimum requirement.
+
+### 3. Tests (if available)
+
+**Always run:**
+```bash
+npm test
+```
+
+**What it does:**
+- Runs Jest test suite
+- Ensures no regressions
+- Validates business logic
+
+**If it fails:**
+- Fix failing tests before committing
+- Don't skip tests or mark them as `.skip`
+- Update tests if behavior intentionally changed
+
+**Note:** If tests don't exist for the changed code, note this in commit message.
+
+### 4. Build Check
+
+**Always run:**
+```bash
+npm run build
+```
+
+**What it does:**
+- Ensures code compiles successfully
+- Catches build-time errors
+- Validates all imports and dependencies
+
+**If it fails:**
+- Fix build errors before committing
+- Check for missing dependencies
+- Ensure all imports are correct
+
+## Pre-Commit Workflow
+
+### Standard Workflow
+
+```bash
+# 1. Stage your changes
+git add -A
+
+# 2. Run checks (IN THIS ORDER)
+npm run type-check    # TypeScript check
+npm run lint          # Linting (or npm run lint:fix)
+npm test              # Tests
+npm run build         # Build check
+
+# 3. If all pass, commit
+git commit -m "your commit message"
+
+# 4. Push
+git push
+```
+
+### Quick Check (Minimum)
+
+If you're in a hurry, **at minimum** run:
+
+```bash
+npm run build  # This includes type-check
+```
+
+This catches most issues, but full checks are preferred.
+
+## When to Skip Checks
+
+You may skip checks ONLY if:
+
+1. **Documentation-only changes** (markdown files in `docs/`)
+   - Still run `npm run build` to be safe
+   
+2. **Emergency hotfix** (critical bug in production)
+   - Run checks after pushing the hotfix
+   - Create follow-up commit if checks fail
+
+3. **Work-in-progress commits** to a feature branch
+   - Must pass checks before merging to main
+
+## Automated Enforcement
+
+### Git Hooks (Recommended)
+
+Consider adding a pre-commit hook to enforce this:
+
+```bash
+# .git/hooks/pre-commit (make executable with chmod +x)
+#!/bin/sh
+
+echo "Running pre-commit checks..."
+
+# Type check
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed. Commit aborted."
+  exit 1
+fi
+
+# Build check
+npm run build
+if [ $? -ne 0 ]; then
+  echo "❌ Build failed. Commit aborted."
+  exit 1
+fi
+
+echo "✅ All checks passed!"
+exit 0
+```
+
+### CI/CD
+
+All checks should also run in CI/CD pipeline before merging PRs.
+
+## Error Handling
+
+### Type Errors
+
+```bash
+# Example error:
+src/main.ts:123:5 - error TS2322: Type 'string' is not assignable to type 'number'.
+
+# Fix:
+1. Go to src/main.ts line 123
+2. Fix the type mismatch
+3. Re-run npm run type-check
+```
+
+### Lint Errors
+
+```bash
+# Example error:
+src/main.ts:45:7 - 'foo' is assigned a value but never used.
+
+# Fix:
+1. Remove unused variable
+2. Or use it in code
+3. Or add // eslint-disable-next-line with justification
+4. Re-run npm run lint
+```
+
+### Test Failures
+
+```bash
+# Example error:
+FAIL tests/AIService.test.ts
+  ● AIService › should process transcript
+
+# Fix:
+1. Read test failure message
+2. Fix the code or update the test
+3. Re-run npm test
+4. Ensure all tests pass
+```
+
+### Build Errors
+
+```bash
+# Example error:
+Error: Cannot find module './missing-file'
+
+# Fix:
+1. Check import paths
+2. Ensure file exists
+3. Check for typos
+4. Re-run npm run build
+```
+
+## Commit Message Template
+
+After all checks pass:
+
+```bash
+git commit -m "type: brief description
+
+- What changed
+- Why it changed
+- Any side effects
+
+Tests: ✅ All passing
+Build: ✅ Success"
+```
+
+## Quick Reference
+
+| Check | Command | Required? | Skip If... |
+|-------|---------|-----------|------------|
+| Type Check | `npm run type-check` | ✅ Always | Never |
+| Lint | `npm run lint` | ✅ Always | Docs-only |
+| Tests | `npm test` | ✅ Recommended | No tests exist |
+| Build | `npm run build` | ✅ Always | Never |
+
+## Examples
+
+### Good Workflow ✅
+
+```bash
+# Made changes to src/services/AIService.ts
+
+git add -A
+npm run type-check  # ✅ Pass
+npm run lint        # ✅ Pass
+npm test            # ✅ All tests pass
+npm run build       # ✅ Build successful
+
+git commit -m "feat: Add batch reprocess command"
+git push
+```
+
+### Bad Workflow ❌
+
+```bash
+# Made changes
+
+git add -A
+git commit -m "quick fix"  # ❌ Didn't run checks
+git push                    # ❌ Might break production
+```
+
+### Recovery from Failed Checks
+
+```bash
+# You committed without checks and broke the build
+
+git reset --soft HEAD~1     # Undo commit, keep changes
+npm run build               # Check what's broken
+# Fix the issues
+npm run build               # ✅ Now passes
+git commit -m "fix: [...]"  # Commit again
+git push
+```
+
+## Remember
+
+**Code quality is not optional.** These checks exist to:
+- Prevent bugs from reaching production
+- Maintain code consistency
+- Save time debugging later
+- Keep the codebase maintainable
+
+**2 minutes of checks now** saves **2 hours of debugging later**.
+
+## Enforcement in Cursor
+
+When using Cursor AI to make changes:
+
+1. After making changes, run all checks before committing
+2. If checks fail, fix issues before moving to next task
+3. Don't skip checks to "move faster" - it slows you down later
+4. Update this rule if you find better practices
+
+## CI/CD Integration
+
+The following should run on every push:
+
+```yaml
+# Example GitHub Actions workflow
+- name: Type Check
+  run: npm run type-check
+
+- name: Lint
+  run: npm run lint
+
+- name: Test
+  run: npm test
+
+- name: Build
+  run: npm run build
+```
+
+If any fail, the push is rejected.
