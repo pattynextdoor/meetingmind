@@ -34,6 +34,16 @@ MeetingMind is an Obsidian plugin that:
 2. [Configure an import source](/guide/sources)
 3. [Import your first transcript](/guide/quick-start)
 
+## Already Using the Free Version?
+
+If you upgrade to Pro, you can easily add AI enrichment to your existing meeting notes:
+
+1. [Get a Pro license](https://tumbucon.gumroad.com/l/meetingmind-pro)
+2. [Activate your license](/pro/license) and [add your API key](/pro/api-keys)
+3. Run command: `MeetingMind: Reprocess all meetings (add AI to existing notes)`
+
+This will retroactively add summaries, action items, and AI insights to all your existing meetings.
+
 ## Requirements
 
 - Obsidian 1.4.0 or later

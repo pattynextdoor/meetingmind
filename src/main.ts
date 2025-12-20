@@ -8,7 +8,9 @@ import {
   TFile, 
   Notice, 
   addIcon,
-  setIcon
+  setIcon,
+  Modal,
+  App
 } from 'obsidian';
 
 import { 
@@ -217,6 +219,13 @@ export default class MeetingMindPlugin extends Plugin {
         }
         return false;
       },
+    });
+    
+    // Reprocess all meetings in folder
+    this.addCommand({
+      id: 'reprocess-all-meetings',
+      name: 'Reprocess all meetings (add AI to existing notes)',
+      callback: () => this.reprocessAllMeetings(),
     });
     
     // View sync log
@@ -814,6 +823,223 @@ export default class MeetingMindPlugin extends Plugin {
       console.error('MeetingMind: Archive failed', error);
       new Notice(`Archive failed: ${errorMessage}`);
       this.updateStatusBar('error', errorMessage);
+    }
+  }
+  
+  /**
+   * Reprocess all meetings in the output folder to add AI enrichment
+   * Useful when upgrading from Free to Pro
+   */
+  async reprocessAllMeetings(): Promise<void> {
+    try {
+      // Check if AI is enabled and licensed
+      const hasAILicense = this.licenseService.hasFeature('aiEnrichment');
+      
+      if (!this.settings.aiEnabled || !this.aiService.isEnabled()) {
+        new Notice('Please enable AI enrichment in settings first');
+        return;
+      }
+      
+      if (!hasAILicense) {
+        new Notice('Pro license required for AI enrichment');
+        return;
+      }
+      
+      new Notice('Finding meetings to reprocess...');
+      this.updateStatusBar('syncing', 'Finding meetings...');
+      
+      // Get all markdown files in the meetings folder
+      const meetingsFolder = this.settings.outputFolder;
+      const allFiles = this.app.vault.getMarkdownFiles();
+      const meetingFiles = allFiles.filter(file => 
+        file.path.startsWith(meetingsFolder + '/') && 
+        !file.path.includes('/Archive/')
+      );
+      
+      if (meetingFiles.length === 0) {
+        new Notice(`No meetings found in ${meetingsFolder}/`);
+        this.updateStatusBar('idle');
+        return;
+      }
+      
+      // Ask for confirmation
+      const confirmed = await this.confirmBatchReprocess(meetingFiles.length);
+      if (!confirmed) {
+        new Notice('Reprocess cancelled');
+        this.updateStatusBar('idle');
+        return;
+      }
+      
+      // Process each meeting
+      let processed = 0;
+      let skipped = 0;
+      let failed = 0;
+      
+      for (const file of meetingFiles) {
+        try {
+          this.updateStatusBar('syncing', `Processing ${processed + 1}/${meetingFiles.length}...`);
+          
+          // Read and parse the note
+          const content = await this.app.vault.read(file);
+          const parsed = this.parseExistingNote(content);
+          
+          if (!parsed) {
+            console.debug(`MeetingMind: Skipping ${file.basename} - not a meeting note`);
+            skipped++;
+            continue;
+          }
+          
+          // Check if it already has AI enrichment
+          if (parsed.existingEnrichment?.summary) {
+            console.debug(`MeetingMind: Skipping ${file.basename} - already has AI enrichment`);
+            skipped++;
+            continue;
+          }
+          
+          // Reprocess the note
+          await this.reprocessNoteInternal(file, parsed.transcript);
+          processed++;
+          
+          // Small delay to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+        } catch (error) {
+          console.error(`MeetingMind: Failed to reprocess ${file.basename}`, error);
+          failed++;
+        }
+      }
+      
+      this.updateStatusBar('idle');
+      
+      // Show summary
+      let summary = `Reprocessed ${processed} meeting(s)`;
+      if (skipped > 0) {
+        summary += `, skipped ${skipped}`;
+      }
+      if (failed > 0) {
+        summary += `, failed ${failed}`;
+      }
+      
+      new Notice(summary);
+      
+      // Log to sync log
+      this.syncLogs.push({
+        timestamp: new Date(),
+        action: 'Batch reprocess',
+        status: failed > 0 ? 'warning' : 'success',
+        message: summary,
+      });
+      
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('MeetingMind: Batch reprocess failed', error);
+      new Notice(`Batch reprocess failed: ${errorMessage}`);
+      this.updateStatusBar('error', errorMessage);
+    }
+  }
+  
+  /**
+   * Ask user to confirm batch reprocess
+   */
+  private async confirmBatchReprocess(count: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      const modal = new (class extends Modal {
+        constructor(app: App) {
+          super(app);
+        }
+        
+        onOpen() {
+          const { contentEl } = this;
+          
+          contentEl.createEl('h2', { text: 'Reprocess all meetings?' });
+          
+          contentEl.createEl('p', { 
+            text: `This will add AI enrichment (summaries, action items, etc.) to ${count} meeting note(s).`
+          });
+          
+          contentEl.createEl('p', { 
+            text: 'This may take several minutes and will use your AI API credits.',
+            cls: 'mod-warning'
+          });
+          
+          const buttonContainer = contentEl.createDiv({ cls: 'modal-button-container' });
+          
+          buttonContainer.createEl('button', { text: 'Cancel' })
+            .addEventListener('click', () => {
+              resolve(false);
+              this.close();
+            });
+          
+          const confirmBtn = buttonContainer.createEl('button', { 
+            text: `Reprocess ${count} meeting(s)`,
+            cls: 'mod-cta'
+          });
+          confirmBtn.addEventListener('click', () => {
+            resolve(true);
+            this.close();
+          });
+        }
+        
+        onClose() {
+          const { contentEl } = this;
+          contentEl.empty();
+        }
+      })(this.app);
+      
+      modal.open();
+    });
+  }
+  
+  /**
+   * Internal reprocess method (without UI notifications)
+   */
+  private async reprocessNoteInternal(file: TFile, transcript: RawTranscript): Promise<void> {
+    // AI enrichment
+    const enrichment = await this.aiService.processTranscript(transcript);
+    
+    // Extract entities if enabled
+    let entities: EntityExtraction | null = null;
+    if (this.settings.autoExtractEntities && enrichment) {
+      entities = await this.aiService.extractEntities(transcript);
+      if (entities) {
+        enrichment.entities = entities;
+        
+        // Enrich participant insights with entity information
+        if (enrichment.participantInsights && enrichment.participantInsights.length > 0) {
+          enrichment.participantInsights = this.aiService.enrichParticipantInsightsWithEntities(
+            enrichment.participantInsights,
+            entities,
+            transcript.date
+          );
+        }
+      }
+    }
+    
+    // Re-run auto-linking
+    const suggestedLinks = this.applyAutoLinking(transcript, enrichment);
+    
+    // Create processed meeting
+    const processedMeeting: ProcessedMeeting = {
+      transcript,
+      enrichment: enrichment || undefined,
+      autoLinks: new Map(),
+      suggestedLinks,
+    };
+    
+    // Generate new content
+    const newContent = this.noteGenerator.buildNoteContent(processedMeeting);
+    
+    // Update file
+    await this.app.vault.modify(file, newContent);
+    
+    // Process participants if enabled
+    if (this.settings.autoCreateParticipants) {
+      await this.handleParticipants(transcript, file, enrichment);
+    }
+    
+    // Process entities if we extracted them
+    if (entities) {
+      await this.handleEntities(transcript, file, enrichment, entities);
     }
   }
   

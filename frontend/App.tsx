@@ -259,7 +259,7 @@ const Features = () => {
             <h2 className="font-serif text-4xl text-stone-900">Auto-create participant notes</h2>
             <p className="font-sans text-lg text-stone-600 leading-relaxed">
               MeetingMind automatically creates notes for people mentioned in your meetings. 
-              Track meeting history, contributions, action items, and what they own—all in one place.
+              Track meeting history, contributions, action items, and what they own — all in one place.
             </p>
             <ul className="space-y-3 text-stone-600 font-sans text-sm">
               <li className="flex items-center gap-3">

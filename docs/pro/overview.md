@@ -36,6 +36,23 @@ You pay for API usage directly to Anthropic or OpenAI. Typical meeting costs ~$0
 3. [Add your API key](/pro/api-keys)
 4. Enable AI features in settings
 
+### Upgrading from Free to Pro
+
+If you already have meeting notes from the free version, you can easily add AI enrichment to them:
+
+1. Activate your Pro license and configure your API key
+2. Open command palette (Cmd/Ctrl + P)
+3. Run: `MeetingMind: Reprocess all meetings (add AI to existing notes)`
+4. Confirm the batch operation
+
+This will:
+- Add AI summaries, action items, and decisions to all existing meetings
+- Extract entities (issues, topics) if enabled
+- Update participant notes with AI insights
+- Preserve your original transcript data
+
+**Note:** This may take several minutes depending on how many meetings you have, and will use your AI API credits (~$0.01-0.05 per meeting).
+
 ## Example Output
 
 With Pro enabled, your meeting notes include:
