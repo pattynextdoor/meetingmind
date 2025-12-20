@@ -64,7 +64,3 @@ Sarah will lead the technical planning.
 | **Claude** (Anthropic) | claude-sonnet-4-20250514 | Best quality, recommended |
 | **OpenAI** | gpt-4o | Alternative option |
 
-## Free Trial
-
-Want to try before buying? Use `TEST-PRO` as your license key in development mode to test AI features.
-
