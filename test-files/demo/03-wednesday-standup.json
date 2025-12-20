@@ -2,16 +2,17 @@
   "title": "Wednesday Standup",
   "date": "2025-01-15T09:00:00Z",
   "duration": 10,
-  "participants": ["Sam Chen", "Priya Sharma", "Marcus Williams"],
+  "participants": ["Sam Chen", "Priya Sharma", "Marcus Williams", "Patrick Tumbucon"],
   "transcript": [
     {"speaker": "Sam Chen", "text": "Quick check-in. How's everyone doing?"},
     {"speaker": "Priya Sharma", "text": "Metrics Dashboard is coming along. Marcus helped me with the websocket issue yesterday. Now I'm blocked on getting test data—need access to the staging environment."},
     {"speaker": "Marcus Williams", "text": "I can help with that. Also, my Checkout Service PR is up for review. Would love eyes on it."},
-    {"speaker": "Sam Chen", "text": "I'll review it this afternoon. Priya, talk to Riley about staging access. What about the Auth Token Refresh Bug?"},
-    {"speaker": "Marcus Williams", "text": "Still investigating. It's trickier than I thought—the issue is in how we're handling refresh tokens across microservices. Might need to refactor the auth middleware."},
+    {"speaker": "Patrick Tumbucon", "text": "I'll take a look this afternoon. Been diving into the auth middleware code—I think I have some ideas for the Auth Token Refresh Bug."},
+    {"speaker": "Sam Chen", "text": "That's great to hear, Patrick. Marcus, want to sync with Patrick after this to discuss?"},
+    {"speaker": "Marcus Williams", "text": "Definitely. The issue is trickier than I thought—it's in how we're handling refresh tokens across microservices. Would be great to get fresh eyes on it."},
     {"speaker": "Sam Chen", "text": "Alright, keep me posted. That's a blocker for the Platform Migration if we don't fix it before Q2."},
     {"speaker": "Priya Sharma", "text": "Quick question—should the Metrics Dashboard show auth-related metrics? Might help us catch issues like this earlier."},
-    {"speaker": "Sam Chen", "text": "Great idea. Let's add that to the backlog."}
+    {"speaker": "Sam Chen", "text": "Great idea. Let's add that to the backlog. Patrick, as you're looking at auth, keep Priya's dashboard in mind for what metrics would be useful."}
   ]
 }
 

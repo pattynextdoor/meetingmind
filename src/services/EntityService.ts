@@ -246,6 +246,7 @@ export class EntityService {
       `${entity.name}.md`,
     ];
     
+    // First, check specific paths with type verification
     for (const path of possiblePaths) {
       const normalizedPath = normalizePath(path);
       const file = this.app.vault.getAbstractFileByPath(normalizedPath);
@@ -258,12 +259,21 @@ export class EntityService {
       }
     }
     
-    // Search by name and type
+    // Search by name and type in frontmatter
     const files = this.app.vault.getMarkdownFiles();
     for (const file of files) {
       const cache = this.app.metadataCache.getFileCache(file);
       if (cache?.frontmatter?.type === entity.type && 
           file.basename.toLowerCase() === entity.name.toLowerCase()) {
+        return file.path;
+      }
+    }
+    
+    // If no typed notes found, look for ANY note with this name (case-insensitive)
+    // This allows enriching manually-created notes
+    for (const file of files) {
+      if (file.basename.toLowerCase() === entity.name.toLowerCase()) {
+        console.debug(`MeetingMind: Found manually-created note for ${entity.name} at ${file.path}`);
         return file.path;
       }
     }
@@ -408,9 +418,35 @@ created: ${date}`;
         return;
       }
       
+      // Add frontmatter if it doesn't exist (for manually-created notes)
+      const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/m;
+      if (!frontmatterRegex.test(content)) {
+        const frontmatter = `---
+type: ${entity.type}
+created: ${new Date().toISOString().split('T')[0]}
+${entity.status ? `status: ${entity.status}` : ''}
+${entity.category ? `category: ${entity.category}` : ''}
+---
+
+`;
+        content = frontmatter + content;
+        console.debug(`MeetingMind: Added frontmatter to manually-created note ${notePath}`);
+      }
+      
       // Extract existing description for synthesis
       const descriptionMatch = content.match(/## Description\s*\n\n([\s\S]*?)(?=\n\n(?:\*\*|##)|$)/);
       const existingDescription = descriptionMatch ? descriptionMatch[1].trim() : '';
+      
+      // If no Description section exists, try to use existing content as description
+      let contentForSynthesis = existingDescription;
+      if (!existingDescription && !content.includes('## Description')) {
+        // Extract content after title/frontmatter as the existing description
+        const contentWithoutFrontmatter = content.replace(frontmatterRegex, '');
+        const contentAfterTitle = contentWithoutFrontmatter.replace(/^# .+\n+/m, '').trim();
+        if (contentAfterTitle && !contentAfterTitle.startsWith('##')) {
+          contentForSynthesis = contentAfterTitle.split('\n##')[0].trim();
+        }
+      }
       
       // Synthesize new description using AI if available
       if (this.aiService && entity.description) {
@@ -418,7 +454,7 @@ created: ${date}`;
         const synthesizedDescription = await this.aiService.synthesizeDescription(
           entity.name,
           entityType,
-          existingDescription,
+          contentForSynthesis,
           entity.description,
           meetingTitle
         );
@@ -431,13 +467,22 @@ created: ${date}`;
               `## Description\n\n${synthesizedDescription}`
             );
           } else {
-            // Add description section after the title
+            // Add description section after the title/frontmatter
             const titleMatch = content.match(/^# .+\n\n/m);
             if (titleMatch) {
               const insertPos = content.indexOf(titleMatch[0]) + titleMatch[0].length;
               content = content.slice(0, insertPos) + 
                 `## Description\n\n${synthesizedDescription}\n\n` + 
                 content.slice(insertPos);
+            } else {
+              // No title found, add at the beginning after frontmatter
+              const afterFrontmatter = content.replace(frontmatterRegex, '');
+              const frontmatterMatch = content.match(frontmatterRegex);
+              if (frontmatterMatch) {
+                content = frontmatterMatch[0] + 
+                  `# ${entity.name}\n\n## Description\n\n${synthesizedDescription}\n\n` + 
+                  afterFrontmatter;
+              }
             }
           }
           console.debug(`MeetingMind: Synthesized description for ${entity.name}`);

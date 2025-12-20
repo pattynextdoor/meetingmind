@@ -2,15 +2,17 @@
   "title": "Monday Standup",
   "date": "2025-01-13T09:00:00Z",
   "duration": 12,
-  "participants": ["Sam Chen", "Priya Sharma", "Marcus Williams", "Riley O'Brien"],
+  "participants": ["Sam Chen", "Priya Sharma", "Marcus Williams", "Riley O'Brien", "Patrick Tumbucon"],
   "transcript": [
-    {"speaker": "Sam Chen", "text": "Alright, let's do a quick round. Priya, you want to start?"},
+    {"speaker": "Sam Chen", "text": "Alright, let's do a quick round. Patrick, welcome to your first standup! Why don't you introduce yourself, then we'll go around."},
+    {"speaker": "Patrick Tumbucon", "text": "Thanks! I'm Patrick, just joined as a senior engineer. Excited to be here. Still getting oriented, but looking forward to diving in."},
+    {"speaker": "Sam Chen", "text": "Great to have you. Priya, you want to go next?"},
     {"speaker": "Priya Sharma", "text": "Sure. I'm still working on the Metrics Dashboard redesign. Hit a snag with the real-time charts—need to talk to Marcus about the websocket connection."},
     {"speaker": "Marcus Williams", "text": "Yeah, happy to sync on that. On my end, the Checkout Service refactor is going well. Got the new payment flow working locally. Should have a PR up by end of day."},
     {"speaker": "Riley O'Brien", "text": "Quick heads up—the CI pipeline is running slow again. I've been investigating the CI Pipeline Slowdown issue. Looks like it's the test parallelization config. Should have a fix today."},
     {"speaker": "Sam Chen", "text": "Good. The Platform Migration is still on track for the Q2 launch. Marcus, make sure the Checkout Service changes are compatible with the new architecture."},
     {"speaker": "Marcus Williams", "text": "Will do. I'll coordinate with Riley on the deployment strategy."},
-    {"speaker": "Sam Chen", "text": "Perfect. Anything blocking anyone? No? Alright, let's get to it."}
+    {"speaker": "Sam Chen", "text": "Perfect. Patrick, feel free to shadow Marcus this week to get up to speed on the Checkout Service. Anything blocking anyone? No? Alright, let's get to it."}
   ]
 }
 
