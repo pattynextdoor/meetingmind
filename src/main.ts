@@ -153,7 +153,7 @@ export default class MeetingMindPlugin extends Plugin {
    */
   private async startServices(): Promise<void> {
     // Build vault index
-    await this.vaultIndex.buildIndex();
+    this.vaultIndex.buildIndex();
     
     // Start folder watcher if enabled
     if (this.settings.folderWatcherEnabled && this.settings.watchFolder) {
@@ -309,10 +309,10 @@ export default class MeetingMindPlugin extends Plugin {
       (status) => {
         this.updateStatusBar(status.status, status.message);
       },
-      async (accessToken, refreshToken) => {
+      (accessToken, refreshToken) => {
         this.settings.otterAccessToken = accessToken;
         this.settings.otterRefreshToken = refreshToken;
-        await this.saveSettings();
+        void this.saveSettings();
       }
     );
     
@@ -343,7 +343,7 @@ export default class MeetingMindPlugin extends Plugin {
       const content = await this.app.vault.read(file);
       
       // Parse transcript
-      const transcript = await this.transcriptParser.parseFile(content, file.name);
+      const transcript = this.transcriptParser.parseFile(content, file.name);
       
       // Check for duplicates
       if (this.isDuplicate(transcript.hash)) {
@@ -715,19 +715,6 @@ export default class MeetingMindPlugin extends Plugin {
         const progressBar = progressContainer.createDiv({ cls: 'meetingmind-progress-bar' });
         const progressFill = progressBar.createDiv({ cls: 'meetingmind-progress-fill' });
         
-        // Add some basic styling
-        progressBar.style.width = '100%';
-        progressBar.style.height = '20px';
-        progressBar.style.backgroundColor = 'var(--background-modifier-border)';
-        progressBar.style.borderRadius = '4px';
-        progressBar.style.overflow = 'hidden';
-        progressBar.style.marginTop = '10px';
-        
-        progressFill.style.height = '100%';
-        progressFill.style.backgroundColor = 'var(--interactive-accent)';
-        progressFill.style.width = '0%';
-        progressFill.style.transition = 'width 0.3s ease';
-        
         modal.open();
         
         // Process each file sequentially
@@ -738,11 +725,11 @@ export default class MeetingMindPlugin extends Plugin {
           try {
             // Update progress
             progressText.setText(`Processing ${file.name} (${i + 1}/${totalFiles})...`);
-            progressFill.style.width = `${progress}%`;
+            progressFill.setCssProps({ '--progress-width': `${progress}%` });
             
             const content = await file.text();
             progressText.setText(`Parsing ${file.name}...`);
-            const transcript = await this.transcriptParser.parseFile(content, file.name);
+            const transcript = this.transcriptParser.parseFile(content, file.name);
             
             progressText.setText(`Creating note for ${file.name}...`);
             // Manual imports skip duplicate check - user explicitly chose to import
@@ -765,7 +752,7 @@ export default class MeetingMindPlugin extends Plugin {
         }
         
         // Show completion
-        progressFill.style.width = '100%';
+        progressFill.setCssProps({ '--progress-width': '100%' });
         
         if (failCount === 0) {
           progressText.setText(`✅ Successfully imported ${successCount} ${successCount === 1 ? 'meeting' : 'meetings'}!`);
@@ -1113,7 +1100,7 @@ export default class MeetingMindPlugin extends Plugin {
    */
   async rebuildVaultIndex(): Promise<void> {
     const startTime = Date.now();
-    await this.vaultIndex.buildIndex();
+    this.vaultIndex.buildIndex();
     const elapsed = Date.now() - startTime;
     
     const index = this.vaultIndex.getIndex();
@@ -1235,7 +1222,7 @@ export default class MeetingMindPlugin extends Plugin {
       }
       
       // Extract transcript from callout
-      const transcriptMatch = content.match(/## Transcript\n\n> \[\!note\][^\n]*\n([\s\S]*?)(?=\n## |$)/);
+      const transcriptMatch = content.match(/## Transcript\n\n> \[!note\][^\n]*\n([\s\S]*?)(?=\n## |$)/);
       if (!transcriptMatch) {
         return null;
       }

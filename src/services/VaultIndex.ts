@@ -35,7 +35,7 @@ export class VaultIndexService {
   /**
    * Build or rebuild the full vault index
    */
-  async buildIndex(): Promise<void> {
+  buildIndex(): void {
     const startTime = Date.now();
     
     // Clear existing index
@@ -93,16 +93,16 @@ export class VaultIndexService {
       
       if (paths.length === 1) {
         // Single match - exact
-        this.index.exactMatches.set(alias, paths[0] as string);
+        this.index.exactMatches.set(alias, paths[0]);
       } else if (paths.length > 1) {
         // Multiple matches
         if (data.isExplicit) {
           // If it's an explicit alias that matches multiple notes, still try to use it
           // but mark as ambiguous for manual resolution
-          this.index.ambiguousMatches.set(alias, paths as string[]);
+          this.index.ambiguousMatches.set(alias, paths);
         } else {
           // Implicit aliases that match multiple notes go to ambiguous
-          this.index.ambiguousMatches.set(alias, paths as string[]);
+          this.index.ambiguousMatches.set(alias, paths);
         }
       }
     }

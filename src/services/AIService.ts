@@ -669,7 +669,12 @@ ${transcriptText}`;
       if (response.status !== 200) {
         const error = response.json;
         console.error('Claude API response:', response.status, error);
-        throw new Error(`Claude API error: ${error.error?.message || error.message || response.status}`);
+        const errorMessage = (error && typeof error === 'object' && 'error' in error && error.error && typeof error.error === 'object' && 'message' in error.error && typeof error.error.message === 'string') 
+          ? error.error.message 
+          : (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string')
+          ? error.message
+          : String(response.status);
+        throw new Error(`Claude API error: ${errorMessage}`);
       }
       
       const data = response.json;
@@ -710,7 +715,10 @@ ${transcriptText}`;
     
     if (response.status !== 200) {
       const error = response.json;
-      throw new Error(`OpenAI API error: ${error.error?.message || response.status}`);
+      const errorMessage = (error && typeof error === 'object' && 'error' in error && error.error && typeof error.error === 'object' && 'message' in error.error && typeof error.error.message === 'string')
+        ? error.error.message
+        : String(response.status);
+      throw new Error(`OpenAI API error: ${errorMessage}`);
     }
     
     const data = response.json;

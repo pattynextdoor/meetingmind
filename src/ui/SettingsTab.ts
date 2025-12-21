@@ -31,7 +31,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     containerEl.empty();
     
     new Setting(containerEl)
-      .setName('MeetingMind Settings')
+      .setName('Configuration')
       .setHeading();
     
     containerEl.createEl('p', { 
@@ -122,7 +122,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     
     // Fireflies.ai Integration
     new Setting(containerEl)
-      .setName('🔥 Fireflies.ai Integration')
+      .setName('🔥 Fireflies.ai integration')
       .setHeading();
     
     new Setting(containerEl)
@@ -160,7 +160,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Test connection')
         .setDesc('Verify your Fireflies API key is working')
         .addButton(button => button
-          .setButtonText('Test Connection')
+          .setButtonText('Test connection')
           .onClick(async () => {
             button.setButtonText('Testing...');
             button.setDisabled(true);
@@ -173,7 +173,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
               new Notice(`✗ ${result.message}`);
             }
             
-            button.setButtonText('Test Connection');
+            button.setButtonText('Test connection');
             button.setDisabled(false);
           })
         );
@@ -200,7 +200,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Sync now')
         .setDesc('Manually trigger a sync with Fireflies.ai')
         .addButton(button => button
-          .setButtonText('Sync Now')
+          .setButtonText('Sync now')
           .setCta()
           .onClick(async () => {
             button.setButtonText('Syncing...');
@@ -214,7 +214,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
               new Notice(`Sync failed: ${errorMessage}`);
             }
             
-            button.setButtonText('Sync Now');
+            button.setButtonText('Sync now');
             button.setDisabled(false);
           })
         );
@@ -263,7 +263,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createAISection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🤖 AI Enrichment')
+      .setName('🤖 AI enrichment')
       .setHeading();
     
     // Check license status
@@ -299,7 +299,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setValue(this.plugin.settings.aiEnabled)
         .onChange(async (value) => {
           if (value && !hasAILicense) {
-            this.plugin.licenseService.showUpgradeNotice('AI Enrichment');
+            this.plugin.licenseService.showUpgradeNotice('AI enrichment');
             toggle.setValue(false);
             return;
           }
@@ -382,7 +382,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Test API connection')
         .setDesc('Verify your API key is working')
         .addButton(button => button
-          .setButtonText('Test Connection')
+          .setButtonText('Test connection')
           .onClick(async () => {
             button.setButtonText('Testing...');
             button.setDisabled(true);
@@ -395,14 +395,14 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
               new Notice(`✗ Connection failed: ${result.message}`);
             }
             
-            button.setButtonText('Test Connection');
+            button.setButtonText('Test connection');
             button.setDisabled(false);
           })
         );
       
       // Feature toggles
       new Setting(containerEl)
-        .setName('AI Features')
+        .setName('AI features')
         .setHeading();
       
       new Setting(containerEl)
@@ -455,7 +455,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     } else if (!hasAILicense) {
       // Show what Pro includes when AI is disabled
       const featuresEl = containerEl.createDiv({ cls: 'meetingmind-pro-features' });
-      featuresEl.createEl('p', { text: 'With AI Enrichment Pro, you get:' });
+      featuresEl.createEl('p', { text: 'With AI enrichment Pro, you get:' });
       const list = featuresEl.createEl('ul');
       list.createEl('li', { text: '📝 Automatic 2-4 sentence summaries' });
       list.createEl('li', { text: '✅ Action item extraction with owners' });
@@ -470,7 +470,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createLinkingSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🔗 Auto-Linking')
+      .setName('🔗 Auto-linking')
       .setHeading();
     
     // Enable auto-linking
@@ -536,7 +536,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Rebuild vault index')
         .setDesc('Force re-index all notes for auto-linking')
         .addButton(button => button
-          .setButtonText('Rebuild Index')
+          .setButtonText('Rebuild index')
           .onClick(async () => {
             button.setButtonText('Rebuilding...');
             button.setDisabled(true);
@@ -544,7 +544,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
             await this.plugin.rebuildVaultIndex();
             
             new Notice('Vault index rebuilt successfully');
-            button.setButtonText('Rebuild Index');
+            button.setButtonText('Rebuild index');
             button.setDisabled(false);
           })
         );
@@ -608,7 +608,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createEntitySection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📊 Entity Extraction (Pro)')
+      .setName('📊 Entity extraction (Pro)')
       .setHeading();
     
     const isPro = this.plugin.licenseService.isPro();
@@ -784,7 +784,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       const upgradeContainer = containerEl.createDiv({ cls: 'meetingmind-upgrade-section' });
       
       new Setting(upgradeContainer)
-        .setName('Upgrade to MeetingMind Pro')
+        .setName('Upgrade to Pro')
         .setHeading();
       
       const priceEl = upgradeContainer.createDiv({ cls: 'meetingmind-price' });
@@ -807,7 +807,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       
       new Setting(upgradeContainer)
         .addButton(button => button
-          .setButtonText('Get Pro License')
+          .setButtonText('Get Pro license')
           .setCta()
           .onClick(() => {
             window.open('https://tumbucon.gumroad.com/l/meetingmind-pro', '_blank');

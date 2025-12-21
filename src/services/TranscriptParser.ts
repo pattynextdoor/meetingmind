@@ -10,7 +10,7 @@ export class TranscriptParser {
   /**
    * Parse a transcript file based on its extension
    */
-  async parseFile(content: string, filename: string): Promise<RawTranscript> {
+  parseFile(content: string, filename: string): RawTranscript {
     const extension = filename.split('.').pop()?.toLowerCase() || '';
     
     let segments: TranscriptSegment[];

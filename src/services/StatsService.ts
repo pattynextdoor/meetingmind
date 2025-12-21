@@ -64,7 +64,7 @@ export class StatsService {
   /**
    * Gather all meeting notes from the vault
    */
-  private async gatherMeetingNotes(): Promise<MeetingNote[]> {
+  private gatherMeetingNotes(): MeetingNote[] {
     const meetings: MeetingNote[] = [];
     const files = this.app.vault.getMarkdownFiles();
     
@@ -118,7 +118,7 @@ export class StatsService {
    * Calculate all statistics from meeting notes
    */
   async calculateStats(): Promise<MeetingStats> {
-    const meetings = await this.gatherMeetingNotes();
+    const meetings = this.gatherMeetingNotes();
     
     const now = new Date();
     const startOfWeek = new Date(now);
