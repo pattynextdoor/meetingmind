@@ -11,11 +11,7 @@ Participant notes include rich, structured insights with automatic linking:
 
 **Role**: Engineering Lead
 
-## Top of Mind
-
-*Recent active items and current focus*
-
-### Owns
+## Owns
 - [[Payment flow]] — *active topic*
 - 🔄 OAuth integration — *in-progress 2024-12-15* (from [[Monday Standup]])
 

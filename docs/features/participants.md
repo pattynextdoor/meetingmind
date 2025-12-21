@@ -35,14 +35,10 @@ created: 2024-12-18
 ## About
 
 
-## Top of Mind
-
-*Recent active items and current focus*
-
-### Active Action Items
+## Active Action Items
 - [ ] Draft technical spec — from [[2024-12-18 Project Kickoff]]
 
-### Recent Wins
+## Recent Wins
 - ✅ Completed API architecture proposal — from [[2024-12-18 Project Kickoff]]
 
 ## Meetings
@@ -66,15 +62,11 @@ created: 2024-12-18
 With Pro, participant notes include rich AI-generated insights and automatic linking to related work:
 
 ```markdown
-## Top of Mind
-
-*Recent active items and current focus*
-
-### Owns
+## Owns
 - [[Payment flow]] — *active topic*
 - 🔄 OAuth integration — *in-progress 2024-12-15* (from [[Monday Standup]])
 
-### Active Action Items
+## Active Action Items
 - [ ] Review API dependencies (due: 2024-12-20) — from [[Project Kickoff]]
 
 ### Recent Wins

@@ -76,11 +76,7 @@ created: 2024-12-18
 ## About
 
 
-## Top of Mind
-
-*Recent active items and current focus*
-
-### Owns
+## Owns
 - [[Payment flow]] — *active topic*
 - 🔄 OAuth integration — *in-progress 2024-12-15* (from [[Monday Standup]])
 

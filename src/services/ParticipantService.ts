@@ -201,13 +201,9 @@ tags: [person]
     
     content += `## About\n\n\n`;
     
-    // Top of Mind section (recent active items)
-    content += `## Top of Mind\n\n`;
-    content += `*Recent active items and current focus*\n\n`;
-    
     // Owns section (topics and updates)
     if ((insight?.ownedTopics && insight.ownedTopics.length > 0) || (insight?.updates && insight.updates.length > 0)) {
-      content += `### Owns\n`;
+      content += `## Owns\n`;
       
       // Add owned topics
       if (insight?.ownedTopics && insight.ownedTopics.length > 0) {
@@ -229,7 +225,7 @@ tags: [person]
     
     // Action items section (active)
     if (insight?.actionItems && insight.actionItems.length > 0) {
-      content += `### Active Action Items\n\n`;
+      content += `## Active Action Items\n\n`;
       for (const item of insight.actionItems) {
         let task = `- [ ] ${item.task}`;
         if (item.dueDate) {
@@ -243,7 +239,7 @@ tags: [person]
     
     // Wins section
     if (insight?.wins && insight.wins.length > 0) {
-      content += `### Recent Wins\n\n`;
+      content += `## Recent Wins\n\n`;
       for (const win of insight.wins) {
         content += `- ✅ ${win} — from [[${meetingLink}|${meetingTitle}]]\n`;
       }
@@ -408,18 +404,7 @@ tags: [person]
         }
       }
       
-      // Ensure Top of Mind section exists (for new structure)
-      if (!content.includes('## Top of Mind')) {
-        // Migrate old structure to new structure
-        const actionItemsIndex = content.indexOf('## Action Items');
-        if (actionItemsIndex !== -1) {
-          content = content.slice(0, actionItemsIndex) + 
-            `## Top of Mind\n\n*Recent active items and current focus*\n\n` +
-            content.slice(actionItemsIndex);
-        } else {
-          content = content.trimEnd() + `\n\n## Top of Mind\n\n*Recent active items and current focus*\n\n`;
-        }
-      }
+      // Remove old "Top of Mind" section logic - no longer used
       
       // Ensure Archive section exists
       if (!content.includes('## Archive')) {
@@ -433,10 +418,10 @@ tags: [person]
         }
       }
       
-      // Add owned topics and updates to Top of Mind section
+      // Add owned topics and updates to Owns section
       if ((insight?.ownedTopics && insight.ownedTopics.length > 0) || (insight?.updates && insight.updates.length > 0)) {
-        // Check if Owns subsection exists
-        if (content.includes('### Owns')) {
+        // Check if Owns section exists
+        if (content.includes('## Owns')) {
           // Add to existing Owns section
           let ownsContent = '';
           
@@ -454,12 +439,12 @@ tags: [person]
           }
           
           content = content.replace(
-            /(### Owns\n)/,
+            /(## Owns\n)/,
             `$1${ownsContent}`
           );
         } else {
-          // Create new Owns subsection at start of Top of Mind
-          let ownsSection = `### Owns\n`;
+          // Create new Owns section before Raised Issues
+          let ownsSection = `## Owns\n`;
           
           if (insight?.ownedTopics && insight.ownedTopics.length > 0) {
             for (const topic of insight.ownedTopics) {
@@ -476,10 +461,16 @@ tags: [person]
           
           ownsSection += `\n`;
           
-          content = content.replace(
-            /(## Top of Mind\s*\n\*[^\n]*\*\s*\n\n)/,
-            `$1${ownsSection}`
-          );
+          // Insert before Raised Issues or Meetings section
+          const raisedIssuesIndex = content.indexOf('## Raised Issues');
+          const meetingsIndex = content.indexOf('## Meetings');
+          const insertIndex = raisedIssuesIndex !== -1 ? raisedIssuesIndex : meetingsIndex;
+          
+          if (insertIndex !== -1) {
+            content = content.slice(0, insertIndex) + ownsSection + content.slice(insertIndex);
+          } else {
+            content = content.trimEnd() + `\n\n${ownsSection}`;
+          }
         }
       }
       
@@ -527,46 +518,33 @@ tags: [person]
         }
       }
       
-      // Add wins to Top of Mind section
+      // Add wins to Recent Wins section
       if (insight?.wins && insight.wins.length > 0) {
-        const topOfMindSection = content.match(/^## Top of Mind\s*$[\s\S]*?(?=^## |$)/m);
-        if (topOfMindSection) {
-          const winsSubsection = `### Recent Wins\n\n${insight.wins.map(win => `- ✅ ${win} — from [[${meetingLink}|${meetingTitle}]]`).join('\n')}\n\n`;
+        const winsContent = insight.wins.map(win => `- ✅ ${win} — from [[${meetingLink}|${meetingTitle}]]`).join('\n');
+        
+        if (content.includes('## Recent Wins')) {
+          // Add to existing Recent Wins section
+          content = content.replace(
+            /(## Recent Wins\n\n)/,
+            `$1${winsContent}\n`
+          );
+        } else {
+          // Create new Recent Wins section before Active Action Items or Raised Issues
+          const winsSection = `## Recent Wins\n\n${winsContent}\n\n`;
+          const actionItemsIndex = content.indexOf('## Active Action Items');
+          const raisedIssuesIndex = content.indexOf('## Raised Issues');
+          const insertIndex = actionItemsIndex !== -1 ? actionItemsIndex : raisedIssuesIndex;
           
-          // Check if Recent Wins subsection already exists
-          if (topOfMindSection[0].includes('### Recent Wins')) {
-            // Add to existing wins
-            content = content.replace(
-              /(### Recent Wins\n\n)/,
-              `$1${insight.wins.map(win => `- ✅ ${win} — from [[${meetingLink}|${meetingTitle}]]`).join('\n')}\n`
-            );
+          if (insertIndex !== -1) {
+            content = content.slice(0, insertIndex) + winsSection + content.slice(insertIndex);
           } else {
-            // Add new wins subsection
-            const activeActionItemsIndex = topOfMindSection[0].indexOf('### Active Action Items');
-            if (activeActionItemsIndex !== -1) {
-              // Insert before Active Action Items
-              const sectionStart = content.indexOf('## Top of Mind');
-              const sectionEnd = content.indexOf('##', sectionStart + 1);
-              const topOfMindContent = content.slice(sectionStart, sectionEnd !== -1 ? sectionEnd : undefined);
-              const newTopOfMind = topOfMindContent.replace(
-                /(## Top of Mind\s*\n\*[^\n]*\*\s*\n\n)/,
-                `$1${winsSubsection}`
-              );
-              content = content.replace(topOfMindContent, newTopOfMind);
-            } else {
-              // Add at start of Top of Mind section
-              content = content.replace(
-                /(## Top of Mind\s*\n\*[^\n]*\*\s*\n\n)/,
-                `$1${winsSubsection}`
-              );
-            }
+            content = content.trimEnd() + `\n\n${winsSection}`;
           }
         }
       }
       
-      // Add new action items to Top of Mind
+      // Add new action items to Active Action Items section
       if (insight?.actionItems && insight.actionItems.length > 0) {
-        const topOfMindRegex = /^## Top of Mind\s*$[\s\S]*?(?=^## |$)/m;
         const newActionItems = insight.actionItems.map(item => {
           let task = `- [ ] ${item.task}`;
           if (item.dueDate) {
@@ -576,38 +554,30 @@ tags: [person]
           return task;
         }).join('\n');
         
-        // Check if Active Action Items subsection exists
-        if (content.includes('### Active Action Items')) {
-          // Add to existing section
+        // Check if Active Action Items section exists (##) or subsection (###)
+        if (content.includes('## Active Action Items')) {
+          // Add to existing top-level section
+          content = content.replace(
+            /(## Active Action Items\n\n)/,
+            `$1${newActionItems}\n`
+          );
+        } else if (content.includes('### Active Action Items')) {
+          // Add to existing subsection (from old structure)
           content = content.replace(
             /(### Active Action Items\n\n)/,
             `$1${newActionItems}\n`
           );
         } else {
-          // Add new subsection
-          const topOfMindMatch = content.match(topOfMindRegex);
-          if (topOfMindMatch) {
-            const winsIndex = topOfMindMatch[0].indexOf('### Recent Wins');
-            if (winsIndex !== -1) {
-              // Insert after Recent Wins
-              const winsEnd = topOfMindMatch[0].indexOf('\n\n', winsIndex);
-              const insertPos = content.indexOf('## Top of Mind') + (topOfMindMatch.index ?? 0) + (winsEnd !== -1 ? winsEnd + 2 : topOfMindMatch[0].length);
-              content = content.slice(0, insertPos) + 
-                `### Active Action Items\n\n${newActionItems}\n\n` +
-                content.slice(insertPos);
-            } else {
-              // Add at start of Top of Mind
-              content = content.replace(
-                /(## Top of Mind\s*\n\*[^\n]*\*\s*\n\n)/,
-                `$1### Active Action Items\n\n${newActionItems}\n\n`
-              );
-            }
+          // Create new section before Raised Issues or Meetings
+          const actionItemsSection = `## Active Action Items\n\n${newActionItems}\n\n`;
+          const raisedIssuesIndex = content.indexOf('## Raised Issues');
+          const meetingsIndex = content.indexOf('## Meetings');
+          const insertIndex = raisedIssuesIndex !== -1 ? raisedIssuesIndex : meetingsIndex;
+          
+          if (insertIndex !== -1) {
+            content = content.slice(0, insertIndex) + actionItemsSection + content.slice(insertIndex);
           } else {
-            // Fallback: add to Top of Mind section
-            content = content.replace(
-              /(## Top of Mind\s*\n\*[^\n]*\*\s*\n\n)/,
-              `$1### Active Action Items\n\n${newActionItems}\n\n`
-            );
+            content = content.trimEnd() + `\n\n${actionItemsSection}`;
           }
         }
       }

@@ -244,10 +244,14 @@ export class NoteGenerator {
   }
   
   /**
-   * Format date to ISO format (YYYY-MM-DD)
+   * Format date to ISO format (YYYY-MM-DD) using local timezone
+   * This ensures the date matches the filename date
    */
   private formatDateISO(date: Date): string {
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
   
   /**
