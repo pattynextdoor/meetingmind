@@ -183,18 +183,46 @@ ${transcriptText}`;
   ): ParticipantInsight[] {
     const meetingDateStr = meetingDate.toISOString().split('T')[0];
     
-    // Ensure entities has the expected structure
+    // Type guard function to safely check if an item is an Entity
+    const isEntity = (item: unknown): item is Entity => {
+      return typeof item === 'object' && item !== null && 'name' in item && typeof (item as { name: unknown }).name === 'string';
+    };
+    
+    // Type guard to ensure arrays are properly typed - avoids ESLint false positives
+    const ensureEntityArray = (arr: unknown): Entity[] => {
+      if (!Array.isArray(arr)) {
+        return [];
+      }
+      const result: Entity[] = [];
+      // Use Array.prototype methods which TypeScript understands better
+      for (let i = 0; i < arr.length; i++) {
+        const item = arr[i];
+        if (isEntity(item)) {
+          result.push(item);
+        }
+      }
+      return result;
+    };
+    
+    // Validate entities parameter with proper type narrowing
+    const validatedEntities: EntityExtraction = (entities && typeof entities === 'object' && 'issues' in entities && 'updates' in entities && 'topics' in entities)
+      ? entities as EntityExtraction
+      : { issues: [], updates: [], topics: [] };
+    
+    // Normalize entities arrays
     const safeEntities: EntityExtraction = {
-      issues: (Array.isArray(entities.issues) ? entities.issues : []) as Entity[],
-      updates: (Array.isArray(entities.updates) ? entities.updates : []) as Entity[],
-      topics: (Array.isArray(entities.topics) ? entities.topics : []) as Entity[],
+      issues: ensureEntityArray(validatedEntities.issues),
+      updates: ensureEntityArray(validatedEntities.updates),
+      topics: ensureEntityArray(validatedEntities.topics),
     };
     
     return insights.map(insight => {
       const enriched = { ...insight };
       
       // Add updates owned by this participant
-      const filteredUpdates = (safeEntities.updates as Entity[]).filter((update: Entity) => {
+      const updatesList: readonly Entity[] = safeEntities.updates;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      const filteredUpdates = Array.from(updatesList).filter((update: Entity) => {
         const mentionedBy = update.mentionedBy;
         return mentionedBy && typeof mentionedBy === 'string' 
           ? mentionedBy.toLowerCase() === insight.name.toLowerCase()

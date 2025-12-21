@@ -104,12 +104,12 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('Project Phoenix.md', '# Project Phoenix');
       
       vaultIndex.buildIndex();
-      const text = 'Working on Project Phoenix today.';
-      const result = autoLinker.processText(text);
+        const text = 'Working on Project Phoenix today.';
+        const result = autoLinker.processText(text);
 
-      // Should link to "Project Phoenix" not just "Phoenix"
-      expect(result.linkedText).toContain('[[Project Phoenix]]');
-      expect(result.linkedText).not.toContain('[[Phoenix]]');
+        // Should link to "Project Phoenix" not just "Phoenix"
+        expect(result.linkedText).toContain('[[Project Phoenix]]');
+        expect(result.linkedText).not.toContain('[[Phoenix]]');
     });
 
     it('should handle ambiguous matches', async () => {
@@ -174,11 +174,11 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('AB.md', '# AB');
       
       vaultIndex.buildIndex();
-      const text = 'AB testing is important.';
-      const result = autoLinker.processText(text);
+        const text = 'AB testing is important.';
+        const result = autoLinker.processText(text);
 
-      // Terms less than 3 characters should be skipped
-      expect(result.linkedText).toBe(text);
+        // Terms less than 3 characters should be skipped
+        expect(result.linkedText).toBe(text);
     });
   });
 

@@ -662,7 +662,12 @@ ${entity.category ? `category: ${entity.category}` : ''}
           
           // Check if issue is resolved and has been resolved long enough
           if (frontmatter?.status === 'resolved' && frontmatter?.resolved_date) {
-            const resolvedDate = new Date(frontmatter.resolved_date);
+            const resolvedDateValue = frontmatter.resolved_date;
+            const resolvedDate = resolvedDateValue instanceof Date
+              ? resolvedDateValue
+              : typeof resolvedDateValue === 'string' || typeof resolvedDateValue === 'number'
+              ? new Date(resolvedDateValue)
+              : new Date();
             
             if (resolvedDate < cutoffDate) {
               // Archive this issue
