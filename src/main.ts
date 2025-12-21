@@ -194,8 +194,8 @@ export default class MeetingMindPlugin extends Plugin {
     // Import file
     this.addCommand({
       id: 'import-file',
-      name: 'Import file',
-      callback: () => this.importFile(),
+      name: 'Import transcript file(s)',
+      callback: () => this.importFiles(),
     });
     
     // Rebuild vault index
@@ -689,7 +689,7 @@ export default class MeetingMindPlugin extends Plugin {
    * Import files manually (supports multiple file selection)
    * Skips duplicate check for manual imports
    */
-  importFile(): void {
+  importFiles(): void {
     // Use Obsidian's file picker with multiple selection
     const input = document.createElement('input');
     input.type = 'file';
