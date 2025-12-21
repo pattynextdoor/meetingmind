@@ -53,5 +53,5 @@ Your license key works on any device. Simply enter the same key in MeetingMind s
 
 ## Support
 
-Having issues with your license? Open an issue on [GitHub](https://github.com/pattynextdoor/meetingmind/issues).
+Having issues with your license? Contact us at **support@meetingmind.me** or open an issue on [GitHub](https://github.com/pattynextdoor/meetingmind/issues).
 

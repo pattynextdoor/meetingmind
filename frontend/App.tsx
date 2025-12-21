@@ -706,10 +706,6 @@ const FAQ = () => {
     {
       question: "How does the Fireflies.ai sync work?",
       answer: "With Fireflies.ai API sync enabled, MeetingMind automatically imports new transcripts as they're created in your Fireflies account. Just set up your API key once, and new meetings appear in your vault automatically."
-    },
-    {
-      question: "Can I try Pro before buying?",
-      answer: "Yes! You can test Pro features with your own API key. If you're not satisfied, the Free version includes all core functionality—auto-linking, participant tracking, and meeting dashboard—so you'll still have a fully functional plugin."
     }
   ];
 
@@ -759,6 +755,7 @@ const Footer = () => (
           <div className="hidden md:flex gap-6 text-sm text-stone-500">
             <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
             <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
+            <a href="mailto:support@meetingmind.me" className="hover:text-stone-900 transition-colors">Support</a>
             <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
           </div>
         </div>

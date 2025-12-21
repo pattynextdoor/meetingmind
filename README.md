@@ -162,7 +162,9 @@ This plugin connects to the following external services:
 
 ## Support
 
-- [GitHub Issues](https://github.com/pattynextdoor/meetingmind/issues)
+- **Documentation**: [docs.meetingmind.me](https://docs.meetingmind.me)
+- **Email**: support@meetingmind.me
+- **Issues**: [GitHub Issues](https://github.com/pattynextdoor/meetingmind/issues)
 
 ## License
 

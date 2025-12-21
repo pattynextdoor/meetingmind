@@ -50,3 +50,9 @@ This will retroactively add summaries, action items, and AI insights to all your
 - Desktop only (macOS, Windows, Linux)
 - For Pro: Claude or OpenAI API key
 
+## Need Help?
+
+- **Documentation**: [docs.meetingmind.me](https://docs.meetingmind.me)
+- **Support**: support@meetingmind.me
+- **Issues**: [GitHub Issues](https://github.com/pattynextdoor/meetingmind/issues)
+
