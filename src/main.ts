@@ -706,36 +706,51 @@ export default class MeetingMindPlugin extends Plugin {
         let failCount = 0;
         let lastCreatedNote: TFile | null = null;
         
-        // Show initial notice for bulk imports
-        if (totalFiles > 1) {
-          new Notice(`Importing ${totalFiles} files...`);
-        }
+        // Create a progress modal for better UX
+        const modal = new Modal(this.app);
+        modal.titleEl.setText(`Importing ${totalFiles} ${totalFiles === 1 ? 'file' : 'files'}`);
+        
+        const progressContainer = modal.contentEl.createDiv({ cls: 'meetingmind-import-progress' });
+        const progressText = progressContainer.createEl('p', { text: 'Starting import...' });
+        const progressBar = progressContainer.createDiv({ cls: 'meetingmind-progress-bar' });
+        const progressFill = progressBar.createDiv({ cls: 'meetingmind-progress-fill' });
+        
+        // Add some basic styling
+        progressBar.style.width = '100%';
+        progressBar.style.height = '20px';
+        progressBar.style.backgroundColor = 'var(--background-modifier-border)';
+        progressBar.style.borderRadius = '4px';
+        progressBar.style.overflow = 'hidden';
+        progressBar.style.marginTop = '10px';
+        
+        progressFill.style.height = '100%';
+        progressFill.style.backgroundColor = 'var(--interactive-accent)';
+        progressFill.style.width = '0%';
+        progressFill.style.transition = 'width 0.3s ease';
+        
+        modal.open();
         
         // Process each file sequentially
         for (let i = 0; i < totalFiles; i++) {
           const file = files[i];
+          const progress = Math.round(((i) / totalFiles) * 100);
           
           try {
+            // Update progress
+            progressText.setText(`Processing ${file.name} (${i + 1}/${totalFiles})...`);
+            progressFill.style.width = `${progress}%`;
+            
             const content = await file.text();
+            progressText.setText(`Parsing ${file.name}...`);
             const transcript = await this.transcriptParser.parseFile(content, file.name);
             
-            // Show progress for single file or update for bulk
-            if (totalFiles === 1) {
-              new Notice(`Importing ${file.name}...`);
-            } else {
-              this.updateStatusBar('syncing', `${i + 1}/${totalFiles}`);
-            }
-            
+            progressText.setText(`Creating note for ${file.name}...`);
             // Manual imports skip duplicate check - user explicitly chose to import
             const note = await this.processTranscript(transcript, true); // skipDuplicateCheck = true
             
             if (note) {
               successCount++;
               lastCreatedNote = note;
-              
-              if (totalFiles === 1) {
-                new Notice(`Created: ${note.basename}`);
-              }
             }
             
           } catch (error: unknown) {
@@ -743,21 +758,26 @@ export default class MeetingMindPlugin extends Plugin {
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error(`MeetingMind: Import failed for ${file.name}`, error);
             
-            if (totalFiles === 1) {
-              new Notice(`Import failed: ${errorMessage}`);
-            }
+            // Show error in modal
+            progressText.setText(`❌ Failed: ${file.name} - ${errorMessage}`);
+            await new Promise(resolve => setTimeout(resolve, 1500)); // Show error briefly
           }
         }
         
-        // Show summary for bulk imports
-        if (totalFiles > 1) {
-          this.updateStatusBar('idle');
-          if (failCount === 0) {
-            new Notice(`✅ Imported ${successCount} meetings successfully!`);
-          } else {
-            new Notice(`Imported ${successCount}/${totalFiles} meetings (${failCount} failed)`);
-          }
+        // Show completion
+        progressFill.style.width = '100%';
+        
+        if (failCount === 0) {
+          progressText.setText(`✅ Successfully imported ${successCount} ${successCount === 1 ? 'meeting' : 'meetings'}!`);
+          new Notice(`✅ Imported ${successCount} ${successCount === 1 ? 'meeting' : 'meetings'}!`);
+        } else {
+          progressText.setText(`⚠️ Imported ${successCount}/${totalFiles} meetings (${failCount} failed)`);
+          new Notice(`Imported ${successCount}/${totalFiles} meetings (${failCount} failed)`);
         }
+        
+        // Close modal after a brief delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        modal.close();
         
         // Open the last created note
         if (lastCreatedNote) {
