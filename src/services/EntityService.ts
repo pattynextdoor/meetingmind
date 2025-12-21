@@ -21,6 +21,7 @@ export class EntityService {
   private enableIssues: boolean;
   private enableUpdates: boolean;
   private enableTopics: boolean;
+  private enrichManualNotes: boolean;
   
   constructor(app: App, aiService?: AIService) {
     this.app = app;
@@ -31,6 +32,7 @@ export class EntityService {
     this.enableIssues = true;
     this.enableUpdates = true;
     this.enableTopics = true;
+    this.enrichManualNotes = false;
   }
   
   /**
@@ -49,7 +51,8 @@ export class EntityService {
     topicsFolder: string,
     enableIssues: boolean,
     enableUpdates: boolean,
-    enableTopics: boolean
+    enableTopics: boolean,
+    enrichManualNotes: boolean
   ): void {
     this.issuesFolder = issuesFolder;
     this.updatesFolder = updatesFolder;
@@ -57,6 +60,7 @@ export class EntityService {
     this.enableIssues = enableIssues;
     this.enableUpdates = enableUpdates;
     this.enableTopics = enableTopics;
+    this.enrichManualNotes = enrichManualNotes;
   }
   
   /**
@@ -269,12 +273,14 @@ export class EntityService {
       }
     }
     
-    // If no typed notes found, look for ANY note with this name (case-insensitive)
+    // If enrichManualNotes is enabled, look for ANY note with this name (case-insensitive)
     // This allows enriching manually-created notes
-    for (const file of files) {
-      if (file.basename.toLowerCase() === entity.name.toLowerCase()) {
-        console.debug(`MeetingMind: Found manually-created note for ${entity.name} at ${file.path}`);
-        return file.path;
+    if (this.enrichManualNotes) {
+      for (const file of files) {
+        if (file.basename.toLowerCase() === entity.name.toLowerCase()) {
+          console.debug(`MeetingMind: Found manually-created note for ${entity.name} at ${file.path}`);
+          return file.path;
+        }
       }
     }
     

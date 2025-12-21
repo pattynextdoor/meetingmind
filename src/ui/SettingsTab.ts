@@ -673,6 +673,18 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           })
         );
       
+      new Setting(containerEl)
+        .setName('Enrich manually-created notes')
+        .setDesc('Allow MeetingMind to find and enrich notes you created manually (adds frontmatter, AI synthesis). If disabled, only enriches notes created by MeetingMind.')
+        .addToggle(toggle => toggle
+          .setValue(this.plugin.settings.enrichManualNotes)
+          .onChange(async (value) => {
+            this.plugin.settings.enrichManualNotes = value;
+            await this.plugin.saveSettings();
+            this.plugin.updateEntityService();
+          })
+        );
+      
       // Folder paths - debounced
       const debouncedFolderUpdate = debounce(async () => {
         await this.plugin.saveSettings();

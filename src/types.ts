@@ -156,6 +156,7 @@ export interface MeetingMindSettings {
   enableUpdateExtraction: boolean; // Now only enriches People notes, doesn't create separate notes
   enableTopicExtraction: boolean;
   issueArchiveDays: number; // Days before archiving resolved issues
+  enrichManualNotes: boolean; // Whether to enrich manually-created notes (default: false)
   
   // License settings
   licenseKey: string;
@@ -211,6 +212,7 @@ export const DEFAULT_SETTINGS: MeetingMindSettings = {
   enableUpdateExtraction: true, // For People note enrichment only
   enableTopicExtraction: true,
   issueArchiveDays: 30,
+  enrichManualNotes: false, // Default: don't touch manually-created notes
   
   licenseKey: '',
   licenseStatus: 'free',
