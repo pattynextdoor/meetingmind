@@ -1,6 +1,6 @@
 {
   "name": "meetingmind",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Automatically import meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking",
   "main": "main.js",
   "scripts": {
