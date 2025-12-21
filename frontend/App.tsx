@@ -57,16 +57,16 @@ const Hero = () => {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up mb-20" style={{ animationDelay: '400ms' }}>
           <a href="https://www.youtube.com/watch?v=KZ8D_RlLz7c" target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-emerald-800 text-white font-medium rounded-xl hover:bg-emerald-900 hover:-translate-y-0.5 transition-all shadow-xl shadow-emerald-800/10 flex items-center gap-2 text-lg">
-            <Icons.Play size={20} fill="currentColor" />
+            <Icons.Play size={20} fill="currentColor" className="pointer-events-none" />
             Watch Demo
           </a>
           <a href="https://docs.meetingmind.me/guide/installation" className="px-8 py-4 bg-stone-900 text-[#faf9f7] font-medium rounded-xl hover:bg-stone-800 hover:-translate-y-0.5 transition-all shadow-xl shadow-stone-900/10 flex items-center gap-2 text-lg">
             Get Started
-            <Icons.ArrowRight size={18} />
+            <Icons.ArrowRight size={18} className="pointer-events-none" />
           </a>
           <a href="obsidian://show-plugin?id=meetingmind" className="px-8 py-4 bg-white border-2 border-stone-200 text-stone-900 font-medium rounded-xl hover:bg-stone-50 hover:border-stone-300 hover:-translate-y-0.5 transition-all shadow-lg flex items-center gap-2 text-lg">
             Install in Obsidian
-            <Icons.ArrowRight size={18} />
+            <Icons.ArrowRight size={18} className="pointer-events-none" />
           </a>
         </div>
 
