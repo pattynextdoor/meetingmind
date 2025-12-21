@@ -22,7 +22,7 @@ describe('VaultIndexService', () => {
     it('should index note titles', async () => {
       const file = (app.vault as any)._setFile('Notes/Project Phoenix.md', '# Content');
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('project phoenix')).toBe('Notes/Project Phoenix.md');
     });
@@ -36,7 +36,7 @@ describe('VaultIndexService', () => {
         },
       });
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('john')).toBe('Notes/John Smith.md');
       expect(vaultIndex.lookupExact('j. smith')).toBe('Notes/John Smith.md');
@@ -52,7 +52,7 @@ describe('VaultIndexService', () => {
         },
       });
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('singlealias')).toBe('Notes/Test.md');
     });
@@ -61,7 +61,7 @@ describe('VaultIndexService', () => {
       const file = (app.vault as any)._setFile('Notes/Project Phoenix Team.md', '# Content');
 
       vaultIndex.configure([], true);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Words longer than 3 characters should be indexed
       expect(vaultIndex.hasMatches('project')).toBe(true);
@@ -73,7 +73,7 @@ describe('VaultIndexService', () => {
       const file = (app.vault as any)._setFile('Notes/Project Phoenix.md', '# Content');
 
       vaultIndex.configure([], false);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Full title should be indexed
       expect(vaultIndex.lookupExact('project phoenix')).toBe('Notes/Project Phoenix.md');
@@ -88,7 +88,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Templates/Template.md', '# Content');
 
       vaultIndex.configure(['Archive', 'Templates'], true);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('valid')).toBe('Notes/Valid.md');
       expect(vaultIndex.lookupExact('old')).toBeNull();
@@ -99,7 +99,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('People/John.md', '# Content');
       (app.vault as any)._setFile('Projects/John.md', '# Content');
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Should be ambiguous
       expect(vaultIndex.lookupExact('john')).toBeNull();
@@ -113,7 +113,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Notes/Phoenix.md', '# Content');
       (app.vault as any)._setFile('Notes/Project Phoenix.md', '# Content');
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('project phoenix')).toBe('Notes/Project Phoenix.md');
       expect(vaultIndex.lookupExact('phoenix')).toBeNull(); // Ambiguous
@@ -122,7 +122,7 @@ describe('VaultIndexService', () => {
     it('should handle case-insensitive matching', async () => {
       (app.vault as any)._setFile('Notes/Test Note.md', '# Content');
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('test note')).toBe('Notes/Test Note.md');
       expect(vaultIndex.lookupExact('TEST NOTE')).toBe('Notes/Test Note.md');
@@ -134,7 +134,7 @@ describe('VaultIndexService', () => {
     beforeEach(async () => {
       (app.vault as any)._setFile('Notes/Project Phoenix.md', '# Content');
       (app.vault as any)._setFile('People/Sarah Chen.md', '# Content');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
     });
 
     it('should return path for exact matches', () => {
@@ -155,7 +155,7 @@ describe('VaultIndexService', () => {
     beforeEach(async () => {
       (app.vault as any)._setFile('People/John.md', '# Content');
       (app.vault as any)._setFile('Projects/John.md', '# Content');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
     });
 
     it('should return all matching paths', () => {
@@ -175,7 +175,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Notes/Project Phoenix.md', '# Content');
       (app.vault as any)._setFile('People/John.md', '# Content');
       (app.vault as any)._setFile('Projects/John.md', '# Content');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
     });
 
     it('should return true for exact matches', () => {
@@ -196,7 +196,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Notes/A.md', '# Content');
       (app.vault as any)._setFile('Notes/BB.md', '# Content');
       (app.vault as any)._setFile('Notes/CCC.md', '# Content');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
     });
 
     it('should return terms sorted by length descending', () => {
@@ -216,7 +216,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Notes/Unique.md', '# Content');
       (app.vault as any)._setFile('Notes/John.md', '# Content');
       (app.vault as any)._setFile('People/John.md', '# Content');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       const terms = vaultIndex.getSortedTerms();
       
@@ -239,7 +239,7 @@ describe('VaultIndexService', () => {
 
   describe('edge cases', () => {
     it('should handle empty vault', async () => {
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.getSortedTerms()).toEqual([]);
       expect(vaultIndex.lookupExact('anything')).toBeNull();
@@ -248,7 +248,7 @@ describe('VaultIndexService', () => {
     it('should handle notes with special characters', async () => {
       (app.vault as any)._setFile('Notes/Test-Note_123.md', '# Content');
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('test-note_123')).toBe('Notes/Test-Note_123.md');
     });
@@ -257,7 +257,7 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Notes/A B C Test.md', '# Content');
 
       vaultIndex.configure([], true);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Short words (3 chars or less) should not be indexed as implicit aliases
       expect(vaultIndex.lookupExact('a')).toBeNull();
@@ -277,7 +277,7 @@ describe('VaultIndexService', () => {
         },
       });
 
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('valid')).toBe('Notes/Test.md');
       expect(vaultIndex.lookupExact('another')).toBe('Notes/Test.md');
@@ -290,11 +290,11 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Archive/Test.md', '# Content');
 
       vaultIndex.configure([], true);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       expect(vaultIndex.lookupExact('test')).toBe('Archive/Test.md');
 
       vaultIndex.configure(['Archive'], true);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       expect(vaultIndex.lookupExact('test')).toBeNull();
     });
 
@@ -302,11 +302,11 @@ describe('VaultIndexService', () => {
       (app.vault as any)._setFile('Notes/Multi Word Title.md', '# Content');
 
       vaultIndex.configure([], true);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       expect(vaultIndex.hasMatches('multi')).toBe(true);
 
       vaultIndex.configure([], false);
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       expect(vaultIndex.lookupExact('multi')).toBeNull();
     });
   });

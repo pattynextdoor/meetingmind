@@ -25,7 +25,7 @@ describe('AutoLinker', () => {
     (app.vault as any)._setFile('Projects/Project Phoenix.md', '# Phoenix');
     (app.vault as any)._setFile('Notes/API.md', '# API Documentation');
     
-    await vaultIndex.buildIndex();
+    vaultIndex.buildIndex();
   });
 
   describe('processText', () => {
@@ -103,14 +103,13 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('Phoenix.md', '# Phoenix');
       (app.vault as any)._setFile('Project Phoenix.md', '# Project Phoenix');
       
-      vaultIndex.buildIndex().then(() => {
-        const text = 'Working on Project Phoenix today.';
-        const result = autoLinker.processText(text);
+      vaultIndex.buildIndex();
+      const text = 'Working on Project Phoenix today.';
+      const result = autoLinker.processText(text);
 
-        // Should link to "Project Phoenix" not just "Phoenix"
-        expect(result.linkedText).toContain('[[Project Phoenix]]');
-        expect(result.linkedText).not.toContain('[[Phoenix]]');
-      });
+      // Should link to "Project Phoenix" not just "Phoenix"
+      expect(result.linkedText).toContain('[[Project Phoenix]]');
+      expect(result.linkedText).not.toContain('[[Phoenix]]');
     });
 
     it('should handle ambiguous matches', async () => {
@@ -119,7 +118,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('People/John.md', '# John');
       (app.vault as any)._setFile('Projects/John.md', '# John Project');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 3);
 
       const text = 'John is working on the project.';
@@ -144,7 +143,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('D/Test.md', '# Test');
       (app.vault as any)._setFile('E/Test.md', '# Test');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 3); // Max 3 suggestions
 
       const text = 'This is a test.';
@@ -174,13 +173,12 @@ describe('AutoLinker', () => {
       (app.vault as any)._clear();
       (app.vault as any)._setFile('AB.md', '# AB');
       
-      vaultIndex.buildIndex().then(() => {
-        const text = 'AB testing is important.';
-        const result = autoLinker.processText(text);
+      vaultIndex.buildIndex();
+      const text = 'AB testing is important.';
+      const result = autoLinker.processText(text);
 
-        // Terms less than 3 characters should be skipped
-        expect(result.linkedText).toBe(text);
-      });
+      // Terms less than 3 characters should be skipped
+      expect(result.linkedText).toBe(text);
     });
   });
 
@@ -190,7 +188,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('People/John.md', '# John');
       (app.vault as any)._setFile('Projects/John.md', '# John');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 3);
 
       const text = 'John mentioned John several times.';
@@ -212,7 +210,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('C/Test.md', '# Test');
       (app.vault as any)._setFile('D/Test.md', '# Test');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 2); // Max 2
 
       let text = 'This is a test.';
@@ -245,7 +243,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._setFile('API.md', '# API');
       (app.vault as any)._setFile('Documentation.md', '# Documentation');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 3);
 
       const text = 'API Documentation is ready.';
@@ -278,7 +276,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._clear();
       (app.vault as any)._setFile('C++.md', '# C++');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 3);
 
       const text = 'Learning C++ programming.';
@@ -291,7 +289,7 @@ describe('AutoLinker', () => {
       (app.vault as any)._clear();
       (app.vault as any)._setFile('Test-Driven-Development.md', '# TDD');
       
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       autoLinker = new AutoLinker(vaultIndex, 3);
 
       const text = 'Use Test-Driven-Development for quality.';

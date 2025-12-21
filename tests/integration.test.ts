@@ -33,7 +33,7 @@ describe('Integration Tests', () => {
       // Set up vault with existing notes
       (app.vault as any)._setFile('People/Sarah Chen.md', '# Sarah');
       (app.vault as any)._setFile('Projects/Phoenix.md', '# Project Phoenix');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Parse a transcript
       const vttContent = `WEBVTT
@@ -72,7 +72,7 @@ describe('Integration Tests', () => {
       // Set up vault
       (app.vault as any)._setFile('People/Alice.md', '# Alice');
       (app.vault as any)._setFile('People/Bob.md', '# Bob');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Parse JSON transcript
       const jsonContent = JSON.stringify({
@@ -112,7 +112,7 @@ describe('Integration Tests', () => {
       // Set up vault with ambiguous terms
       (app.vault as any)._setFile('People/John.md', '# John');
       (app.vault as any)._setFile('Projects/John.md', '# John Project');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // Parse transcript
       const txtContent = 'Alice: John mentioned the API issues.';
@@ -144,14 +144,14 @@ describe('Integration Tests', () => {
     it('should rebuild index when new notes are added', async () => {
       // Initial index
       (app.vault as any)._setFile('First.md', '# First');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('first')).toBe('First.md');
       expect(vaultIndex.lookupExact('second')).toBeNull();
 
       // Add new note
       (app.vault as any)._setFile('Second.md', '# Second');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('first')).toBe('First.md');
       expect(vaultIndex.lookupExact('second')).toBe('Second.md');
@@ -163,7 +163,7 @@ describe('Integration Tests', () => {
       (app.metadataCache as any)._setCache('Person.md', {
         frontmatter: { aliases: ['Johnny'] },
       });
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('johnny')).toBe('Person.md');
 
@@ -171,7 +171,7 @@ describe('Integration Tests', () => {
       (app.metadataCache as any)._setCache('Person.md', {
         frontmatter: { aliases: ['Johnny', 'J.'] },
       });
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       expect(vaultIndex.lookupExact('johnny')).toBe('Person.md');
       expect(vaultIndex.lookupExact('j.')).toBe('Person.md');
@@ -183,7 +183,7 @@ describe('Integration Tests', () => {
       (app.vault as any)._setFile('API.md', '# API');
       (app.vault as any)._setFile('REST.md', '# REST');
       (app.vault as any)._setFile('REST API.md', '# REST API');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       const text = 'The REST API documentation needs updating.';
       const result = autoLinker.processText(text);
@@ -194,7 +194,7 @@ describe('Integration Tests', () => {
 
     it('should preserve existing links', async () => {
       (app.vault as any)._setFile('Project.md', '# Project');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       const text = 'See [[Project Notes]] about the Project status.';
       const result = autoLinker.processText(text);
@@ -212,7 +212,7 @@ describe('Integration Tests', () => {
       (app.vault as any)._setFile('People/Sarah.md', '# Sarah');
       (app.vault as any)._setFile('Projects/Phoenix.md', '# Phoenix');
       (app.vault as any)._setFile('Topics/API Design.md', '# API Design');
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
 
       // 2. Import transcript
       const vttContent = `WEBVTT
@@ -264,7 +264,7 @@ describe('Integration Tests', () => {
       }
 
       const startTime = Date.now();
-      await vaultIndex.buildIndex();
+      vaultIndex.buildIndex();
       const elapsed = Date.now() - startTime;
 
       // Should complete in reasonable time (< 1 second for 100 notes)
