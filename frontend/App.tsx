@@ -72,7 +72,7 @@ const Hero = () => {
 
         {/* Hero Visual */}
         <div className="relative animate-fade-up" style={{ animationDelay: '500ms' }}>
-          <div className="absolute inset-0 bg-emerald-500/5 blur-3xl rounded-full transform scale-150 opacity-50"></div>
+          <div className="absolute inset-0 bg-emerald-500/5 blur-3xl rounded-full transform scale-150 opacity-50 pointer-events-none"></div>
           <div className="relative transform hover:scale-[1.01] transition-transform duration-700 ease-out">
              <MacWindow title="Project_Phoenix_Sync.md" className="max-w-4xl mx-auto h-[400px] md:h-[500px] shadow-2xl border-stone-200/80">
                <div className="flex h-full font-sans">
