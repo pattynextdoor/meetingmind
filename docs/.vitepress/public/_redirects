@@ -1,2 +1,4 @@
+# Redirect all routes to index.html for client-side routing
+# This allows VitePress to handle routing on the client side
 /*    /index.html   200
 
