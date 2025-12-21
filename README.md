@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.svg" alt="MeetingMind Logo" width="120" height="120" />
+  <img src="assets/logos/meetingmind_logo_240.png" alt="MeetingMind Logo" width="120" height="120" />
   <h1>MeetingMind for Obsidian</h1>
   <p><strong>Stop copy-pasting transcripts. MeetingMind turns your raw meeting transcripts into linked, actionable Obsidian notes automatically.</strong></p>
   <p>

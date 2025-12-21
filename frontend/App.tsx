@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-[#faf9f7]/95 backdrop-blur-sm border-b border-stone-200 py-4">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <a href="#" className="flex items-center gap-3 font-serif text-2xl tracking-tight text-stone-900 group">
-          <img src="/logo.svg" alt="MeetingMind" className="w-8 h-8" />
+          <img src="/meetingmind_logo_240.png" alt="MeetingMind" className="w-8 h-8" />
           <span className="tracking-tighter">Meeting<span className="text-emerald-800 group-hover:text-emerald-600 transition-colors">Mind</span></span>
         </a>
         
@@ -38,7 +38,7 @@ const Hero = () => {
       <WebGLBackground />
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <div className="mb-8 animate-fade-up" style={{ animationDelay: '0ms' }}>
-          <img src="/logo.svg" alt="MeetingMind" className="w-20 h-20 mx-auto drop-shadow-sm" />
+          <img src="/meetingmind_logo_240.png" alt="MeetingMind" className="w-20 h-20 mx-auto drop-shadow-sm" />
         </div>
         
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 shadow-sm text-stone-600 text-xs font-medium tracking-wide uppercase mb-8 animate-fade-up" style={{ animationDelay: '100ms' }}>
@@ -884,7 +884,7 @@ const Footer = () => (
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-4">
         <div className="flex items-center gap-8">
           <a href="#" className="flex items-center gap-2 font-serif text-xl text-stone-900">
-            <img src="/logo.svg" alt="MeetingMind" className="w-6 h-6" />
+            <img src="/meetingmind_logo_240.png" alt="MeetingMind" className="w-6 h-6" />
             <span className="tracking-tighter">Meeting<span className="text-emerald-800">Mind</span></span>
           </a>
           <div className="hidden md:flex gap-6 text-sm text-stone-500">
