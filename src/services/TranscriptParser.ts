@@ -15,6 +15,7 @@ export class TranscriptParser {
     
     let segments: TranscriptSegment[];
     let participants: string[] = [];
+    let explicitDuration: number | undefined;
     
     switch (extension) {
       case 'vtt':
@@ -27,6 +28,7 @@ export class TranscriptParser {
         const jsonResult = this.parseJSON(content);
         segments = jsonResult.segments;
         participants = jsonResult.participants;
+        explicitDuration = jsonResult.duration;
         break;
       }
       case 'txt':
@@ -40,10 +42,12 @@ export class TranscriptParser {
       participants = [...new Set(segments.map(s => s.speaker).filter(s => s))];
     }
     
-    // Calculate duration from last segment
-    const duration = segments.length > 0 
-      ? Math.ceil((segments[segments.length - 1].timestamp || 0) / 60)
-      : 0;
+    // Use explicit duration if provided, otherwise calculate from last segment
+    const duration = explicitDuration !== undefined 
+      ? explicitDuration
+      : segments.length > 0 
+        ? Math.ceil((segments[segments.length - 1].timestamp || 0) / 60)
+        : 0;
     
     // Extract title from filename
     const title = this.extractTitle(filename);
@@ -180,12 +184,18 @@ export class TranscriptParser {
   /**
    * Parse JSON format (supports various structures)
    */
-  private parseJSON(content: string): { segments: TranscriptSegment[]; participants: string[] } {
+  private parseJSON(content: string): { segments: TranscriptSegment[]; participants: string[]; duration?: number } {
     const segments: TranscriptSegment[] = [];
     let participants: string[] = [];
+    let duration: number | undefined;
     
     try {
       const data = JSON.parse(content);
+      
+      // Extract duration if provided at top level
+      if (typeof data.duration === 'number') {
+        duration = data.duration;
+      }
       
       // Handle Otter.ai export format (transcripts plural)
       if (data.transcripts && Array.isArray(data.transcripts)) {
@@ -250,7 +260,7 @@ export class TranscriptParser {
       console.error('Failed to parse JSON transcript:', e);
     }
     
-    return { segments, participants };
+    return { segments, participants, duration };
   }
   
   /**
