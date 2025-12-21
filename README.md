@@ -2,6 +2,11 @@
   <img src="logo.svg" alt="MeetingMind Logo" width="120" height="120" />
   <h1>MeetingMind for Obsidian</h1>
   <p><strong>Stop copy-pasting transcripts. MeetingMind turns your raw meeting transcripts into linked, actionable Obsidian notes automatically.</strong></p>
+  <p>
+    <a href="https://www.youtube.com/watch?v=KZ8D_RlLz7c">
+      <img src="https://img.shields.io/badge/▶_Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch Demo" />
+    </a>
+  </p>
 </div>
 
 MeetingMind is an Obsidian plugin that automatically imports meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking. Bridge the gap between meeting recording tools and personal knowledge management.

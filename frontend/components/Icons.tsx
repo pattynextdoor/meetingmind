@@ -15,7 +15,8 @@ import {
   Folder,
   Calendar,
   Clock,
-  ChevronDown
+  ChevronDown,
+  Play
 } from 'lucide-react';
 
 export const Icons = {
@@ -35,5 +36,6 @@ export const Icons = {
   Folder,
   Calendar,
   Clock,
-  ChevronDown
+  ChevronDown,
+  Play
 };

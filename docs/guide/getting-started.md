@@ -2,6 +2,20 @@
 
 MeetingMind transforms your meeting transcripts into connected, actionable notes in Obsidian.
 
+## See It In Action
+
+Watch a 2-minute demo showing MeetingMind in action:
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe 
+    src="https://www.youtube.com/embed/KZ8D_RlLz7c" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
 ## What is MeetingMind?
 
 MeetingMind is an Obsidian plugin that:

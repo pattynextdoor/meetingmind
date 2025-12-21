@@ -7,6 +7,9 @@ hero:
   tagline: An Obsidian plugin for importing transcripts with AI summaries, action items, and auto-linking
   actions:
     - theme: brand
+      text: Watch Demo
+      link: https://www.youtube.com/watch?v=KZ8D_RlLz7c
+    - theme: alt
       text: Get Started
       link: /guide/getting-started
     - theme: alt
