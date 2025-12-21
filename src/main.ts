@@ -1432,7 +1432,6 @@ export default class MeetingMindPlugin extends Plugin {
       this.settings.entityUpdatesFolder,
       this.settings.entityTopicsFolder,
       this.settings.enableIssueExtraction,
-      this.settings.enableUpdateExtraction,
       this.settings.enableTopicExtraction,
       this.settings.enrichManualNotes
     );

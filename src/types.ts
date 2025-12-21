@@ -153,7 +153,6 @@ export interface MeetingMindSettings {
   entityUpdatesFolder: string; // Deprecated but kept for migration
   entityTopicsFolder: string;
   enableIssueExtraction: boolean;
-  enableUpdateExtraction: boolean; // Now only enriches People notes, doesn't create separate notes
   enableTopicExtraction: boolean;
   issueArchiveDays: number; // Days before archiving resolved issues
   enrichManualNotes: boolean; // Whether to enrich manually-created notes (default: false)
@@ -209,7 +208,6 @@ export const DEFAULT_SETTINGS: MeetingMindSettings = {
   entityUpdatesFolder: 'Updates', // Deprecated
   entityTopicsFolder: 'Topics',
   enableIssueExtraction: true,
-  enableUpdateExtraction: true, // For People note enrichment only
   enableTopicExtraction: true,
   issueArchiveDays: 30,
   enrichManualNotes: false, // Default: don't touch manually-created notes

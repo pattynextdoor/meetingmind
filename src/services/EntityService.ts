@@ -19,7 +19,6 @@ export class EntityService {
   private updatesFolder: string;
   private topicsFolder: string;
   private enableIssues: boolean;
-  private enableUpdates: boolean;
   private enableTopics: boolean;
   private enrichManualNotes: boolean;
   
@@ -30,7 +29,6 @@ export class EntityService {
     this.updatesFolder = 'Updates';
     this.topicsFolder = 'Topics';
     this.enableIssues = true;
-    this.enableUpdates = true;
     this.enableTopics = true;
     this.enrichManualNotes = false;
   }
@@ -50,7 +48,6 @@ export class EntityService {
     updatesFolder: string,
     topicsFolder: string,
     enableIssues: boolean,
-    enableUpdates: boolean,
     enableTopics: boolean,
     enrichManualNotes: boolean
   ): void {
@@ -58,7 +55,6 @@ export class EntityService {
     this.updatesFolder = updatesFolder;
     this.topicsFolder = topicsFolder;
     this.enableIssues = enableIssues;
-    this.enableUpdates = enableUpdates;
     this.enableTopics = enableTopics;
     this.enrichManualNotes = enrichManualNotes;
   }
@@ -71,7 +67,6 @@ export class EntityService {
     const entities: Array<{ name: string; type: 'issue' | 'update' | 'topic'; currentStatus?: string; path: string }> = [];
     const folders = [];
     if (this.enableIssues && this.issuesFolder) folders.push({ path: this.issuesFolder, type: 'issue' as const });
-    if (this.enableUpdates && this.updatesFolder) folders.push({ path: this.updatesFolder, type: 'update' as const });
     if (this.enableTopics && this.topicsFolder) folders.push({ path: this.topicsFolder, type: 'topic' as const });
     
     for (const folder of folders) {
@@ -746,7 +741,6 @@ ${entity.category ? `category: ${entity.category}` : ''}
     
     const folders = [];
     if (this.enableIssues && this.issuesFolder) folders.push(this.issuesFolder);
-    if (this.enableUpdates && this.updatesFolder) folders.push(this.updatesFolder);
     if (this.enableTopics && this.topicsFolder) folders.push(this.topicsFolder);
     
     for (const folderPath of folders) {

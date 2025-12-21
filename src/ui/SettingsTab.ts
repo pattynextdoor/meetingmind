@@ -650,18 +650,6 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         );
       
       new Setting(containerEl)
-        .setName('Extract updates')
-        .setDesc('Create notes for progress updates, milestones, and status changes')
-        .addToggle(toggle => toggle
-          .setValue(this.plugin.settings.enableUpdateExtraction)
-          .onChange(async (value) => {
-            this.plugin.settings.enableUpdateExtraction = value;
-            await this.plugin.saveSettings();
-            this.plugin.updateEntityService();
-          })
-        );
-      
-      new Setting(containerEl)
         .setName('Extract topics')
         .setDesc('Create notes for important concepts, systems, and recurring themes')
         .addToggle(toggle => toggle

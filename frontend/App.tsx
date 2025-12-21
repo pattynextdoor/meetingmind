@@ -749,20 +749,25 @@ const FAQ = () => {
 
 const Footer = () => (
   <footer className="bg-white py-12 border-t border-stone-200">
-    <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-      <div className="flex items-center gap-8">
-        <a href="#" className="flex items-center gap-2 font-serif text-xl text-stone-900">
-          <img src="/logo.svg" alt="MeetingMind" className="w-6 h-6" />
-          <span className="tracking-tighter">Meeting<span className="text-emerald-800">Mind</span></span>
-        </a>
-        <div className="hidden md:flex gap-6 text-sm text-stone-500">
-          <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
-          <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
-          <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
+    <div className="max-w-7xl mx-auto px-6">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-4">
+        <div className="flex items-center gap-8">
+          <a href="#" className="flex items-center gap-2 font-serif text-xl text-stone-900">
+            <img src="/logo.svg" alt="MeetingMind" className="w-6 h-6" />
+            <span className="tracking-tighter">Meeting<span className="text-emerald-800">Mind</span></span>
+          </a>
+          <div className="hidden md:flex gap-6 text-sm text-stone-500">
+            <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
+            <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
+            <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
+          </div>
+        </div>
+        <div className="text-sm text-stone-400">
+          Built for the <a href="https://obsidian.md" className="underline decoration-stone-200 hover:decoration-stone-400 transition-all text-stone-500">Obsidian</a> community.
         </div>
       </div>
-      <div className="text-sm text-stone-400">
-        Built for the <a href="https://obsidian.md" className="underline decoration-stone-200 hover:decoration-stone-400 transition-all text-stone-500">Obsidian</a> community.
+      <div className="text-center text-xs text-stone-400">
+        Copyright © 2026 Patrick Tumbucon
       </div>
     </div>
   </footer>
