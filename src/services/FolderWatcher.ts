@@ -54,11 +54,11 @@ export class FolderWatcher {
     // Obsidian doesn't have native file watching outside the vault
     // So we poll for changes every 5 seconds as specified in PRD
     this.watchInterval = setInterval(() => {
-      this.checkForNewFiles();
+      void this.checkForNewFiles();
     }, 5000);
     
     // Also check immediately
-    this.checkForNewFiles();
+    void this.checkForNewFiles();
     
     console.debug(`MeetingMind: Folder watcher started for ${this.watchFolder}`);
   }

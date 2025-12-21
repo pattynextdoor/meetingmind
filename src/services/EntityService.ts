@@ -825,7 +825,7 @@ ${entity.category ? `category: ${entity.category}` : ''}
             
             // If no meetings left and no other meaningful content, delete the file
             if (!hasOtherContent && !meetingsHeaderRegex.test(content)) {
-              await this.app.vault.trash(file, false);
+              await this.app.fileManager.trashFile(file);
               deleted++;
               continue; // Skip to next file
             }

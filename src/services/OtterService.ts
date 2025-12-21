@@ -97,11 +97,11 @@ export class OtterService {
     const intervalMs = this.syncInterval * 60 * 1000;
     
     this.syncTimer = setInterval(() => {
-      this.sync();
+      void this.sync();
     }, intervalMs);
     
     // Initial sync
-    this.sync();
+    void this.sync();
     
     console.debug(`MeetingMind: Otter sync started (every ${this.syncInterval} minutes)`);
   }
@@ -346,7 +346,7 @@ export class OtterService {
    */
   private scheduleRetry(): void {
     setTimeout(() => {
-      this.sync();
+      void this.sync();
     }, this.retryDelay);
     
     // Increase delay for next retry (exponential backoff)

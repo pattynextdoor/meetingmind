@@ -183,27 +183,48 @@ ${transcriptText}`;
   ): ParticipantInsight[] {
     const meetingDateStr = meetingDate.toISOString().split('T')[0];
     
+    // Ensure entities has the expected structure
+    const safeEntities: EntityExtraction = {
+      issues: (Array.isArray(entities.issues) ? entities.issues : []) as Entity[],
+      updates: (Array.isArray(entities.updates) ? entities.updates : []) as Entity[],
+      topics: (Array.isArray(entities.topics) ? entities.topics : []) as Entity[],
+    };
+    
     return insights.map(insight => {
       const enriched = { ...insight };
       
       // Add updates owned by this participant
-      enriched.updates = entities.updates
-        .filter(update => update.mentionedBy?.toLowerCase() === insight.name.toLowerCase())
-        .map(update => ({
-          name: update.name,
-          status: update.status || 'in-progress',
-          date: meetingDateStr
-        }));
+      const filteredUpdates = (safeEntities.updates as Entity[]).filter((update: Entity) => {
+        const mentionedBy = update.mentionedBy;
+        return mentionedBy && typeof mentionedBy === 'string' 
+          ? mentionedBy.toLowerCase() === insight.name.toLowerCase()
+          : false;
+      });
+      enriched.updates = filteredUpdates.map((update: Entity) => ({
+        name: update.name,
+        status: update.status || 'in-progress',
+        date: meetingDateStr
+      }));
       
       // Add topics owned by this participant
-      enriched.ownedTopics = entities.topics
-        .filter(topic => topic.mentionedBy?.toLowerCase() === insight.name.toLowerCase())
-        .map(topic => topic.name);
+      enriched.ownedTopics = safeEntities.topics
+        .filter((topic: Entity) => {
+          const mentionedBy = topic.mentionedBy;
+          return mentionedBy && typeof mentionedBy === 'string'
+            ? mentionedBy.toLowerCase() === insight.name.toLowerCase()
+            : false;
+        })
+        .map((topic: Entity) => topic.name);
       
       // Add issues raised by this participant
-      enriched.raisedIssues = entities.issues
-        .filter(issue => issue.mentionedBy?.toLowerCase() === insight.name.toLowerCase())
-        .map(issue => issue.name);
+      enriched.raisedIssues = safeEntities.issues
+        .filter((issue: Entity) => {
+          const mentionedBy = issue.mentionedBy;
+          return mentionedBy && typeof mentionedBy === 'string'
+            ? mentionedBy.toLowerCase() === insight.name.toLowerCase()
+            : false;
+        })
+        .map((issue: Entity) => issue.name);
       
       return enriched;
     });
@@ -659,11 +680,11 @@ ${transcriptText}`;
           max_tokens: 4096,
           messages: [
             {
-              role: 'user',
+              role: 'user' as const,
               content: prompt,
             },
           ],
-        }),
+        } as Record<string, unknown>),
       });
       
       if (response.status !== 200) {
@@ -704,13 +725,13 @@ ${transcriptText}`;
         model: 'gpt-4-turbo-preview',
         messages: [
           {
-            role: 'user',
+            role: 'user' as const,
             content: prompt,
           },
         ],
         max_tokens: 4096,
         response_format: { type: 'json_object' },
-      }),
+      } as Record<string, unknown>),
     });
     
     if (response.status !== 200) {
@@ -911,7 +932,7 @@ ${transcriptText}`;
         
         updates.push({
           entityName,
-          entityType: (update.entityType || 'issue') as 'issue' | 'update' | 'topic',
+          entityType: (update.entityType || 'issue'),
           newStatus,
           reason: update.reason,
         });

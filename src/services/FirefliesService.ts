@@ -196,11 +196,11 @@ export class FirefliesService {
     const intervalMs = this.syncInterval * 60 * 1000;
     
     this.syncTimer = setInterval(() => {
-      this.sync();
+      void this.sync();
     }, intervalMs);
     
     // Initial sync
-    this.sync();
+    void this.sync();
     
     console.debug(`MeetingMind: Fireflies sync started (every ${this.syncInterval} minutes)`);
   }

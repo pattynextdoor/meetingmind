@@ -496,7 +496,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.generateImplicitAliases = value;
             await this.plugin.saveSettings();
-            this.plugin.rebuildVaultIndex();
+            void this.plugin.rebuildVaultIndex();
           })
         );
       
@@ -527,7 +527,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .onChange(async (value) => {
             this.plugin.settings.excludedFolders = value;
             await this.plugin.saveSettings();
-            this.plugin.rebuildVaultIndex();
+            void this.plugin.rebuildVaultIndex();
           })
         );
       

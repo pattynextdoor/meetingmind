@@ -111,7 +111,7 @@ export class NoteGenerator {
           yaml += `  - ${item}\n`;
         }
       } else {
-        yaml += `${key}: ${value}\n`;
+        yaml += `${key}: ${String(value)}\n`;
       }
     }
     

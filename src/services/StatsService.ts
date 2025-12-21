@@ -79,10 +79,17 @@ export class StatsService {
       if (frontmatter.date && (frontmatter.duration !== undefined || frontmatter.participants || frontmatter.attendees)) {
         const participants = this.parseParticipants(frontmatter.participants || frontmatter.attendees || []);
         
+        const dateValue = frontmatter.date;
+        const date = dateValue instanceof Date 
+          ? dateValue 
+          : typeof dateValue === 'string' || typeof dateValue === 'number'
+          ? new Date(dateValue)
+          : new Date();
+        
         meetings.push({
           file,
           title: file.basename,
-          date: new Date(frontmatter.date),
+          date,
           duration: frontmatter.duration || 0,
           participants,
           source: frontmatter.source || 'unknown',
