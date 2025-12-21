@@ -16,7 +16,8 @@ import {
   Calendar,
   Clock,
   ChevronDown,
-  Play
+  Play,
+  Star
 } from 'lucide-react';
 
 export const Icons = {
@@ -37,5 +38,6 @@ export const Icons = {
   Calendar,
   Clock,
   ChevronDown,
-  Play
+  Play,
+  Star
 };

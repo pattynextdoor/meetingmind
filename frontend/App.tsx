@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Icons } from './components/Icons';
 import { AutoLinkVisual, AIExtractionVisual, DataviewVisual, GraphViewVisual, MacWindow } from './components/Visuals';
 import { WebGLBackground } from './components/WebGLBackground';
+import { ProBackground } from './components/ProBackground';
 import { PricingTier } from './types';
 
 // --- Components ---
@@ -193,19 +194,130 @@ const Hero = () => {
 };
 
 const SocialProof = () => (
-  <section className="py-12 bg-[#f5f3ef] border-b border-stone-200">
-    <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-      {[
-        { value: "VTT/SRT/JSON", label: "Format Support" },
-        { value: "Claude + GPT", label: "AI Providers" },
-        { value: "Auto", label: "Wiki-Linking" },
-        { value: "$39", label: "Lifetime Pro" },
-      ].map((stat, i) => (
-        <div key={i} className="text-center group cursor-default">
-          <div className="font-serif text-3xl md:text-4xl text-stone-900 mb-1 group-hover:scale-110 transition-transform duration-300 ease-out">{stat.value}</div>
-          <div className="text-xs uppercase tracking-widest text-stone-500 font-medium">{stat.label}</div>
+  <section className="py-16 bg-[#f5f3ef] border-b border-stone-200">
+    <div className="max-w-4xl mx-auto px-6">
+      {/* Testimonial */}
+      <div className="bg-white rounded-xl border border-stone-200 shadow-lg p-8 mb-12">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0">
+            <img 
+              src="/patrick-profile.jpg" 
+              alt="Patrick Tumbucon" 
+              className="w-16 h-16 rounded-full object-cover border-2 border-emerald-100 sepia"
+            />
+          </div>
+          <div className="flex-1">
+            <p className="text-stone-700 text-lg leading-relaxed mb-4 italic">
+              "I built MeetingMind because I was tired of losing context between meetings. 
+               As a person with autism, I sometimes have difficulty remembering the finer details of a meeting.
+               Now? I import my meeting transcripts, they integrate with my Obsidian vault,
+               and I can easily connect the dots between topics, people, and issues."
+            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-medium text-stone-900">Patrick Tumbucon</div>
+                <div className="text-sm text-stone-500">Creator of MeetingMind</div>
+              </div>
+              <div className="flex gap-1 text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Icons.Star key={i} size={16} fill="currentColor" />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-      ))}
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {[
+          { value: "VTT/SRT/JSON", label: "Format Support" },
+          { value: "Claude + GPT", label: "AI Providers" },
+          { value: "Auto", label: "Wiki-Linking" },
+          { value: "$39", label: "Lifetime Pro" },
+        ].map((stat, i) => (
+          <div key={i} className="text-center group cursor-default">
+            <div className="font-serif text-3xl md:text-4xl text-stone-900 mb-1 group-hover:scale-110 transition-transform duration-300 ease-out">{stat.value}</div>
+            <div className="text-xs uppercase tracking-widest text-stone-500 font-medium">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const BeforeAfter = () => (
+  <section className="py-24 bg-[#faf9f7] border-b border-stone-200 overflow-hidden">
+    <div className="max-w-4xl mx-auto px-6 relative">
+      <div className="text-center mb-16">
+        <h2 className="font-serif text-4xl text-stone-900 mb-4">See the difference</h2>
+        <p className="text-stone-600 text-lg">Stop letting valuable context slip away in isolated recordings.</p>
+      </div>
+
+      <div className="grid md:grid-cols-[1fr_auto_1fr] gap-6 items-center max-w-5xl mx-auto">
+        
+        {/* Left Card: The Problem */}
+        <div className="group relative p-8 rounded-2xl bg-[#f5f5f7] border border-stone-200/60 h-full flex flex-col justify-center">
+          <div className="opacity-60 group-hover:opacity-80 transition-opacity">
+            <div className="flex items-center gap-2 mb-6 text-stone-500">
+              <Icons.FileText size={16} />
+              <span className="text-xs font-bold uppercase tracking-widest">Static Transcripts</span>
+            </div>
+
+            <ul className="space-y-4 font-medium text-stone-600">
+              {[
+                "Isolated text dumps",
+                "Disconnected from your vault",
+                "Manual copy-pasting",
+                "Unstructured data"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3">
+                  <Icons.X size={16} className="text-stone-400 flex-shrink-0" />
+                  <span className="text-stone-500">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Connection (Desktop) */}
+        <div className="hidden md:flex flex-col items-center justify-center relative h-full px-4">
+           {/* Line */}
+           <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-stone-200 -z-10"></div>
+           
+           {/* Badge */}
+           <div className="bg-white border border-stone-200 shadow-sm rounded-full px-3 py-1.5 flex items-center gap-2 z-10">
+              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest whitespace-nowrap">Import</span>
+              <Icons.ArrowRight size={12} className="text-stone-400" />
+           </div>
+        </div>
+
+        {/* Right Card: The Solution */}
+        <div className="group relative p-8 rounded-2xl bg-white border border-stone-200 shadow-xl shadow-stone-200/40 h-full overflow-hidden hover:-translate-y-1 transition-transform duration-500">
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-6 text-emerald-900">
+              <Icons.Network size={16} className="text-emerald-600" />
+              <span className="text-xs font-bold uppercase tracking-widest">Connected Knowledge</span>
+            </div>
+
+            <ul className="space-y-4 font-medium text-stone-900">
+              {[
+                "Deeply linked vault notes",
+                "Rich participant context",
+                "Automated graph growth",
+                "Structured actionable insights"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                    <Icons.Check size={12} className="text-emerald-700 stroke-[3]" />
+                  </div>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 );
@@ -586,8 +698,14 @@ const PricingCard = ({ tier }: { tier: PricingTier }) => (
       : 'bg-white border-stone-200 hover:border-stone-300 hover:shadow-lg'
     }
   `}>
+    <div className="absolute inset-0 rounded-xl overflow-hidden">
+      {tier.name === "Free" && <WebGLBackground opacity={0.6} />}
+      {tier.name === "Pro License" && <ProBackground opacity={0.5} />}
+    </div>
+    
+    <div className="relative z-10 flex flex-col h-full">
     {tier.featured && (
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-800 text-white px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">
+        <div className="absolute -top-11 left-1/2 -translate-x-1/2 bg-emerald-800 text-white px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">
         Best Value
       </div>
     )}
@@ -622,6 +740,7 @@ const PricingCard = ({ tier }: { tier: PricingTier }) => (
     >
       {tier.cta}
     </a>
+    </div>
   </div>
 );
 
@@ -647,7 +766,7 @@ const Pricing = () => {
     {
       name: "Pro License",
       price: "$39",
-      period: "once",
+      period: "lifetime",
       description: "Unlock context-aware AI features. Pay once, use forever.",
       features: [
         "Everything in Free",
@@ -694,6 +813,18 @@ const FAQ = () => {
     {
       question: "Do I need an API key for the Free version?",
       answer: "No! The Free version works completely offline. Auto-linking, participant tracking, folder watcher, and all core features work without any API keys. Only Pro features (AI summaries, action items, etc.) require your own API key."
+    },
+    {
+      question: "What if I don't like it?",
+      answer: "We offer refunds within 14 days, no questions asked. If Pro doesn't save you time or fit your workflow, just email support@meetingmind.me and we'll process your refund immediately."
+    },
+    {
+      question: "Is this worth $39?",
+      answer: "If you attend just 2 meetings per week, you'll save hours of manual note organization in the first month alone. Most users report saving 15-30 minutes per meeting by not having to manually write summaries, extract action items, or create issue tracking notes. That's 1-2 hours saved per week—your time back for $39, once."
+    },
+    {
+      question: "Can I try Pro before buying?",
+      answer: "The free version gives you the full import and linking experience—try it first and see how it fits your workflow. When you're ready for AI summaries, action items, and entity extraction, upgrade to Pro with a one-time payment. You can also reprocess all your existing meetings to add AI enrichment after upgrading."
     },
     {
       question: "How much do API calls cost?",
@@ -780,6 +911,7 @@ const App = () => {
       <Navbar />
       <Hero />
       <SocialProof />
+      <BeforeAfter />
       <Features />
       <HowItWorks />
       <Pricing />

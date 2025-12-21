@@ -80,7 +80,7 @@ const fragmentShaderSource = `
   }
 `;
 
-export const WebGLBackground = () => {
+export const WebGLBackground = ({ className = "absolute inset-0 w-full h-full pointer-events-none", opacity = 0.8 }: { className?: string, opacity?: number }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
 
@@ -195,8 +195,8 @@ export const WebGLBackground = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 0.8 }}
+      className={className}
+      style={{ opacity }}
     />
   );
 };
