@@ -37,6 +37,7 @@ Configure automatic entity extraction:
 - Issues, topics, and updates
 - Folder locations
 - Auto-archive settings
+- Enrich manually-created notes
 
 ### 🔑 License
 Manage your Pro license:
@@ -68,6 +69,7 @@ Manage your Pro license:
 | Extract issues | Create notes for blockers and problems | On |
 | Extract updates | Extract updates for participant notes | On |
 | Extract topics | Create notes for concepts and themes | On |
+| Enrich manually-created notes | Allow enriching notes you created manually | Off |
 | Issues folder | Where issue notes are created | `Issues` |
 | Topics folder | Where topic notes are created | `Topics` |
 | Issue archive days | Days before archiving resolved issues | 30 |

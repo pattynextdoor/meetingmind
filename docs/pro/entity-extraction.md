@@ -32,6 +32,7 @@ Entity notes are automatically created in your configured folders and linked to 
 | Extract issues | Create notes for blockers and problems | On |
 | Extract updates | Extract updates for participant notes | On |
 | Extract topics | Create notes for concepts and themes | On |
+| Enrich manually-created notes | Allow enriching notes you created manually | Off |
 | Issues folder | Where issue notes are created | `Issues` |
 | Topics folder | Where topic notes are created | `Topics` |
 | Issue archive days | Days before archiving resolved issues | 30 |
@@ -162,6 +163,58 @@ Entities automatically link to the people involved:
 - **Participant notes**: Include "Raised Issues" and "Owns" sections with reverse links
 
 This creates a rich knowledge graph in Obsidian's graph view.
+
+## Enrich Manually-Created Notes
+
+You can enable MeetingMind to find and enrich notes you created manually:
+
+**Setting:** `Entity Extraction → Enrich manually-created notes` (default: OFF)
+
+**How it works:**
+1. You create `Platform Migration.md` or `Checkout Service.md` manually with your own notes
+2. MeetingMind detects these topics mentioned in meetings
+3. Plugin finds your existing notes (even without proper frontmatter)
+4. Adds frontmatter (`type: topic`, created date, status)
+5. AI synthesizes your existing content with new meeting context
+6. Your manual notes are preserved and enhanced
+
+**Example:**
+
+**Your manual note (before):**
+```markdown
+# Platform Migration
+
+Major initiative to modernize our infrastructure.
+Moving from monolith to microservices.
+```
+
+**After first meeting (AI enriches):**
+```markdown
+---
+type: topic
+created: 2025-01-13
+category: technical
+---
+
+# Platform Migration
+
+## Description
+Major initiative to modernize infrastructure, transitioning from monolith to microservices. Sam Chen is leading the effort with a target Q2 launch. Focus on Checkout Service as the first migration candidate.
+
+## Updates
+- **2025-01-13** (from [[Monday Standup]]): On track for Q2 launch, Checkout Service is the first priority
+
+## Related Meetings
+- [[2025-01-13 Monday Standup]] (2025-01-13)
+```
+
+**Benefits:**
+- Bridge manual and automated workflows
+- Enrich project documentation automatically
+- Preserve existing knowledge while adding AI insights
+- Opt-in control (default: OFF)
+
+**Privacy note:** Your manually-created notes are only modified if you explicitly enable this setting.
 
 ## Tips
 

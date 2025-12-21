@@ -359,9 +359,9 @@ const Features = () => {
             </div>
             <h2 className="font-serif text-4xl text-stone-900">Grow your knowledge graph</h2>
             <p className="font-sans text-lg text-stone-600 leading-relaxed">
-              MeetingMind doesn't just link to existing notes—it creates new ones and connects them to people. 
+              MeetingMind doesn't just link to existing notes—it creates new ones and enriches them with AI. 
               Issues and topics mentioned in meetings automatically become part of your vault, 
-              linked to who raised them and who owns them.
+              with living descriptions that evolve as more meetings reference them.
             </p>
             <ul className="space-y-3 text-stone-600 font-sans text-sm">
               <li className="flex items-center gap-3">
@@ -370,11 +370,15 @@ const Features = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
-                <span>Document topics with ownership tracking</span>
+                <span>Document topics with ownership tracking and AI-synthesized descriptions</span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
                 <span>Track progress updates on participant notes</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Icons.Check className="text-emerald-700" size={16} />
+                <span>Enrich your manually-created notes (opt-in)</span>
               </li>
               <li className="flex items-center gap-3">
                 <Icons.Check className="text-emerald-700" size={16} />
