@@ -202,7 +202,7 @@ export class FirefliesService {
     // Initial sync
     void this.sync();
     
-    console.debug(`MeetingMind: Fireflies sync started (every ${this.syncInterval} minutes)`);
+    console.debug(`MeetingMind: fireflies sync started (every ${this.syncInterval} minutes)`);
   }
   
   /**
@@ -213,7 +213,7 @@ export class FirefliesService {
       clearInterval(this.syncTimer);
       this.syncTimer = null;
     }
-    console.debug('MeetingMind: Fireflies sync stopped');
+    console.debug('MeetingMind: fireflies sync stopped');
   }
   
   /**
@@ -221,7 +221,7 @@ export class FirefliesService {
    */
   async sync(): Promise<RawTranscript[]> {
     if (!this.isConnected()) {
-      console.debug('MeetingMind: Cannot sync - Fireflies not configured');
+      console.debug('MeetingMind: cannot sync - Fireflies not configured');
       return [];
     }
     
@@ -239,13 +239,13 @@ export class FirefliesService {
       this.lastSyncTimestamp = Date.now();
       
       this.updateStatus('idle', `Synced ${transcripts.length} transcripts from Fireflies`);
-      console.debug(`MeetingMind: Fireflies sync complete - ${transcripts.length} new transcripts`);
+      console.debug(`MeetingMind: fireflies sync complete - ${transcripts.length} new transcripts`);
       
       return transcripts;
       
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Fireflies sync failed';
-      console.error('MeetingMind: Fireflies sync failed', error);
+      console.error('MeetingMind: fireflies sync failed', error);
       this.updateStatus('error', `Fireflies sync failed: ${errorMessage}`);
       return [];
     }
@@ -269,7 +269,7 @@ export class FirefliesService {
       };
       
       if (!listResult.data?.transcripts) {
-        console.debug('MeetingMind: No transcripts returned from Fireflies');
+        console.debug('MeetingMind: no transcripts returned from Fireflies');
         return [];
       }
       
@@ -279,7 +279,7 @@ export class FirefliesService {
       const sinceDate = timestamp ? new Date(timestamp) : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
       const newTranscripts = transcripts.filter(t => new Date(t.date) > sinceDate);
       
-      console.debug(`MeetingMind: Found ${newTranscripts.length} new Fireflies transcripts`);
+      console.debug(`MeetingMind: found ${newTranscripts.length} new Fireflies transcripts`);
       
       // Fetch full details for each new transcript
       for (const transcript of newTranscripts) {
@@ -289,12 +289,12 @@ export class FirefliesService {
             rawTranscripts.push(fullTranscript);
           }
         } catch (e) {
-          console.error(`MeetingMind: Failed to fetch Fireflies transcript ${transcript.id}`, e);
+          console.error(`MeetingMind: failed to fetch Fireflies transcript ${transcript.id}`, e);
         }
       }
       
     } catch (error) {
-      console.error('MeetingMind: Failed to fetch Fireflies transcripts list', error);
+      console.error('MeetingMind: failed to fetch Fireflies transcripts list', error);
       throw error;
     }
     
@@ -320,7 +320,7 @@ export class FirefliesService {
       return this.convertToRawTranscript(transcript);
       
     } catch (error) {
-      console.error(`MeetingMind: Failed to fetch Fireflies transcript ${id}`, error);
+      console.error(`MeetingMind: failed to fetch Fireflies transcript ${id}`, error);
       return null;
     }
   }

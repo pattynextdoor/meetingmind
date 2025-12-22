@@ -103,7 +103,7 @@ export class OtterService {
     // Initial sync
     void this.sync();
     
-    console.debug(`MeetingMind: Otter sync started (every ${this.syncInterval} minutes)`);
+    console.debug(`MeetingMind: otter sync started (every ${this.syncInterval} minutes)`);
   }
   
   /**
@@ -114,7 +114,7 @@ export class OtterService {
       clearInterval(this.syncTimer);
       this.syncTimer = null;
     }
-    console.debug('MeetingMind: Otter sync stopped');
+    console.debug('MeetingMind: otter sync stopped');
   }
   
   /**
@@ -122,7 +122,7 @@ export class OtterService {
    */
   async sync(): Promise<void> {
     if (!this.isConnected()) {
-      console.debug('MeetingMind: Cannot sync - not connected to Otter');
+      console.debug('MeetingMind: cannot sync - not connected to Otter');
       return;
     }
     
@@ -143,10 +143,10 @@ export class OtterService {
       this.retryDelay = 60000;
       
       this.updateStatus('idle', `Synced ${transcripts.length} transcripts`);
-      console.debug(`MeetingMind: Otter sync complete - ${transcripts.length} new transcripts`);
+      console.debug(`MeetingMind: otter sync complete - ${transcripts.length} new transcripts`);
       
     } catch (error: unknown) {
-      console.error('MeetingMind: Otter sync failed', error);
+      console.error('MeetingMind: otter sync failed', error);
       
       const errorWithStatus = error as Error & { status?: number };
       if (errorWithStatus.status === 401) {
@@ -206,7 +206,7 @@ export class OtterService {
           transcripts.push(fullTranscript);
         }
       } catch (e) {
-        console.error(`MeetingMind: Failed to fetch transcript ${speech.id}`, e);
+        console.error(`MeetingMind: failed to fetch transcript ${speech.id}`, e);
       }
     }
     
@@ -264,7 +264,7 @@ export class OtterService {
         hash,
       };
     } catch (error) {
-      console.error(`MeetingMind: Failed to fetch transcript ${id}`, error);
+      console.error(`MeetingMind: failed to fetch transcript ${id}`, error);
       return null;
     }
   }
@@ -331,11 +331,11 @@ export class OtterService {
           this.onTokenRefresh(this.accessToken, this.refreshToken);
         }
         
-        console.debug('MeetingMind: Otter token refreshed successfully');
+        console.debug('MeetingMind: otter token refreshed successfully');
         return true;
       }
     } catch (error) {
-      console.error('MeetingMind: Token refresh failed', error);
+      console.error('MeetingMind: token refresh failed', error);
     }
     
     return false;
@@ -422,7 +422,7 @@ export class OtterService {
         };
       }
     } catch (error) {
-      console.error('MeetingMind: OAuth token exchange failed', error);
+      console.error('MeetingMind: oAuth token exchange failed', error);
     }
     
     return null;

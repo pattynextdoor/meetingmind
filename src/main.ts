@@ -67,7 +67,7 @@ export default class MeetingMindPlugin extends Plugin {
   private maxLogs = 100;
   
   async onload(): Promise<void> {
-    console.debug('MeetingMind: Loading plugin');
+    console.debug('MeetingMind: loading plugin');
     
     // Load settings
     await this.loadSettings();
@@ -95,11 +95,11 @@ export default class MeetingMindPlugin extends Plugin {
     // Start services
     this.startServices();
     
-    console.debug('MeetingMind: Plugin loaded successfully');
+    console.debug('MeetingMind: plugin loaded successfully');
   }
   
   onunload(): void {
-    console.debug('MeetingMind: Unloading plugin');
+    console.debug('MeetingMind: unloading plugin');
     
     // Clean up services
     this.folderWatcher?.destroy();
@@ -175,11 +175,11 @@ export default class MeetingMindPlugin extends Plugin {
       this.entityService.archiveResolvedIssues(this.settings.issueArchiveDays)
         .then(result => {
           if (result.archived > 0) {
-            console.debug(`MeetingMind: Auto-archived ${result.archived} resolved issue(s)`);
+            console.debug(`MeetingMind: auto-archived ${result.archived} resolved issue(s)`);
           }
         })
         .catch(error => {
-          console.error('MeetingMind: Auto-archive failed', error);
+          console.error('MeetingMind: auto-archive failed', error);
         });
     }
     
@@ -359,7 +359,7 @@ export default class MeetingMindPlugin extends Plugin {
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       this.addLog('Import', 'error', `Failed to import ${file.name}`, errorMessage);
-      console.error('MeetingMind: Import failed', error);
+      console.error('MeetingMind: import failed', error);
     }
   }
   
@@ -371,7 +371,7 @@ export default class MeetingMindPlugin extends Plugin {
     try {
       // Check for duplicate (unless skipped for manual imports)
       if (!skipDuplicateCheck && this.isDuplicate(transcript.hash)) {
-        console.debug(`MeetingMind: Skipping duplicate transcript ${transcript.title}`);
+        console.debug(`MeetingMind: skipping duplicate transcript ${transcript.title}`);
         return null;
       }
       
@@ -519,16 +519,16 @@ export default class MeetingMindPlugin extends Plugin {
       );
       
       if (result.created.length > 0) {
-        console.debug(`MeetingMind: Created participant notes for: ${result.created.join(', ')}`);
+        console.debug(`MeetingMind: created participant notes for: ${result.created.join(', ')}`);
         new Notice(`Created notes for: ${result.created.join(', ')}`);
         this.vaultIndex.scheduleIncrementalUpdate();
       }
       
       if (result.updated.length > 0) {
-        console.debug(`MeetingMind: Updated participant notes for: ${result.updated.join(', ')}`);
+        console.debug(`MeetingMind: updated participant notes for: ${result.updated.join(', ')}`);
       }
     } catch (error) {
-      console.error('MeetingMind: Failed to process participant notes', error);
+      console.error('MeetingMind: failed to process participant notes', error);
       // Continue - don't block meeting note creation
     }
   }
@@ -553,7 +553,7 @@ export default class MeetingMindPlugin extends Plugin {
       // Create/update entity notes
       await this.createEntityNotes(transcript, file, entities);
     } catch (error) {
-      console.error('MeetingMind: Failed to process entities', error);
+      console.error('MeetingMind: failed to process entities', error);
       // Continue - don't block meeting note creation
     }
   }
@@ -590,10 +590,10 @@ export default class MeetingMindPlugin extends Plugin {
       }
       
       if (statusUpdates.length > 0) {
-        console.debug(`MeetingMind: Updated status for ${statusUpdates.length} entity(ies)`);
+        console.debug(`MeetingMind: updated status for ${statusUpdates.length} entity(ies)`);
       }
     } catch (error) {
-      console.error('MeetingMind: Failed to analyze entity status changes', error);
+      console.error('MeetingMind: failed to analyze entity status changes', error);
       // Continue - don't block entity extraction
     }
   }
@@ -622,13 +622,13 @@ export default class MeetingMindPlugin extends Plugin {
     );
     
     if (entityResult.created.length > 0) {
-      console.debug(`MeetingMind: Created entity notes for: ${entityResult.created.join(', ')}`);
+      console.debug(`MeetingMind: created entity notes for: ${entityResult.created.join(', ')}`);
       new Notice(`Created notes for: ${entityResult.created.join(', ')}`);
       this.vaultIndex.scheduleIncrementalUpdate();
     }
     
     if (entityResult.updated.length > 0) {
-      console.debug(`MeetingMind: Updated entity notes for: ${entityResult.updated.join(', ')}`);
+      console.debug(`MeetingMind: updated entity notes for: ${entityResult.updated.join(', ')}`);
     }
   }
   
@@ -743,7 +743,7 @@ export default class MeetingMindPlugin extends Plugin {
           } catch (error: unknown) {
             failCount++;
             const errorMessage = error instanceof Error ? error.message : String(error);
-            console.error(`MeetingMind: Import failed for ${file.name}`, error);
+            console.error(`MeetingMind: import failed for ${file.name}`, error);
             
             // Show error in modal
             progressText.setText(`❌ Failed: ${file.name} - ${errorMessage}`);
@@ -799,7 +799,7 @@ export default class MeetingMindPlugin extends Plugin {
       new Notice('Meeting dashboard updated!');
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('MeetingMind: Dashboard generation failed', error);
+      console.error('MeetingMind: dashboard generation failed', error);
       new Notice(`Dashboard failed: ${errorMessage}`);
     }
   }
@@ -836,7 +836,7 @@ export default class MeetingMindPlugin extends Plugin {
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('MeetingMind: Cleanup failed', error);
+      console.error('MeetingMind: cleanup failed', error);
       new Notice(`Cleanup failed: ${errorMessage}`);
       this.updateStatusBar('error', errorMessage);
     }
@@ -862,7 +862,7 @@ export default class MeetingMindPlugin extends Plugin {
         new Notice(message);
         
         if (result.errors.length > 0) {
-          console.error('MeetingMind: Archive errors:', result.errors);
+          console.error('MeetingMind: archive errors:', result.errors);
         }
         
         // Rebuild vault index after archiving
@@ -872,7 +872,7 @@ export default class MeetingMindPlugin extends Plugin {
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('MeetingMind: Archive failed', error);
+      console.error('MeetingMind: archive failed', error);
       new Notice(`Archive failed: ${errorMessage}`);
       this.updateStatusBar('error', errorMessage);
     }
@@ -936,14 +936,14 @@ export default class MeetingMindPlugin extends Plugin {
           const parsed = this.parseExistingNote(content);
           
           if (!parsed) {
-            console.debug(`MeetingMind: Skipping ${file.basename} - not a meeting note`);
+            console.debug(`MeetingMind: skipping ${file.basename} - not a meeting note`);
             skipped++;
             continue;
           }
           
           // Check if it already has AI enrichment
           if (parsed.existingEnrichment?.summary) {
-            console.debug(`MeetingMind: Skipping ${file.basename} - already has AI enrichment`);
+            console.debug(`MeetingMind: skipping ${file.basename} - already has AI enrichment`);
             skipped++;
             continue;
           }
@@ -956,7 +956,7 @@ export default class MeetingMindPlugin extends Plugin {
           await new Promise(resolve => setTimeout(resolve, 1000));
           
         } catch (error) {
-          console.error(`MeetingMind: Failed to reprocess ${file.basename}`, error);
+          console.error(`MeetingMind: failed to reprocess ${file.basename}`, error);
           failed++;
         }
       }
@@ -984,7 +984,7 @@ export default class MeetingMindPlugin extends Plugin {
       
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('MeetingMind: Batch reprocess failed', error);
+      console.error('MeetingMind: batch reprocess failed', error);
       new Notice(`Batch reprocess failed: ${errorMessage}`);
       this.updateStatusBar('error', errorMessage);
     }
@@ -1183,7 +1183,7 @@ export default class MeetingMindPlugin extends Plugin {
       
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('MeetingMind: Reprocess failed', error);
+      console.error('MeetingMind: reprocess failed', error);
       new Notice(`Reprocess failed: ${errorMessage}`);
       this.updateStatusBar('error', errorMessage);
     }
@@ -1325,7 +1325,7 @@ export default class MeetingMindPlugin extends Plugin {
       return { transcript, existingEnrichment };
       
     } catch (error) {
-      console.error('MeetingMind: Failed to parse existing note', error);
+      console.error('MeetingMind: failed to parse existing note', error);
       return null;
     }
   }

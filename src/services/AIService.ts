@@ -104,7 +104,7 @@ export class AIService {
           enrichment.participantInsights = insights;
         }
       } catch (error) {
-        console.error('MeetingMind: Failed to generate participant insights', error);
+        console.error('MeetingMind: failed to generate participant insights', error);
         // Continue without participant insights
       }
     }
@@ -168,7 +168,7 @@ ${transcriptText}`;
       
       return this.parseParticipantInsights(response);
     } catch (error) {
-      console.error('MeetingMind: Failed to generate participant insights', error);
+      console.error('MeetingMind: failed to generate participant insights', error);
       return null;
     }
   }
@@ -290,7 +290,7 @@ ${transcriptText}`;
         sentiment: p.sentiment || undefined,
       }));
     } catch (error) {
-      console.error('MeetingMind: Failed to parse participant insights', error);
+      console.error('MeetingMind: failed to parse participant insights', error);
       return [];
     }
   }
@@ -364,7 +364,7 @@ ${transcriptText}`;
       
       return this.parseEntityExtraction(response);
     } catch (error) {
-      console.error('MeetingMind: Failed to extract entities', error);
+      console.error('MeetingMind: failed to extract entities', error);
       return null;
     }
   }
@@ -416,7 +416,7 @@ ${transcriptText}`;
         topics: (data.topics || []).map((item) => parseEntity(item, 'topic')),
       };
     } catch (error) {
-      console.error('MeetingMind: Failed to parse entity extraction', error);
+      console.error('MeetingMind: failed to parse entity extraction', error);
       return {
         issues: [],
         updates: [],
@@ -477,7 +477,7 @@ Return ONLY the synthesized description text, no JSON or extra formatting.`;
       // Clean up the response - remove any quotes or extra whitespace
       return response.trim().replace(/^["']|["']$/g, '');
     } catch (error) {
-      console.error('MeetingMind: Failed to synthesize description', error);
+      console.error('MeetingMind: failed to synthesize description', error);
       return null;
     }
   }
@@ -527,7 +527,7 @@ Return ONLY the synthesized "About" text, no JSON or extra formatting.`;
       
       return response.trim().replace(/^["']|["']$/g, '');
     } catch (error) {
-      console.error('MeetingMind: Failed to synthesize person about', error);
+      console.error('MeetingMind: failed to synthesize person about', error);
       return null;
     }
   }
@@ -805,7 +805,7 @@ ${transcriptText}`;
         ),
       };
     } catch (error) {
-      console.error('MeetingMind: Failed to parse AI response', error, response);
+      console.error('MeetingMind: failed to parse AI response', error, response);
       return {
         summary: '',
         actionItems: [],
@@ -915,7 +915,7 @@ ${transcriptText}`;
       
       return this.parseEntityStatusUpdates(response);
     } catch (error) {
-      console.error('MeetingMind: Failed to analyze entity status changes', error);
+      console.error('MeetingMind: failed to analyze entity status changes', error);
       return [];
     }
   }
@@ -967,7 +967,7 @@ ${transcriptText}`;
       
       return updates;
     } catch (error) {
-      console.error('MeetingMind: Failed to parse entity status updates', error);
+      console.error('MeetingMind: failed to parse entity status updates', error);
       return [];
     }
   }

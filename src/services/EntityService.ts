@@ -103,11 +103,11 @@ export class EntityService {
               path: file.path,
             });
           } catch (error) {
-            console.error(`MeetingMind: Failed to read entity file ${file.path}`, error);
+            console.error(`MeetingMind: failed to read entity file ${file.path}`, error);
           }
         }
       } catch (error) {
-        console.error(`MeetingMind: Failed to read entity folder ${folder.path}`, error);
+        console.error(`MeetingMind: failed to read entity folder ${folder.path}`, error);
       }
     }
     
@@ -176,9 +176,9 @@ export class EntityService {
       }
       
       await this.app.vault.modify(file, content);
-      console.debug(`MeetingMind: Updated entity status for ${entityPath} to ${newStatus}`);
+      console.debug(`MeetingMind: updated entity status for ${entityPath} to ${newStatus}`);
     } catch (error) {
-      console.error(`MeetingMind: Failed to update entity status for ${entityPath}`, error);
+      console.error(`MeetingMind: failed to update entity status for ${entityPath}`, error);
     }
   }
   
@@ -273,7 +273,7 @@ export class EntityService {
     if (this.enrichManualNotes) {
       for (const file of files) {
         if (file.basename.toLowerCase() === entity.name.toLowerCase()) {
-          console.debug(`MeetingMind: Found manually-created note for ${entity.name} at ${file.path}`);
+          console.debug(`MeetingMind: found manually-created note for ${entity.name} at ${file.path}`);
           return file.path;
         }
       }
@@ -317,10 +317,10 @@ export class EntityService {
     
     try {
       await this.app.vault.create(filePath, content);
-      console.debug(`MeetingMind: Created ${entity.type} note for ${entity.name}`);
+      console.debug(`MeetingMind: created ${entity.type} note for ${entity.name}`);
       return filePath;
     } catch (error) {
-      console.error(`MeetingMind: Failed to create note for ${entity.name}`, error);
+      console.error(`MeetingMind: failed to create note for ${entity.name}`, error);
       return null;
     }
   }
@@ -415,7 +415,7 @@ created: ${date}`;
       
       // Check if this meeting is already referenced
       if (content.includes(meetingLink)) {
-        console.debug(`MeetingMind: Meeting already referenced in ${notePath}`);
+        console.debug(`MeetingMind: meeting already referenced in ${notePath}`);
         return;
       }
       
@@ -431,7 +431,7 @@ ${entity.category ? `category: ${entity.category}` : ''}
 
 `;
         content = frontmatter + content;
-        console.debug(`MeetingMind: Added frontmatter to manually-created note ${notePath}`);
+        console.debug(`MeetingMind: added frontmatter to manually-created note ${notePath}`);
       }
       
       // Extract existing description for synthesis
@@ -486,7 +486,7 @@ ${entity.category ? `category: ${entity.category}` : ''}
               }
             }
           }
-          console.debug(`MeetingMind: Synthesized description for ${entity.name}`);
+          console.debug(`MeetingMind: synthesized description for ${entity.name}`);
         }
       }
       
@@ -604,10 +604,10 @@ ${entity.category ? `category: ${entity.category}` : ''}
       }
       
       await this.app.vault.modify(file, content);
-      console.debug(`MeetingMind: Updated ${entity.type} note ${notePath} with new context`);
+      console.debug(`MeetingMind: updated ${entity.type} note ${notePath} with new context`);
       
     } catch (error) {
-      console.error(`MeetingMind: Failed to update ${notePath}`, error);
+      console.error(`MeetingMind: failed to update ${notePath}`, error);
     }
   }
   
@@ -621,10 +621,10 @@ ${entity.category ? `category: ${entity.category}` : ''}
     if (!folder) {
       try {
         await this.app.vault.createFolder(normalizedPath);
-        console.debug(`MeetingMind: Created folder ${normalizedPath}`);
+        console.debug(`MeetingMind: created folder ${normalizedPath}`);
       } catch {
         // Folder might already exist
-        console.debug(`MeetingMind: Folder ${normalizedPath} may already exist`);
+        console.debug(`MeetingMind: folder ${normalizedPath} may already exist`);
       }
     }
   }
@@ -681,7 +681,7 @@ ${entity.category ? `category: ${entity.category}` : ''}
               const newPath = `${archivePath}/${file.name}`;
               await this.app.vault.rename(file, newPath);
               
-              console.debug(`MeetingMind: Archived ${file.path} to ${newPath}`);
+              console.debug(`MeetingMind: archived ${file.path} to ${newPath}`);
               archived++;
               
               // Update links in People notes
@@ -724,14 +724,14 @@ ${entity.category ? `category: ${entity.category}` : ''}
           if (content.includes(oldLink)) {
             content = content.replace(new RegExp(`\\[\\[${basename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\]\\]`, 'g'), newLink);
             await this.app.vault.modify(file, content);
-            console.debug(`MeetingMind: Updated links in ${file.path}`);
+            console.debug(`MeetingMind: updated links in ${file.path}`);
           }
         } catch (error) {
-          console.error(`MeetingMind: Failed to update links in ${file.path}`, error);
+          console.error(`MeetingMind: failed to update links in ${file.path}`, error);
         }
       }
     } catch (error) {
-      console.error('MeetingMind: Failed to update links after archive', error);
+      console.error('MeetingMind: failed to update links after archive', error);
     }
   }
   
@@ -842,7 +842,7 @@ ${entity.category ? `category: ${entity.category}` : ''}
           }
         }
       } catch (error) {
-        console.error(`MeetingMind: Failed to cleanup entity references in ${folderPath}`, error);
+        console.error(`MeetingMind: failed to cleanup entity references in ${folderPath}`, error);
       }
     }
     

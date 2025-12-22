@@ -108,12 +108,12 @@ export class LicenseService {
       
       return this.licenseInfo;
     } catch (error) {
-      console.error('MeetingMind: License validation failed', error);
+      console.error('MeetingMind: license validation failed', error);
       
       // On network error, keep existing Pro status for grace period
       // This only applies if they previously had a validated license
       if (this.licenseInfo.status !== 'free' && now - this.lastValidation < this.GRACE_PERIOD) {
-        console.debug('MeetingMind: Using cached license during grace period');
+        console.debug('MeetingMind: using cached license during grace period');
         return this.licenseInfo;
       }
       
@@ -141,9 +141,9 @@ export class LicenseService {
    */
   private async validateWithGumroad(key: string): Promise<LicenseInfo> {
     try {
-      console.debug('MeetingMind: Validating license with Gumroad...');
-      console.debug('MeetingMind: Product ID:', GUMROAD_PRODUCT_ID);
-      console.debug('MeetingMind: License key format check passed');
+      console.debug('MeetingMind: validating license with Gumroad...');
+      console.debug('MeetingMind: product ID:', GUMROAD_PRODUCT_ID);
+      console.debug('MeetingMind: license key format check passed');
       
       const response = await requestUrl({
         url: 'https://api.gumroad.com/v2/licenses/verify',
@@ -155,22 +155,22 @@ export class LicenseService {
         throw: false, // Don't throw on non-200 responses
       });
       
-      console.debug('MeetingMind: Gumroad response status:', response.status);
+      console.debug('MeetingMind: gumroad response status:', response.status);
       
       let data;
       try {
         data = response.json;
-        console.debug('MeetingMind: Gumroad response:', JSON.stringify(data, null, 2));
+        console.debug('MeetingMind: gumroad response:', JSON.stringify(data, null, 2));
         } catch {
-        console.debug('MeetingMind: Response text:', response.text);
+        console.debug('MeetingMind: response text:', response.text);
       }
       
       if (response.status === 200 && data?.success) {
-        console.debug('MeetingMind: Gumroad license valid!');
+        console.debug('MeetingMind: gumroad license valid!');
         
         // Check if the license has been refunded
         if (data.purchase?.refunded) {
-          console.debug('MeetingMind: License has been refunded');
+          console.debug('MeetingMind: license has been refunded');
           return {
             status: 'free',
             features: TIER_FEATURES.free,
@@ -190,19 +190,19 @@ export class LicenseService {
         };
       } else {
         // Log the specific error from Gumroad
-        console.debug('MeetingMind: Gumroad validation failed');
-        console.debug('MeetingMind: Error message:', data?.message || 'Unknown error');
+        console.debug('MeetingMind: gumroad validation failed');
+        console.debug('MeetingMind: error message:', data?.message || 'Unknown error');
         
         // If Gumroad says the license is valid format but wrong product, 
         // it might be a product_id mismatch
         if (data?.message?.includes('product')) {
-          console.debug('MeetingMind: Possible product_id mismatch. Check Gumroad dashboard for correct permalink.');
+          console.debug('MeetingMind: possible product_id mismatch. Check Gumroad dashboard for correct permalink.');
         }
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'License validation failed';
-      console.error('MeetingMind: Gumroad API error:', error);
-      console.error('MeetingMind: Error details:', errorMessage);
+      console.error('MeetingMind: gumroad API error:', error);
+      console.error('MeetingMind: error details:', errorMessage);
       
       // Network errors - don't invalidate existing license, trigger grace period
       throw error;
@@ -224,7 +224,7 @@ export class LicenseService {
     // Gumroad-format keys are NOT accepted here - they must pass API validation
     // This prevents abuse by generating random keys
     if (this.isGumroadKey(key)) {
-      console.debug('MeetingMind: Gumroad keys require API validation');
+      console.debug('MeetingMind: gumroad keys require API validation');
       return {
         status: 'free',
         features: TIER_FEATURES.free,
@@ -234,7 +234,7 @@ export class LicenseService {
     // Development/testing keys
     // TEST-PRO works in all environments for testing/demo purposes
     if (upperKey === 'DEV-MODE' || upperKey === 'TEST-PRO') {
-      console.debug('MeetingMind: Using test license key (TEST-PRO)');
+      console.debug('MeetingMind: using test license key (TEST-PRO)');
       return {
         status: 'pro',
         features: TIER_FEATURES.pro,

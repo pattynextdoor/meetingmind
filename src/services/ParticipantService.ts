@@ -162,10 +162,10 @@ export class ParticipantService {
     
     try {
       await this.app.vault.create(filePath, content);
-      console.debug(`MeetingMind: Created participant note for ${name}`);
+      console.debug(`MeetingMind: created participant note for ${name}`);
       return filePath;
     } catch (error) {
-      console.error(`MeetingMind: Failed to create note for ${name}`, error);
+      console.error(`MeetingMind: failed to create note for ${name}`, error);
       return null;
     }
   }
@@ -302,7 +302,7 @@ tags: [person]
       
       // Check if this meeting is already referenced
       if (content.includes(meetingLink)) {
-        console.debug(`MeetingMind: Meeting already referenced in ${notePath}`);
+        console.debug(`MeetingMind: meeting already referenced in ${notePath}`);
         return;
       }
       
@@ -368,7 +368,7 @@ tags: [person]
                 }
               }
             }
-            console.debug(`MeetingMind: Synthesized About section for ${personName}`);
+            console.debug(`MeetingMind: synthesized About section for ${personName}`);
           }
         }
       }
@@ -583,10 +583,10 @@ tags: [person]
       }
       
       await this.app.vault.modify(file, content);
-      console.debug(`MeetingMind: Updated participant note ${notePath}`);
+      console.debug(`MeetingMind: updated participant note ${notePath}`);
       
     } catch (error) {
-      console.error(`MeetingMind: Failed to update ${notePath}`, error);
+      console.error(`MeetingMind: failed to update ${notePath}`, error);
     }
   }
   
@@ -750,7 +750,7 @@ tags: [person]
       
       return { cleaned, removed, deleted };
     } catch (error) {
-      console.error('MeetingMind: Failed to cleanup participant references', error);
+      console.error('MeetingMind: failed to cleanup participant references', error);
       return { cleaned, removed, deleted };
     }
   }
