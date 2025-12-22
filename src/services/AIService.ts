@@ -206,7 +206,7 @@ ${transcriptText}`;
     
     // Validate entities parameter with proper type narrowing
     const validatedEntities: EntityExtraction = (entities && typeof entities === 'object' && 'issues' in entities && 'updates' in entities && 'topics' in entities)
-      ? entities as EntityExtraction
+      ? entities
       : { issues: [], updates: [], topics: [] };
     
     // Normalize entities arrays
@@ -221,7 +221,6 @@ ${transcriptText}`;
       
       // Add updates owned by this participant
       const updatesList: readonly Entity[] = safeEntities.updates;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const filteredUpdates = Array.from(updatesList).filter((update: Entity) => {
         const mentionedBy = update.mentionedBy;
         return mentionedBy && typeof mentionedBy === 'string' 

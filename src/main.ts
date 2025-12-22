@@ -1446,7 +1446,7 @@ export default class MeetingMindPlugin extends Plugin {
     switch (status) {
       case 'idle':
         setIcon(icon, 'check');
-        this.statusBarItem.setAttribute('aria-label', 'MeetingMind: Idle');
+        this.statusBarItem.setAttribute('aria-label', 'MeetingMind: idle');
         break;
       case 'syncing':
         setIcon(icon, 'sync');
