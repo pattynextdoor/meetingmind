@@ -23,12 +23,15 @@ export default tseslint.config(
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-floating-promises': 'error', // Obsidian store requirement - promises must be handled
+      '@typescript-eslint/require-await': 'error', // Match ObsidianReviewBot - async methods must have await
       '@typescript-eslint/no-unsafe-assignment': 'warn',
       '@typescript-eslint/no-unsafe-member-access': 'warn',
       '@typescript-eslint/no-unsafe-return': 'warn',
       '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
       '@typescript-eslint/no-unsafe-call': 'warn', // Changed from 'error' to 'warn' for false positives
-      'obsidianmd/ui/sentence-case': ['warn', {
+      'obsidianmd/ui/sentence-case': ['error', {
+        enforceCamelCaseLower: true,
+        allowAutoFix: true,
         brands: ['MeetingMind', 'Otter.ai', 'Fireflies.ai', 'Claude', 'OpenAI', 'GPT-4', 'Anthropic', 'Gumroad', 'SRT', 'VTT', 'JSON'],
         acronyms: ['API', 'AI', 'SRT', 'VTT', 'JSON'],
       }],

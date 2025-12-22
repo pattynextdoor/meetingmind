@@ -124,7 +124,7 @@ export class StatsService {
   /**
    * Calculate all statistics from meeting notes
    */
-  async calculateStats(): Promise<MeetingStats> {
+  calculateStats(): MeetingStats {
     const meetings = this.gatherMeetingNotes();
     
     const now = new Date();
@@ -372,7 +372,7 @@ export class StatsService {
    * Generate and save the dashboard note
    */
   async generateDashboardNote(outputPath: string = 'Meeting Dashboard.md'): Promise<TFile> {
-    const stats = await this.calculateStats();
+    const stats = this.calculateStats();
     const content = this.generateDashboard(stats);
     
     const normalizedPath = normalizePath(outputPath);

@@ -93,7 +93,7 @@ export default class MeetingMindPlugin extends Plugin {
     this.registerEventHandlers();
     
     // Start services
-    await this.startServices();
+    this.startServices();
     
     console.debug('MeetingMind: Plugin loaded successfully');
   }
@@ -151,7 +151,7 @@ export default class MeetingMindPlugin extends Plugin {
   /**
    * Start background services
    */
-  private async startServices(): Promise<void> {
+  private startServices(): void {
     // Build vault index
     this.vaultIndex.buildIndex();
     
@@ -213,7 +213,7 @@ export default class MeetingMindPlugin extends Plugin {
         const file = this.app.workspace.getActiveFile();
         if (file && file.extension === 'md') {
           if (!checking) {
-            this.reprocessNote(file);
+            void this.reprocessNote(file);
           }
           return true;
         }
@@ -1098,7 +1098,7 @@ export default class MeetingMindPlugin extends Plugin {
   /**
    * Rebuild the vault index
    */
-  async rebuildVaultIndex(): Promise<void> {
+  rebuildVaultIndex(): void {
     const startTime = Date.now();
     this.vaultIndex.buildIndex();
     const elapsed = Date.now() - startTime;

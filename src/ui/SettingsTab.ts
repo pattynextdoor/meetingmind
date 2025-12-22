@@ -66,13 +66,13 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createSourcesSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📥 Sources')
+      .setName('📥 sources')
       .setHeading();
     
     // Folder watcher toggle (primary method)
     new Setting(containerEl)
       .setName('Enable folder watcher')
-      .setDesc('Watch a folder for new transcript files (.vtt, .srt, .txt, .json)')
+      .setDesc('Watch a folder for new transcript files (.VTT, .SRT, .txt, .JSON)')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.folderWatcherEnabled)
         .onChange(async (value) => {
@@ -95,7 +95,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Watch folder')
         .setDesc('Folder path to watch for new transcript files')
         .addText(text => text
-          .setPlaceholder('Transcripts/Import')
+          .setPlaceholder('Transcripts/import')
           .setValue(this.plugin.settings.watchFolder)
           .onChange(debouncedWatchFolderUpdate)
         );
@@ -104,7 +104,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // Otter.ai export guide
     const otterGuide = containerEl.createDiv({ cls: 'meetingmind-otter-guide' });
     new Setting(otterGuide)
-      .setName('🦦 Using Otter.ai?')
+      .setName('🦦 using Otter.ai?')
       .setHeading();
     otterGuide.createEl('p', { 
       text: 'Export your transcripts from Otter.ai and drop them in your watched folder:',
@@ -112,8 +112,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     });
     const steps = otterGuide.createEl('ol', { cls: 'meetingmind-otter-steps' });
     steps.createEl('li', { text: 'Open your transcript in Otter.ai' });
-    steps.createEl('li', { text: 'Click the "..." menu → Export' });
-    steps.createEl('li', { text: 'Choose "Text" or "SRT" format' });
+    steps.createEl('li', { text: 'Click the "..." menu → export' });
+    steps.createEl('li', { text: 'Choose "text" or "SRT" format' });
     steps.createEl('li', { text: 'Save to your watched folder' });
     otterGuide.createEl('p', { 
       text: 'MeetingMind will automatically import and process it!',
@@ -141,10 +141,10 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // API Key
       new Setting(containerEl)
         .setName('Fireflies API key')
-        .setDesc('Get your API key from app.fireflies.ai → Integrations → Fireflies API')
+        .setDesc('Get your API key from app.Fireflies.ai → integrations → fireflies API')
         .addText(text => {
           text
-            .setPlaceholder('Enter your Fireflies API key')
+            .setPlaceholder('Enter your fireflies API key')
             .setValue(this.plugin.settings.firefliesApiKey)
             .onChange(async (value) => {
               this.plugin.settings.firefliesApiKey = value;
@@ -158,7 +158,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Test connection button
       new Setting(containerEl)
         .setName('Test connection')
-        .setDesc('Verify your Fireflies API key is working')
+        .setDesc('Verify your fireflies API key is working')
         .addButton(button => button
           .setButtonText('Test connection')
           .onClick(async () => {
@@ -226,7 +226,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createOutputSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📁 Output')
+      .setName('📁 output')
       .setHeading();
     
     // Destination folder
@@ -246,12 +246,12 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // Filename template
     new Setting(containerEl)
       .setName('Filename template')
-      .setDesc('Template for generated filenames. Variables: YYYY, MM, DD, Title')
+      .setDesc('Template for generated filenames. Variables: yyyy, mm, dd, title')
       .addText(text => text
-        .setPlaceholder('YYYY-MM-DD Meeting Title')
+        .setPlaceholder('Yyyy-mm-dd meeting title')
         .setValue(this.plugin.settings.filenameTemplate)
         .onChange(async (value) => {
-          this.plugin.settings.filenameTemplate = value || 'YYYY-MM-DD Meeting Title';
+          this.plugin.settings.filenameTemplate = value || 'YYYY-MM-DD Meeting title';
           await this.plugin.saveSettings();
           this.plugin.updateNoteGenerator();
         })
@@ -273,7 +273,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     if (!hasAILicense) {
       const banner = containerEl.createDiv({ cls: 'meetingmind-pro-banner' });
       banner.createEl('div', { 
-        text: '⭐ AI features require MeetingMind Pro', 
+        text: '⭐ AI features require MeetingMind pro', 
         cls: 'meetingmind-pro-banner-title' 
       });
       banner.createEl('div', { 
@@ -312,7 +312,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     
     // Visually indicate if locked
     if (!hasAILicense) {
-      aiToggleSetting.setDesc('Use AI to generate summaries, extract action items, and suggest tags (Pro required)');
+      aiToggleSetting.setDesc('Use AI to generate summaries, extract action items, and suggest tags (pro required)');
     }
     
     if (this.plugin.settings.aiEnabled && hasAILicense) {
@@ -340,7 +340,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .setDesc('Your Anthropic API key')
           .addText(text => {
             text
-              .setPlaceholder('sk-ant-...')
+              .setPlaceholder('Sk-ant-...')
               .setValue(this.plugin.settings.claudeApiKey)
               .onChange(async (value) => {
                 this.plugin.settings.claudeApiKey = value;
@@ -358,7 +358,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .setDesc('Your OpenAI API key')
           .addText(text => {
             text
-              .setPlaceholder('sk-...')
+              .setPlaceholder('Sk-...')
               .setValue(this.plugin.settings.openaiApiKey)
               .onChange(async (value) => {
                 this.plugin.settings.openaiApiKey = value;
@@ -373,7 +373,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       if (this.plugin.settings.aiProvider === 'cloud') {
         new Setting(containerEl)
           .setName('Cloud processing')
-          .setDesc('AI processing happens on our servers. Requires Pro + Cloud subscription.')
+          .setDesc('AI processing happens on our servers. Requires pro + cloud subscription.')
           .setClass('setting-item-description');
       }
       
@@ -455,13 +455,13 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     } else if (!hasAILicense) {
       // Show what Pro includes when AI is disabled
       const featuresEl = containerEl.createDiv({ cls: 'meetingmind-pro-features' });
-      featuresEl.createEl('p', { text: 'With AI enrichment Pro, you get:' });
+      featuresEl.createEl('p', { text: 'With AI enrichment pro, you get:' });
       const list = featuresEl.createEl('ul');
-      list.createEl('li', { text: '📝 Automatic 2-4 sentence summaries' });
-      list.createEl('li', { text: '✅ Action item extraction with owners' });
-      list.createEl('li', { text: '🎯 Decision tracking' });
-      list.createEl('li', { text: '🏷️ Smart tag suggestions from your vault' });
-      list.createEl('li', { text: '👤 AI-powered participant insights' });
+      list.createEl('li', { text: '📝 automatic 2-4 sentence summaries' });
+      list.createEl('li', { text: '✅ action item extraction with owners' });
+      list.createEl('li', { text: '🎯 decision tracking' });
+      list.createEl('li', { text: '🏷️ smart tag suggestions from your vault' });
+      list.createEl('li', { text: '👤 ai-powered participant insights' });
     }
   }
   
@@ -470,7 +470,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createLinkingSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🔗 Auto-linking')
+      .setName('🔗 auto-linking')
       .setHeading();
     
     // Enable auto-linking
@@ -490,7 +490,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Implicit aliases
       new Setting(containerEl)
         .setName('Generate implicit aliases')
-        .setDesc('Create aliases from individual words in multi-word note titles (e.g., "Sarah" from "Sarah Chen")')
+        .setDesc('Create aliases from individual words in multi-word note titles (e.g., "sarah" from "sarah chen")')
         .addToggle(toggle => toggle
           .setValue(this.plugin.settings.generateImplicitAliases)
           .onChange(async (value) => {
@@ -522,7 +522,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Exclude folders')
         .setDesc('Folders to exclude from the link index (comma-separated)')
         .addText(text => text
-          .setPlaceholder('templates, archive')
+          .setPlaceholder('Templates, archive')
           .setValue(this.plugin.settings.excludedFolders)
           .onChange(async (value) => {
             this.plugin.settings.excludedFolders = value;
@@ -537,11 +537,11 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setDesc('Force re-index all notes for auto-linking')
         .addButton(button => button
           .setButtonText('Rebuild index')
-          .onClick(async () => {
+          .onClick(() => {
             button.setButtonText('Rebuilding...');
             button.setDisabled(true);
             
-            await this.plugin.rebuildVaultIndex();
+            this.plugin.rebuildVaultIndex();
             
             new Notice('Vault index rebuilt successfully');
             button.setButtonText('Rebuild index');
@@ -556,7 +556,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createParticipantsSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('👥 Participants')
+      .setName('👥 participants')
       .setHeading();
     
     // Auto-create participant notes
@@ -608,7 +608,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createEntitySection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📊 Entity extraction (Pro)')
+      .setName('📊 entity extraction (pro)')
       .setHeading();
     
     const isPro = this.plugin.licenseService.isPro();
@@ -616,7 +616,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     if (!isPro) {
       const upgradeNote = containerEl.createDiv({ cls: 'meetingmind-pro-note' });
       upgradeNote.createEl('p', { 
-        text: 'Entity extraction requires MeetingMind Pro. Upgrade to automatically create notes for issues, updates, and topics mentioned in meetings.'
+        text: 'Entity extraction requires MeetingMind pro. Upgrade to automatically create notes for issues, updates, and topics mentioned in meetings.'
       });
       return;
     }
@@ -685,7 +685,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .addText(text => text
           .setPlaceholder('Issues')
           .setValue(this.plugin.settings.entityIssuesFolder)
-          .onChange(async (value) => {
+          .onChange((value) => {
             this.plugin.settings.entityIssuesFolder = value || 'Issues';
             debouncedFolderUpdate();
           })
@@ -699,7 +699,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .addText(text => text
           .setPlaceholder('Topics')
           .setValue(this.plugin.settings.entityTopicsFolder)
-          .onChange(async (value) => {
+          .onChange((value) => {
             this.plugin.settings.entityTopicsFolder = value || 'Topics';
             debouncedFolderUpdate();
           })
@@ -718,7 +718,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createLicenseSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🔑 License')
+      .setName('🔑 license')
       .setHeading();
     
     const licenseInfo = this.plugin.licenseService.getLicenseInfo();
@@ -737,7 +737,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // License key input
     new Setting(containerEl)
       .setName('License key')
-      .setDesc('Enter your license key from Gumroad (e.g., XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX)')
+      .setDesc('Enter your license key from Gumroad (e.g., xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx)')
       .addText(text => text
         .setPlaceholder('Paste your Gumroad license key')
         .setValue(this.plugin.settings.licenseKey)
@@ -766,7 +766,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
             } else if (this.plugin.settings.licenseKey) {
               new Notice('Invalid license key. Please check and try again.');
             } else {
-              new Notice('License cleared - Free tier active');
+              new Notice('License cleared - free tier active');
             }
           } catch {
             new Notice('License validation failed. Please try again.');
@@ -784,30 +784,30 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       const upgradeContainer = containerEl.createDiv({ cls: 'meetingmind-upgrade-section' });
       
       new Setting(upgradeContainer)
-        .setName('Upgrade to Pro')
+        .setName('Upgrade to pro')
         .setHeading();
       
       const priceEl = upgradeContainer.createDiv({ cls: 'meetingmind-price' });
       priceEl.createEl('span', { text: '$39', cls: 'meetingmind-price-amount' });
-      priceEl.createEl('span', { text: ' one-time payment', cls: 'meetingmind-price-label' });
+      priceEl.createEl('span', { text: ' One-time payment', cls: 'meetingmind-price-label' });
       
       const benefitsEl = upgradeContainer.createDiv({ cls: 'meetingmind-upgrade-benefits' });
       benefitsEl.createEl('p', { text: 'Unlock AI-powered features:' });
       const list = benefitsEl.createEl('ul');
       list.createEl('li', { text: '🤖 AI summaries, action items & decisions' });
-      list.createEl('li', { text: '👤 Smart participant insights' });
-      list.createEl('li', { text: '🏷️ Intelligent tag suggestions' });
-      list.createEl('li', { text: '♾️ Lifetime license - pay once, use forever' });
-      list.createEl('li', { text: '🔑 Bring your own API key (Claude or OpenAI)' });
+      list.createEl('li', { text: '👤 smart participant insights' });
+      list.createEl('li', { text: '🏷️ intelligent tag suggestions' });
+      list.createEl('li', { text: '♾️ lifetime license - pay once, use forever' });
+      list.createEl('li', { text: '🔑 bring your own API key (Claude or OpenAI)' });
       
       const freeEl = benefitsEl.createDiv({ cls: 'meetingmind-free-note' });
       freeEl.createEl('p', { 
-        text: '✓ Everything else is free: transcript parsing, auto-linking, folder watcher, and participant tracking.'
+        text: '✓ everything else is free: transcript parsing, auto-linking, folder watcher, and participant tracking.'
       });
       
       new Setting(upgradeContainer)
         .addButton(button => button
-          .setButtonText('Get Pro license')
+          .setButtonText('Get pro license')
           .setCta()
           .onClick(() => {
             window.open('https://tumbucon.gumroad.com/l/meetingmind-pro', '_blank');
@@ -817,12 +817,12 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Pro/Supporter - show thank you
       const thankYou = containerEl.createDiv({ cls: 'meetingmind-license-thanks' });
       thankYou.createEl('p', { 
-        text: '🎉 Thank you for supporting MeetingMind! All AI features are unlocked.'
+        text: '🎉 thank you for supporting MeetingMind! All AI features are unlocked.'
       });
       
       if (this.plugin.licenseService.isSupporter()) {
         thankYou.createEl('p', { 
-          text: '⭐ As a Supporter, you also get priority support and early access to new features.',
+          text: '⭐ as a supporter, you also get priority support and early access to new features.',
           cls: 'meetingmind-supporter-note'
         });
       }
