@@ -1,4 +1,4 @@
-/ **
+/**
  * SettingsTab - Plugin settings UI
  */
 
