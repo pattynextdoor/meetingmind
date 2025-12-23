@@ -1,4 +1,4 @@
-/**
+/ **
  * SettingsTab - Plugin settings UI
  */
 
@@ -35,7 +35,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       .setHeading();
     
     containerEl.createEl('p', { 
-      text: 'Configure how MeetingMind imports and processes your meeting transcripts.',
+      text: 'Configure how this plugin imports and processes your meeting transcripts.',
       cls: 'setting-item-description'
     });
     
@@ -72,7 +72,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // Folder watcher toggle (primary method)
     new Setting(containerEl)
       .setName('Enable folder watcher')
-      .setDesc('Watch a folder for new transcript files (.VTT, .SRT, .txt, .JSON)')
+      .setDesc('Watch a folder for new transcript files.')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.folderWatcherEnabled)
         .onChange(async (value) => {
@@ -104,30 +104,30 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // Otter.ai export guide
     const otterGuide = containerEl.createDiv({ cls: 'meetingmind-otter-guide' });
     new Setting(otterGuide)
-      .setName('🦦 using Otter.ai?')
+      .setName('Using Otter?')
       .setHeading();
     otterGuide.createEl('p', { 
-      text: 'Export your transcripts from Otter.ai and drop them in your watched folder:',
+      text: 'Export your transcripts from Otter and drop them in your watched folder.',
       cls: 'setting-item-description'
     });
     const steps = otterGuide.createEl('ol', { cls: 'meetingmind-otter-steps' });
-    steps.createEl('li', { text: 'Open your transcript in Otter.ai' });
-    steps.createEl('li', { text: 'Click the "..." menu → export' });
-    steps.createEl('li', { text: 'Choose "text" or "SRT" format' });
-    steps.createEl('li', { text: 'Save to your watched folder' });
+    steps.createEl('li', { text: 'Open your transcript in Otter.' });
+    steps.createEl('li', { text: 'Click the "..." menu → export.' });
+    steps.createEl('li', { text: 'Choose "text" or "SRT" format.' });
+    steps.createEl('li', { text: 'Save to your watched folder.' });
     otterGuide.createEl('p', { 
-      text: 'MeetingMind will automatically import and process it!',
+      text: 'Your Otter transcripts will bd automatically imported and processed!',
       cls: 'setting-item-description meetingmind-otter-tip'
     });
     
     // Fireflies.ai Integration
     new Setting(containerEl)
-      .setName('🔥 Fireflies.ai integration')
+      .setName('Fireflies integration')
       .setHeading();
     
     new Setting(containerEl)
-      .setName('Enable Fireflies.ai sync')
-      .setDesc('Automatically sync transcripts from your Fireflies.ai account')
+      .setName('Enable Fireflies sync')
+      .setDesc('Automatically sync transcripts from your Fireflies account.')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.firefliesEnabled)
         .onChange(async (value) => {
@@ -141,10 +141,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // API Key
       new Setting(containerEl)
         .setName('Fireflies API key')
-        .setDesc('Get your API key from app.Fireflies.ai → integrations → fireflies API')
         .addText(text => {
           text
-            .setPlaceholder('Enter your fireflies API key')
+            .setPlaceholder('Enter your fireflies API key.')
             .setValue(this.plugin.settings.firefliesApiKey)
             .onChange(async (value) => {
               this.plugin.settings.firefliesApiKey = value;
@@ -158,7 +157,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Test connection button
       new Setting(containerEl)
         .setName('Test connection')
-        .setDesc('Verify your fireflies API key is working')
+        .setDesc('Verify your fireflies API key is working.')
         .addButton(button => button
           .setButtonText('Test connection')
           .onClick(async () => {
@@ -181,7 +180,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Sync interval
       new Setting(containerEl)
         .setName('Sync interval')
-        .setDesc('How often to check for new transcripts')
+        .setDesc('How often to check for new transcripts.')
         .addDropdown(dropdown => dropdown
           .addOption('5', '5 minutes')
           .addOption('15', '15 minutes')
@@ -198,7 +197,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Sync now button
       new Setting(containerEl)
         .setName('Sync now')
-        .setDesc('Manually trigger a sync with Fireflies.ai')
+        .setDesc('Manually trigger a sync with Fireflies.')
         .addButton(button => button
           .setButtonText('Sync now')
           .setCta()
@@ -273,7 +272,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     if (!hasAILicense) {
       const banner = containerEl.createDiv({ cls: 'meetingmind-pro-banner' });
       banner.createEl('div', { 
-        text: '⭐ AI features require MeetingMind pro', 
+        text: 'AI features require MeetingMind pro!', 
         cls: 'meetingmind-pro-banner-title' 
       });
       banner.createEl('div', { 
@@ -321,8 +320,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('AI provider')
         .setDesc('Choose which AI service to use for processing')
         .addDropdown(dropdown => dropdown
-          .addOption('claude', 'Claude (Anthropic)')
-          .addOption('openai', 'GPT-4 (OpenAI)')
+          .addOption('claude', 'Claude ')
+          .addOption('openai', 'GPT-4 OpenAI')
           .addOption('cloud', 'Cloud (hosted)')
           .setValue(this.plugin.settings.aiProvider)
           .onChange(async (value) => {
@@ -337,7 +336,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       if (this.plugin.settings.aiProvider === 'claude') {
         new Setting(containerEl)
           .setName('Claude API key')
-          .setDesc('Your Anthropic API key')
+          .setDesc('Your Anthropic API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-ant-...')
@@ -355,7 +354,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       if (this.plugin.settings.aiProvider === 'openai') {
         new Setting(containerEl)
           .setName('OpenAI API key')
-          .setDesc('Your OpenAI API key')
+          .setDesc('Your OpenAI API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-...')
@@ -616,7 +615,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     if (!isPro) {
       const upgradeNote = containerEl.createDiv({ cls: 'meetingmind-pro-note' });
       upgradeNote.createEl('p', { 
-        text: 'Entity extraction requires MeetingMind pro. Upgrade to automatically create notes for issues, updates, and topics mentioned in meetings.'
+        text: 'Pro license required for entity extraction. Upgrade to automatically create notes for issues, updates, and topics mentioned in meetings.'
       });
       return;
     }
@@ -663,7 +662,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       
       new Setting(containerEl)
         .setName('Enrich manually-created notes')
-        .setDesc('Allow MeetingMind to find and enrich notes you created manually (adds frontmatter, AI synthesis). If disabled, only enriches notes created by MeetingMind.')
+        .setDesc('Allow this plugin to find and enrich notes you created manually (adds frontmatter, AI synthesis). If disabled, only enriches notes created by the plugin.')
         .addToggle(toggle => toggle
           .setValue(this.plugin.settings.enrichManualNotes)
           .onChange(async (value) => {
@@ -737,9 +736,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // License key input
     new Setting(containerEl)
       .setName('License key')
-      .setDesc('Enter your license key from Gumroad (e.g., xxxxxxxx-xxxxxxxx-xxxxxxxx-xxxxxxxx)')
+      .setDesc('Enter your license key from Gumroad.')
       .addText(text => text
-        .setPlaceholder('Paste your Gumroad license key')
+        .setPlaceholder('Paste your Gumroad license key.')
         .setValue(this.plugin.settings.licenseKey)
         .onChange(async (value) => {
           this.plugin.settings.licenseKey = value;
@@ -798,7 +797,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       list.createEl('li', { text: '👤 smart participant insights' });
       list.createEl('li', { text: '🏷️ intelligent tag suggestions' });
       list.createEl('li', { text: '♾️ lifetime license - pay once, use forever' });
-      list.createEl('li', { text: '🔑 bring your own API key (Claude or OpenAI)' });
+      list.createEl('li', { text: '🔑 bring your own API key' });
       
       const freeEl = benefitsEl.createDiv({ cls: 'meetingmind-free-note' });
       freeEl.createEl('p', { 
@@ -817,7 +816,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Pro/Supporter - show thank you
       const thankYou = containerEl.createDiv({ cls: 'meetingmind-license-thanks' });
       thankYou.createEl('p', { 
-        text: '🎉 thank you for supporting MeetingMind! All AI features are unlocked.'
+        text: '🎉 thank you for supporting us! All AI features are unlocked.'
       });
       
       if (this.plugin.licenseService.isSupporter()) {

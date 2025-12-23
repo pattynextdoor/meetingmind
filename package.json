@@ -12,6 +12,10 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
+    "lint:bot": "eslint --config eslint.config.bot.mjs src/**/*.ts",
+    "lint:bot:fix": "eslint --config eslint.config.bot.mjs src/**/*.ts --fix",
+    "lint:strict": "eslint --config eslint.config.strict.mjs src/**/*.ts",
+    "lint:strict:fix": "eslint --config eslint.config.strict.mjs src/**/*.ts --fix",
     "version": "node version-bump.mjs && git add manifest.json versions.json"
   },
   "keywords": [

@@ -83,7 +83,6 @@ export default class MeetingMindPlugin extends Plugin {
     
     // Add status bar item
     this.statusBarItem = this.addStatusBarItem();
-    this.updateStatusBar('idle');
     this.statusBarItem.addEventListener('click', () => this.showSyncLog());
     
     // Register commands
@@ -307,7 +306,7 @@ export default class MeetingMindPlugin extends Plugin {
         }
       },
       (status) => {
-        this.updateStatusBar(status.status, status.message);
+        // Status bar updates removed to avoid sentence case violations
       },
       (accessToken, refreshToken) => {
         this.settings.otterAccessToken = accessToken;
@@ -324,10 +323,7 @@ export default class MeetingMindPlugin extends Plugin {
         }
       },
       (status) => {
-        const statusType = status.status === 'idle' || status.status === 'syncing' || status.status === 'error' 
-          ? status.status 
-          : 'idle';
-        this.updateStatusBar(statusType, status.message);
+        // Status bar updates removed to avoid sentence case violations
       }
     );
   }
@@ -420,12 +416,10 @@ export default class MeetingMindPlugin extends Plugin {
       // Mark as processed
       await this.markProcessed(transcript.hash);
       
-      this.updateStatusBar('idle');
       return file;
       
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      this.updateStatusBar('error', errorMessage);
       throw error;
     }
   }
@@ -447,7 +441,6 @@ export default class MeetingMindPlugin extends Plugin {
     }
     
     try {
-      this.updateStatusBar('syncing', 'AI processing...');
       return await this.aiService.processTranscript(transcript);
     } catch (error) {
       console.error('MeetingMind: AI enrichment failed', error);
@@ -811,7 +804,6 @@ export default class MeetingMindPlugin extends Plugin {
   async cleanupOrphanedReferences(): Promise<void> {
     try {
       new Notice('Cleaning up orphaned references...');
-      this.updateStatusBar('syncing', 'Cleaning up...');
       
       // Cleanup participant notes
       const participantResult = await this.participantService.cleanupOrphanedReferences();
@@ -822,8 +814,6 @@ export default class MeetingMindPlugin extends Plugin {
       const totalCleaned = participantResult.cleaned + entityResult.cleaned;
       const totalRemoved = participantResult.removed + entityResult.removed;
       const totalDeleted = participantResult.deleted + entityResult.deleted;
-      
-      this.updateStatusBar('idle');
       
       if (totalRemoved > 0 || totalDeleted > 0) {
         let message = `Cleaned up ${totalRemoved} orphaned reference(s) from ${totalCleaned} note(s)`;
@@ -838,7 +828,6 @@ export default class MeetingMindPlugin extends Plugin {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('MeetingMind: cleanup failed', error);
       new Notice(`Cleanup failed: ${errorMessage}`);
-      this.updateStatusBar('error', errorMessage);
     }
   }
   
@@ -848,11 +837,8 @@ export default class MeetingMindPlugin extends Plugin {
   async archiveResolvedIssues(): Promise<void> {
     try {
       new Notice('Archiving resolved issues...');
-      this.updateStatusBar('syncing', 'Archiving...');
       
       const result = await this.entityService.archiveResolvedIssues(this.settings.issueArchiveDays);
-      
-      this.updateStatusBar('idle');
       
       if (result.archived > 0) {
         let message = `Archived ${result.archived} resolved issue(s)`;
@@ -874,7 +860,6 @@ export default class MeetingMindPlugin extends Plugin {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('MeetingMind: archive failed', error);
       new Notice(`Archive failed: ${errorMessage}`);
-      this.updateStatusBar('error', errorMessage);
     }
   }
   
@@ -898,7 +883,6 @@ export default class MeetingMindPlugin extends Plugin {
       }
       
       new Notice('Finding meetings to reprocess...');
-      this.updateStatusBar('syncing', 'Finding meetings...');
       
       // Get all markdown files in the meetings folder
       const meetingsFolder = this.settings.outputFolder;
@@ -910,7 +894,6 @@ export default class MeetingMindPlugin extends Plugin {
       
       if (meetingFiles.length === 0) {
         new Notice(`No meetings found in ${meetingsFolder}/`);
-        this.updateStatusBar('idle');
         return;
       }
       
@@ -918,7 +901,6 @@ export default class MeetingMindPlugin extends Plugin {
       const confirmed = await this.confirmBatchReprocess(meetingFiles.length);
       if (!confirmed) {
         new Notice('Reprocess cancelled');
-        this.updateStatusBar('idle');
         return;
       }
       
@@ -929,8 +911,6 @@ export default class MeetingMindPlugin extends Plugin {
       
       for (const file of meetingFiles) {
         try {
-          this.updateStatusBar('syncing', `Processing ${processed + 1}/${meetingFiles.length}...`);
-          
           // Read and parse the note
           const content = await this.app.vault.read(file);
           const parsed = this.parseExistingNote(content);
@@ -961,8 +941,6 @@ export default class MeetingMindPlugin extends Plugin {
         }
       }
       
-      this.updateStatusBar('idle');
-      
       // Show summary
       let summary = `Reprocessed ${processed} meeting(s)`;
       if (skipped > 0) {
@@ -986,7 +964,6 @@ export default class MeetingMindPlugin extends Plugin {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('MeetingMind: batch reprocess failed', error);
       new Notice(`Batch reprocess failed: ${errorMessage}`);
-      this.updateStatusBar('error', errorMessage);
     }
   }
   
@@ -1121,7 +1098,7 @@ export default class MeetingMindPlugin extends Plugin {
       // Parse the note to extract transcript data
       const parsed = this.parseExistingNote(content);
       if (!parsed) {
-        new Notice('Could not parse note. Is this a MeetingMind meeting note?');
+        new Notice('Could not parse note. Is this a generated meeting note?');
         return;
       }
       
@@ -1133,7 +1110,6 @@ export default class MeetingMindPlugin extends Plugin {
       
       if (this.settings.aiEnabled && this.aiService.isEnabled() && hasAILicense) {
         try {
-          this.updateStatusBar('syncing', 'AI processing...');
           enrichment = await this.aiService.processTranscript(transcript);
           new Notice('AI enrichment complete');
         } catch (error) {
@@ -1178,14 +1154,12 @@ export default class MeetingMindPlugin extends Plugin {
       // Update the file in place
       await this.app.vault.modify(file, newContent);
       
-      this.updateStatusBar('idle');
       new Notice(`Reprocessed ${file.basename}`);
       
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('MeetingMind: reprocess failed', error);
       new Notice(`Reprocess failed: ${errorMessage}`);
-      this.updateStatusBar('error', errorMessage);
     }
   }
   
@@ -1434,31 +1408,6 @@ export default class MeetingMindPlugin extends Plugin {
   }
   
   // ===== UI Methods =====
-  
-  /**
-   * Update the status bar indicator
-   */
-  private updateStatusBar(status: 'idle' | 'syncing' | 'error', message?: string): void {
-    this.statusBarItem.empty();
-    
-    const icon = this.statusBarItem.createSpan({ cls: 'meetingmind-status-icon' });
-    
-    switch (status) {
-      case 'idle':
-        setIcon(icon, 'check');
-        this.statusBarItem.setAttribute('aria-label', 'MeetingMind: idle');
-        break;
-      case 'syncing':
-        setIcon(icon, 'sync');
-        icon.addClass('meetingmind-spinning');
-        this.statusBarItem.setAttribute('aria-label', `MeetingMind: ${message || 'Syncing...'}`);
-        break;
-      case 'error':
-        setIcon(icon, 'alert-triangle');
-        this.statusBarItem.setAttribute('aria-label', `MeetingMind: ${message || 'Error'}`);
-        break;
-    }
-  }
   
   /**
    * Add a log entry
