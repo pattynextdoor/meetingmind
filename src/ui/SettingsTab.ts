@@ -320,8 +320,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('AI provider')
         .setDesc('Choose which AI service to use for processing')
         .addDropdown(dropdown => dropdown
-          .addOption('claude', 'Claude ')
-          .addOption('openai', 'openai')
+          .addOption('claude', 'Claude')
+          .addOption('openai', 'Openai')
           .addOption('cloud', 'Cloud (hosted)')
           .setValue(this.plugin.settings.aiProvider)
           .onChange(async (value) => {
