@@ -321,7 +321,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setDesc('Choose which AI service to use for processing')
         .addDropdown(dropdown => dropdown
           .addOption('claude', 'Claude ')
-          .addOption('openai', 'OpenAI')
+          .addOption('openai', 'openai')
           .addOption('cloud', 'Cloud (hosted)')
           .setValue(this.plugin.settings.aiProvider)
           .onChange(async (value) => {
@@ -354,7 +354,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       if (this.plugin.settings.aiProvider === 'openai') {
         new Setting(containerEl)
           .setName('Openai API key')
-          .setDesc('Your Openai API key.')
+          .setDesc('Your openai API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-...')
