@@ -104,19 +104,19 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // Otter.ai export guide
     const otterGuide = containerEl.createDiv({ cls: 'meetingmind-otter-guide' });
     new Setting(otterGuide)
-      .setName('Using Otter?')
+      .setName('Otter integration guide')
       .setHeading();
     otterGuide.createEl('p', { 
-      text: 'Export your transcripts from Otter and drop them in your watched folder.',
+      text: 'Export your transcripts from otter and drop them in your watched folder.',
       cls: 'setting-item-description'
     });
     const steps = otterGuide.createEl('ol', { cls: 'meetingmind-otter-steps' });
-    steps.createEl('li', { text: 'Open your transcript in Otter.' });
+    steps.createEl('li', { text: 'Open your transcript in otter.' });
     steps.createEl('li', { text: 'Click the "..." menu → export.' });
-    steps.createEl('li', { text: 'Choose "text" or "SRT" format.' });
+    steps.createEl('li', { text: 'Choose "text" format.' });
     steps.createEl('li', { text: 'Save to your watched folder.' });
     otterGuide.createEl('p', { 
-      text: 'Your Otter transcripts will bd automatically imported and processed!',
+      text: 'Your otter transcripts will bd automatically imported and processed!',
       cls: 'setting-item-description meetingmind-otter-tip'
     });
     
@@ -126,8 +126,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       .setHeading();
     
     new Setting(containerEl)
-      .setName('Enable Fireflies sync')
-      .setDesc('Automatically sync transcripts from your Fireflies account.')
+      .setName('Enable fireflies sync')
+      .setDesc('Automatically sync transcripts from your fireflies account.')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.firefliesEnabled)
         .onChange(async (value) => {
@@ -197,7 +197,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Sync now button
       new Setting(containerEl)
         .setName('Sync now')
-        .setDesc('Manually trigger a sync with Fireflies.')
+        .setDesc('Manually trigger a sync with fireflies.')
         .addButton(button => button
           .setButtonText('Sync now')
           .setCta()
@@ -272,7 +272,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     if (!hasAILicense) {
       const banner = containerEl.createDiv({ cls: 'meetingmind-pro-banner' });
       banner.createEl('div', { 
-        text: 'AI features require MeetingMind pro!', 
+        text: 'AI features require pro license!', 
         cls: 'meetingmind-pro-banner-title' 
       });
       banner.createEl('div', { 
@@ -321,7 +321,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setDesc('Choose which AI service to use for processing')
         .addDropdown(dropdown => dropdown
           .addOption('claude', 'Claude ')
-          .addOption('openai', 'GPT-4 OpenAI')
+          .addOption('openai', 'OpenAI')
           .addOption('cloud', 'Cloud (hosted)')
           .setValue(this.plugin.settings.aiProvider)
           .onChange(async (value) => {
@@ -336,7 +336,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       if (this.plugin.settings.aiProvider === 'claude') {
         new Setting(containerEl)
           .setName('Claude API key')
-          .setDesc('Your Anthropic API key.')
+          .setDesc('Your anthropic API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-ant-...')
@@ -353,8 +353,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // OpenAI API Key
       if (this.plugin.settings.aiProvider === 'openai') {
         new Setting(containerEl)
-          .setName('OpenAI API key')
-          .setDesc('Your OpenAI API key.')
+          .setName('Openai API key')
+          .setDesc('Your Openai API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-...')
@@ -736,9 +736,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // License key input
     new Setting(containerEl)
       .setName('License key')
-      .setDesc('Enter your license key from Gumroad.')
+      .setDesc('Enter your license key from gumroad.')
       .addText(text => text
-        .setPlaceholder('Paste your Gumroad license key.')
+        .setPlaceholder('Paste your gumroad license key.')
         .setValue(this.plugin.settings.licenseKey)
         .onChange(async (value) => {
           this.plugin.settings.licenseKey = value;
