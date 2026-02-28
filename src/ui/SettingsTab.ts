@@ -321,7 +321,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setDesc('Choose which AI service to use for processing')
         .addDropdown(dropdown => dropdown
           .addOption('claude', 'Claude')
-          .addOption('openai', 'Openai')
+          .addOption('openai', 'OpenAI')
           .addOption('cloud', 'Cloud (hosted)')
           .setValue(this.plugin.settings.aiProvider)
           .onChange(async (value) => {
@@ -361,7 +361,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .setName('Claude model')
           .setDesc('Choose which Claude model to use for processing.')
           .addDropdown(dropdown => dropdown
+            // eslint-disable-next-line obsidianmd/ui/sentence-case
             .addOption('claude-opus-4-20250514', 'Claude Opus 4 (recommended)')
+            // eslint-disable-next-line obsidianmd/ui/sentence-case
             .addOption('claude-sonnet-4-20250514', 'Claude Sonnet 4')
             .setValue(this.plugin.settings.aiModel || 'claude-opus-4-20250514')
             .onChange(async (value) => {
@@ -393,7 +395,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .setName('OpenAI model')
           .setDesc('Choose which OpenAI model to use for processing.')
           .addDropdown(dropdown => dropdown
+            // eslint-disable-next-line obsidianmd/ui/sentence-case
             .addOption('gpt-4o', 'GPT-4o (recommended)')
+            // eslint-disable-next-line obsidianmd/ui/sentence-case
             .addOption('o3-mini', 'o3-mini')
             .setValue(this.plugin.settings.aiModel || 'gpt-4o')
             .onChange(async (value) => {
@@ -772,9 +776,9 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     // License key input
     new Setting(containerEl)
       .setName('License key')
-      .setDesc('Enter your license key from gumroad.')
+      .setDesc('Enter your license key from Gumroad.')
       .addText(text => text
-        .setPlaceholder('Paste your gumroad license key.')
+        .setPlaceholder('Paste your Gumroad license key.')
         .setValue(this.plugin.settings.licenseKey)
         .onChange(async (value) => {
           this.plugin.settings.licenseKey = value;
