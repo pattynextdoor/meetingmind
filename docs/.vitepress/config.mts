@@ -55,6 +55,8 @@ export default defineConfig({
           text: 'Import Guides',
           items: [
             { text: 'Zoom', link: '/features/zoom' },
+            { text: 'Google Meet', link: '/features/google-meet' },
+            { text: 'Microsoft Teams', link: '/features/teams' },
             { text: 'Otter.ai', link: '/features/otter-sync' },
             { text: 'Fireflies.ai', link: '/features/fireflies' },
             { text: 'Fathom', link: '/features/fathom' },

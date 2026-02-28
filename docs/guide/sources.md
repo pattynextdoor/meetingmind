@@ -18,6 +18,22 @@ Export transcripts from Zoom meetings — live captions (`.txt`) on free plans, 
 
 [Learn more →](/features/zoom)
 
+## Google Meet
+
+**Best for:** Google Workspace users
+
+Download transcripts from Google Meet as `.txt` and import into your vault.
+
+[Learn more →](/features/google-meet)
+
+## Microsoft Teams
+
+**Best for:** Microsoft 365 users
+
+Download transcripts from Teams as `.vtt` with full speaker labels and timestamps.
+
+[Learn more →](/features/teams)
+
 ## Folder Watcher
 
 **Best for:** Manual exports, automation workflows
@@ -66,6 +82,8 @@ Import individual files via command palette.
 |--------|-------------|----------------|----------|
 | Fireflies.ai Sync | ✅ | API key | Fireflies.ai users |
 | Zoom Export | ✅* | Minimal | Zoom users |
+| Google Meet Export | ✅* | Minimal | Google Workspace users |
+| Teams Export | ✅* | Minimal | Microsoft 365 users |
 | Folder Watcher | ✅ | Minimal | Most users |
 | Otter.ai Export | ✅* | Minimal | Otter.ai users |
 | Fathom Export | ✅* | Minimal | Fathom users |
