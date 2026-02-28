@@ -656,8 +656,34 @@ Return ONLY the synthesized "About" text, no JSON or extra formatting.`;
   private buildPrompt(transcriptText: string): string {
     const sections: string[] = [];
     
+    // Estimate meeting length to scale summary depth
+    const wordCount = transcriptText.split(/\s+/).length;
+    const estimatedMinutes = Math.round(wordCount / 150); // ~150 wpm for transcripts
+    
     if (this.enableSummary) {
-      sections.push('SUMMARY: A 2-4 sentence summary capturing the main topics discussed and any conclusions reached.');
+      let summaryInstruction: string;
+      
+      if (estimatedMinutes <= 15) {
+        // Short meeting: concise summary
+        summaryInstruction = `SUMMARY: Return a markdown-formatted summary with:
+- **TL;DR** — 1-2 sentences capturing the essential outcome.
+- **Key Discussion Points** — 2-4 bullet points covering what was discussed, with enough context that someone who missed the meeting understands what happened and why it matters.
+- **Context & Background** — 1 sentence noting any references to prior work, external dependencies, or upcoming deadlines mentioned. Omit if none.`;
+      } else if (estimatedMinutes <= 30) {
+        // Medium meeting: moderate depth
+        summaryInstruction = `SUMMARY: Return a markdown-formatted summary with:
+- **TL;DR** — 2-3 sentences capturing the essential outcomes and any shifts in direction.
+- **Key Discussion Points** — 4-6 bullet points covering major topics. Each bullet should include enough context that someone who missed the meeting understands what was discussed, what positions were taken, and why it matters.
+- **Context & Background** — 2-3 sentences noting references to prior work, external dependencies, open questions carried forward, or upcoming deadlines mentioned.`;
+      } else {
+        // Long meeting (30+ min): thorough summary
+        summaryInstruction = `SUMMARY: Return a markdown-formatted summary with:
+- **TL;DR** — 3-4 sentences capturing the essential outcomes, key shifts, and overall trajectory.
+- **Key Discussion Points** — 6-10 bullet points covering all major topics and sub-topics. Each bullet should provide substantive context: what was discussed, who drove it, what positions or concerns were raised, and what the resolution or next step is.
+- **Context & Background** — 3-5 sentences covering references to prior meetings or decisions, external dependencies, cross-team implications, open questions, and upcoming deadlines or milestones mentioned.`;
+      }
+      
+      sections.push(summaryInstruction);
     }
     
     if (this.enableActionItems) {
@@ -679,13 +705,14 @@ Return ONLY the synthesized "About" text, no JSON or extra formatting.`;
 
 Return your response in the following JSON format:
 {
-  "summary": "string",
+  "summary": "string (markdown formatted — use **bold** for sub-headings, bullet points with -, etc.)",
   "actionItems": [{"task": "string", "assignee": "string or null", "dueDate": "string or null"}],
   "decisions": ["string"],
   "suggestedTags": ["string"]
 }
 
 Only include the sections that are requested. Return valid JSON only, no additional text.
+The summary value should be a single string containing markdown formatting (newlines as \\n).
 
 Requested sections:
 ${sections.join('\n')}
