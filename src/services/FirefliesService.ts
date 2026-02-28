@@ -11,8 +11,8 @@ const FIREFLIES_API_URL = 'https://api.fireflies.ai/graphql';
 
 // GraphQL Queries
 const TRANSCRIPTS_QUERY = `
-  query Transcripts($limit: Int, $skip: Int) {
-    transcripts(limit: $limit, skip: $skip) {
+  query Transcripts($limit: Int, $skip: Int, $fromDate: DateTime) {
+    transcripts(limit: $limit, skip: $skip, fromDate: $fromDate) {
       id
       title
       date
@@ -258,10 +258,15 @@ export class FirefliesService {
     const rawTranscripts: RawTranscript[] = [];
     
     try {
-      // Fetch list of transcripts
+      // Use fromDate to filter server-side (ISO 8601 format)
+      const sinceDate = timestamp
+        ? new Date(timestamp)
+        : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      
       const listResult = await this.graphqlRequest(TRANSCRIPTS_QUERY, {
         limit: 50,
         skip: 0,
+        fromDate: sinceDate.toISOString(),
       }) as {
         data?: {
           transcripts?: FirefliesTranscript[];
@@ -273,11 +278,7 @@ export class FirefliesService {
         return [];
       }
       
-      const transcripts: FirefliesTranscript[] = listResult.data.transcripts;
-      
-      // Filter to only transcripts after the timestamp
-      const sinceDate = timestamp ? new Date(timestamp) : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-      const newTranscripts = transcripts.filter(t => new Date(t.date) > sinceDate);
+      const newTranscripts: FirefliesTranscript[] = listResult.data.transcripts;
       
       console.debug(`MeetingMind: found ${newTranscripts.length} new Fireflies transcripts`);
       
