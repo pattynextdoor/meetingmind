@@ -71,6 +71,12 @@ const Hero = () => {
           </a>
         </div>
 
+        <div className="flex justify-center animate-fade-up mt-2" style={{ animationDelay: '450ms' }}>
+          <a href="https://www.producthunt.com/products/meetingmind?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-meetingmind-2" target="_blank" rel="noopener noreferrer">
+            <img alt="MeetingMind - Turn meeting chaos into connected knowledge in Obsidian | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1052698&theme=light&t=1772257382483" />
+          </a>
+        </div>
+
         {/* Hero Visual */}
         <div className="relative animate-fade-up" style={{ animationDelay: '500ms' }}>
           <div className="absolute inset-0 bg-emerald-500/5 blur-3xl rounded-full transform scale-150 opacity-50 pointer-events-none"></div>
