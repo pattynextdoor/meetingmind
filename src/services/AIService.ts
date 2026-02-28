@@ -23,8 +23,11 @@ export class AIService {
   private enableTagSuggestions: boolean;
   private existingTags: string[];
   
+  private model: string;
+  
   constructor() {
     this.provider = 'disabled';
+    this.model = '';
     this.claudeApiKey = '';
     this.openaiApiKey = '';
     this.enableSummary = true;
@@ -46,9 +49,11 @@ export class AIService {
       enableActionItems: boolean;
       enableDecisions: boolean;
       enableTagSuggestions: boolean;
+      model?: string;
     }
   ): void {
     this.provider = provider;
+    this.model = options.model || '';
     this.claudeApiKey = claudeApiKey;
     this.openaiApiKey = openaiApiKey;
     this.enableSummary = options.enableSummary;
@@ -703,7 +708,7 @@ ${transcriptText}`;
           'anthropic-version': '2023-06-01',
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: this.model || 'claude-opus-4-20250514',
           max_tokens: 4096,
           messages: [
             {
@@ -749,7 +754,7 @@ ${transcriptText}`;
         'Authorization': `Bearer ${this.openaiApiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4-turbo-preview',
+        model: this.model || 'gpt-4o',
         messages: [
           {
             role: 'user' as const,

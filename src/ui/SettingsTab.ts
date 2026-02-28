@@ -326,17 +326,25 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
           .setValue(this.plugin.settings.aiProvider)
           .onChange(async (value) => {
             this.plugin.settings.aiProvider = value as AIProvider;
+            // Reset model to default for the new provider
+            if (value === 'claude') {
+              this.plugin.settings.aiModel = 'claude-opus-4-20250514';
+            } else if (value === 'openai') {
+              this.plugin.settings.aiModel = 'gpt-4o';
+            } else {
+              this.plugin.settings.aiModel = '';
+            }
             await this.plugin.saveSettings();
             this.plugin.updateAIService();
             this.display();
           })
         );
       
-      // Claude API Key
+      // Claude API Key + Model
       if (this.plugin.settings.aiProvider === 'claude') {
         new Setting(containerEl)
           .setName('Claude API key')
-          .setDesc('Your anthropic API key.')
+          .setDesc('Your Anthropic API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-ant-...')
@@ -348,13 +356,27 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
               });
             text.inputEl.type = 'password';
           });
+        
+        new Setting(containerEl)
+          .setName('Claude model')
+          .setDesc('Choose which Claude model to use for processing.')
+          .addDropdown(dropdown => dropdown
+            .addOption('claude-opus-4-20250514', 'Claude Opus 4 (recommended)')
+            .addOption('claude-sonnet-4-20250514', 'Claude Sonnet 4')
+            .setValue(this.plugin.settings.aiModel || 'claude-opus-4-20250514')
+            .onChange(async (value) => {
+              this.plugin.settings.aiModel = value;
+              await this.plugin.saveSettings();
+              this.plugin.updateAIService();
+            })
+          );
       }
       
-      // OpenAI API Key
+      // OpenAI API Key + Model
       if (this.plugin.settings.aiProvider === 'openai') {
         new Setting(containerEl)
-          .setName('Openai API key')
-          .setDesc('Your openai API key.')
+          .setName('OpenAI API key')
+          .setDesc('Your OpenAI API key.')
           .addText(text => {
             text
               .setPlaceholder('Sk-...')
@@ -366,6 +388,20 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
               });
             text.inputEl.type = 'password';
           });
+        
+        new Setting(containerEl)
+          .setName('OpenAI model')
+          .setDesc('Choose which OpenAI model to use for processing.')
+          .addDropdown(dropdown => dropdown
+            .addOption('gpt-4o', 'GPT-4o (recommended)')
+            .addOption('o3-mini', 'o3-mini')
+            .setValue(this.plugin.settings.aiModel || 'gpt-4o')
+            .onChange(async (value) => {
+              this.plugin.settings.aiModel = value;
+              await this.plugin.saveSettings();
+              this.plugin.updateAIService();
+            })
+          );
       }
       
       // Cloud info

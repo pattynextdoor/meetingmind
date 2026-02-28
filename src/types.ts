@@ -129,6 +129,7 @@ export interface MeetingMindSettings {
   // AI settings
   aiEnabled: boolean;
   aiProvider: AIProvider;
+  aiModel: string;
   claudeApiKey: string;
   openaiApiKey: string;
   enableSummary: boolean;
@@ -187,6 +188,7 @@ export const DEFAULT_SETTINGS: MeetingMindSettings = {
   
   aiEnabled: false,
   aiProvider: 'disabled',
+  aiModel: '',
   claudeApiKey: '',
   openaiApiKey: '',
   enableSummary: true,

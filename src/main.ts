@@ -1336,6 +1336,7 @@ export default class MeetingMindPlugin extends Plugin {
         enableActionItems: this.settings.enableActionItems,
         enableDecisions: this.settings.enableDecisions,
         enableTagSuggestions: this.settings.enableTagSuggestions,
+        model: this.settings.aiModel,
       }
     );
   }
