@@ -56,15 +56,14 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 
 ## Installation
 
-### From Obsidian Community Plugins
-1. Open Settings → Community Plugins
-2. Search for "MeetingMind"
-3. Install and enable
+### Download from GitHub
+1. Go to the [latest release](https://github.com/pattynextdoor/meetingmind/releases/latest)
+2. Download `main.js`, `manifest.json`, and `styles.css`
+3. Create a folder: `.obsidian/plugins/meetingmind/` in your vault
+4. Copy the three files into that folder
+5. Restart Obsidian and enable the plugin in Settings → Community Plugins
 
-### Manual Installation
-1. Download the latest release from GitHub
-2. Extract to `.obsidian/plugins/meetingmind/`
-3. Enable in Settings → Community Plugins
+> **Community Plugin Store**: MeetingMind is currently under review for the Obsidian Community Plugin store. Once approved, you'll be able to install directly from the plugin browser.
 
 ## Quick Start
 

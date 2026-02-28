@@ -44,7 +44,7 @@ MeetingMind is an Obsidian plugin that:
 
 ## Quick Start
 
-1. [Install the plugin](/guide/installation)
+1. [Download and install the plugin](/guide/installation) from the latest GitHub release
 2. [Configure an import source](/guide/sources)
 3. [Import your first transcript](/guide/quick-start)
 
