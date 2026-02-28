@@ -65,8 +65,8 @@ const Hero = () => {
             Get Started
             <Icons.ArrowRight size={18} style={{ pointerEvents: 'none' }} />
           </a>
-          <a href="obsidian://show-plugin?id=meetingmind" className="px-8 py-4 bg-white border-2 border-stone-200 text-stone-900 font-medium rounded-xl hover:bg-stone-50 hover:border-stone-300 hover:-translate-y-0.5 transition-all shadow-lg flex items-center gap-2 text-lg">
-            Install in Obsidian
+          <a href="https://github.com/pattynextdoor/meetingmind/releases/latest" target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-white border-2 border-stone-200 text-stone-900 font-medium rounded-xl hover:bg-stone-50 hover:border-stone-300 hover:-translate-y-0.5 transition-all shadow-lg flex items-center gap-2 text-lg">
+            Download Latest Release
             <Icons.ArrowRight size={18} style={{ pointerEvents: 'none' }} />
           </a>
         </div>
@@ -760,8 +760,8 @@ const Pricing = () => {
         "Fireflies.ai API sync",
         "Dataview-ready frontmatter"
       ],
-      cta: "Install Free",
-      href: "#"
+      cta: "Download Free",
+      href: "https://github.com/pattynextdoor/meetingmind/releases/latest"
     },
     {
       name: "Pro License",
