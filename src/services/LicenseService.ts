@@ -40,7 +40,8 @@ const TIER_FEATURES = {
 
 // Gumroad product configuration
 // Product: https://tumbucon.gumroad.com/l/meetingmind-pro
-const GUMROAD_PRODUCT_ID = 'meetingmind-pro';
+// Note: Gumroad API requires the internal product ID (not permalink) for products created after Jan 9, 2023
+const GUMROAD_PRODUCT_ID = 'llgrpr';
 
 export class LicenseService {
   private licenseKey: string = '';
