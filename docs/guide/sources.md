@@ -10,6 +10,14 @@ Direct API integration syncs your transcripts automatically.
 
 [Learn more →](/features/fireflies)
 
+## Zoom
+
+**Best for:** Zoom users (free and paid plans)
+
+Export transcripts from Zoom meetings — live captions (`.txt`) on free plans, cloud transcription (`.vtt`) on paid plans.
+
+[Learn more →](/features/zoom)
+
 ## Folder Watcher
 
 **Best for:** Manual exports, automation workflows
@@ -57,6 +65,7 @@ Import individual files via command palette.
 | Method | Auto-Import | Setup Required | Best For |
 |--------|-------------|----------------|----------|
 | Fireflies.ai Sync | ✅ | API key | Fireflies.ai users |
+| Zoom Export | ✅* | Minimal | Zoom users |
 | Folder Watcher | ✅ | Minimal | Most users |
 | Otter.ai Export | ✅* | Minimal | Otter.ai users |
 | Fathom Export | ✅* | Minimal | Fathom users |

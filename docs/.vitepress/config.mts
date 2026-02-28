@@ -49,7 +49,15 @@ export default defineConfig({
             { text: 'Auto-Linking', link: '/features/auto-linking' },
             { text: 'Participant Notes', link: '/features/participants' },
             { text: 'Folder Watcher', link: '/features/folder-watcher' },
-            { text: 'Otter.ai Sync', link: '/features/otter-sync' }
+          ]
+        },
+        {
+          text: 'Import Guides',
+          items: [
+            { text: 'Zoom', link: '/features/zoom' },
+            { text: 'Otter.ai', link: '/features/otter-sync' },
+            { text: 'Fireflies.ai', link: '/features/fireflies' },
+            { text: 'Fathom', link: '/features/fathom' },
           ]
         }
       ],
