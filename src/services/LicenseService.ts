@@ -152,7 +152,7 @@ export class LicenseService {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `product_id=${GUMROAD_PRODUCT_ID}&license_key=${encodeURIComponent(key)}`,
+        body: `product_id=${GUMROAD_PRODUCT_ID}&license_key=${encodeURIComponent(key)}&increment_uses_count=false`,
         throw: false, // Don't throw on non-200 responses
       });
       
