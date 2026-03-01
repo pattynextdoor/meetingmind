@@ -15,11 +15,11 @@
       content="obsidian plugin, meeting transcripts, fireflies, otter, knowledge management, PKM, meeting notes, obsidian meeting notes, fireflies obsidian, otter ai obsidian"
     />
     <meta name="author" content="Patrick Tumbucon" />
-    <link rel="canonical" href="https://docs.meetingmind.me" />
+    <link rel="canonical" href="https://meetingmind.me" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://docs.meetingmind.me" />
+    <meta property="og:url" content="https://meetingmind.me" />
     <meta
       property="og:title"
       content="MeetingMind — Meeting transcripts that actually connect"
@@ -28,11 +28,11 @@
       property="og:description"
       content="Automatically import transcripts from Fireflies, Otter, and Zoom. Generate AI summaries, extract action items, and link mentions to your Obsidian vault—instantly."
     />
-    <meta property="og:image" content="https://docs.meetingmind.me/meetingmind_logo_600.png" />
+    <meta property="og:image" content="https://meetingmind.me/meetingmind_logo_600.png" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://docs.meetingmind.me" />
+    <meta name="twitter:url" content="https://meetingmind.me" />
     <meta
       name="twitter:title"
       content="MeetingMind — Meeting transcripts that actually connect"
@@ -41,10 +41,63 @@
       name="twitter:description"
       content="Automatically import transcripts from Fireflies, Otter, and Zoom. Generate AI summaries, extract action items, and link mentions to your Obsidian vault—instantly."
     />
-    <meta name="twitter:image" content="https://docs.meetingmind.me/meetingmind_logo_600.png" />
+    <meta name="twitter:image" content="https://meetingmind.me/meetingmind_logo_600.png" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "MeetingMind",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Cross-platform (Obsidian Plugin)",
+      "description": "Turn meeting transcripts into connected knowledge inside Obsidian. Import from Fireflies, Otter, Zoom, Google Meet, Microsoft Teams, or any VTT/SRT/TXT file. AI-powered summaries, action items, decisions, and auto-linking to your vault.",
+      "url": "https://meetingmind.me",
+      "downloadUrl": "https://github.com/pattynextdoor/meetingmind/releases/latest",
+      "author": {
+        "@type": "Person",
+        "name": "Patrick Tumbucon",
+        "url": "https://github.com/pattynextdoor"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free tier — multi-format import, auto-linking, folder watcher, participant tracking, meeting dashboard"
+        },
+        {
+          "@type": "Offer",
+          "price": "39",
+          "priceCurrency": "USD",
+          "description": "Pro license (one-time) — AI summaries, action items, decisions, entity extraction, participant insights. BYOK (OpenAI/Claude).",
+          "url": "https://tumbucon.gumroad.com/l/meetingmind-pro"
+        }
+      ],
+      "featureList": [
+        "Multi-format transcript import (VTT, SRT, TXT, JSON)",
+        "Auto-linking participants, topics, and projects to Obsidian notes",
+        "Folder watcher for automatic import",
+        "Fireflies integration",
+        "Otter.ai integration",
+        "Zoom transcript import",
+        "Google Meet transcript import",
+        "Microsoft Teams transcript import",
+        "AI-powered meeting summaries (Pro)",
+        "Action item extraction with assignees (Pro)",
+        "Decision extraction (Pro)",
+        "Participant insights (Pro)",
+        "Entity extraction (Pro)",
+        "Meeting dashboard with Dataview",
+        "BYOK — your own OpenAI or Claude API key"
+      ],
+      "softwareRequirements": "Obsidian v1.0.0+",
+      "license": "https://opensource.org/licenses/MIT"
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,6 +172,42 @@
 </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:sans-serif;color:#1a1a1a;">
+        <h1>MeetingMind — Meeting transcripts that actually connect</h1>
+        <p>MeetingMind is an Obsidian plugin that transforms meeting transcripts into connected knowledge inside your vault.</p>
+        
+        <h2>Features (Free)</h2>
+        <ul>
+          <li>Import transcripts from Zoom, Google Meet, Microsoft Teams, Fireflies, Otter.ai, or any VTT/SRT/TXT file</li>
+          <li>Auto-link participants, topics, and projects to existing Obsidian notes</li>
+          <li>Folder watcher for automatic transcript import</li>
+          <li>Participant tracking across meetings</li>
+          <li>Meeting dashboard with Dataview integration</li>
+          <li>Alias matching — nicknames resolve to full note names</li>
+        </ul>
+
+        <h2>Pro Features ($39 one-time, BYOK)</h2>
+        <ul>
+          <li>AI-powered meeting summaries that scale with meeting length</li>
+          <li>Action item extraction with assignees and due dates</li>
+          <li>Decision extraction</li>
+          <li>Entity extraction (issues, updates, topics)</li>
+          <li>Participant insights (roles, contributions, wins)</li>
+          <li>Smart tag suggestions from your existing vault tags</li>
+          <li>Uses your own OpenAI or Claude API key — data never touches our servers</li>
+        </ul>
+
+        <h2>How it works</h2>
+        <p>Import any meeting transcript and MeetingMind automatically parses participants, timestamps, and content. It scans your vault for matching notes and creates wikilinks — "the enrollment API" links to [[Enrollment API]], "Patty" matches [[Patrick Tumbucon]] via alias. Pro users get AI summaries, action items, and decisions using their own API keys.</p>
+
+        <h2>Integrations</h2>
+        <p>Fireflies.ai (automatic sync), Otter.ai (export import), Zoom (VTT transcripts), Google Meet (Workspace transcripts), Microsoft Teams (.docx/.vtt export), and any plain text transcript file.</p>
+
+        <h2>Get Started</h2>
+        <p><a href="https://github.com/pattynextdoor/meetingmind/releases/latest">Download latest release</a> | <a href="https://docs.meetingmind.me">Documentation</a> | <a href="https://tumbucon.gumroad.com/l/meetingmind-pro">Get Pro License ($39)</a></p>
+      </div>
+    </noscript>
   <script type="module" src="/index.tsx"></script>
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
