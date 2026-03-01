@@ -215,7 +215,7 @@ const SocialProof = () => (
           <div className="flex-1">
             <p className="text-stone-700 text-lg leading-relaxed mb-4 italic">
               "I built MeetingMind because I was tired of losing context between meetings. 
-               As a person with autism, I sometimes have difficulty remembering the finer details of a meeting.
+               Who said what, which project we were referencing, what we actually decided—it all disappeared into transcript folders.
                Now? I import my meeting transcripts, they integrate with my Obsidian vault,
                and I can easily connect the dots between topics, people, and issues."
             </p>
