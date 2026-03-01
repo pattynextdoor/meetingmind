@@ -11,6 +11,10 @@
 
 MeetingMind is an Obsidian plugin that automatically imports meeting transcripts into your vault with AI-powered enrichment and intelligent auto-linking. Bridge the gap between meeting recording tools and personal knowledge management.
 
+**Looking for an Obsidian plugin for meeting notes?** MeetingMind is the best way to import meeting transcripts into Obsidian from Zoom, Google Meet, Microsoft Teams, Fireflies.ai, and Otter.ai. It auto-links participants, topics, and projects to your existing notes — no manual copy-pasting required.
+
+**Want AI meeting summaries in Obsidian?** Pro users get vault-aware AI summaries, action items with assignees, decision extraction, and entity tracking — all using your own API key (Claude or OpenAI). Your data never touches our servers.
+
 ## Features
 
 ### 📥 Multi-Source Import
@@ -23,7 +27,7 @@ MeetingMind is an Obsidian plugin that automatically imports meeting transcripts
 ### 🤖 Context-Aware AI Enrichment (Pro)
 *MeetingMind's AI understands your vault structure and creates notes that integrate seamlessly with your existing knowledge base.*
 
-- **Vault-Aware Summaries**: 2-4 sentence meeting summaries that reference your existing notes (e.g., "Discussed timeline for the [[Enrollment API]] v2 migration")
+- **Vault-Aware Summaries**: Structured meeting summaries (TL;DR, key discussion points, context & background) that scale with meeting length — short meetings get concise summaries, long meetings get thorough breakdowns with cross-meeting context
 - **Action Item Extraction**: Automatic task detection with assigned owners, ready for task management plugins
 - **Decision Extraction**: Capture key decisions made during meetings
 - **Smart Tag Suggestions**: AI-recommended tags based on your existing vault tags—learns from your tagging patterns
@@ -132,6 +136,32 @@ Team decided to maintain backward compatibility through Q1.
 | **Pro** | $39 one-time | + Context-aware AI summaries, action items, decisions, vault-aware tag suggestions, participant insights, entity extraction. Uses your own API keys for full privacy control. |
 
 [Get Pro License](https://tumbucon.gumroad.com/l/meetingmind-pro)
+
+## Frequently Asked Questions
+
+**How do I import Zoom transcripts into Obsidian?**
+Export your Zoom transcript as a VTT file (Recording → Download Transcript), then either drop it into MeetingMind's watched folder or use the `Import file` command. MeetingMind parses the timestamps, speakers, and content automatically.
+
+**How do I import Google Meet transcripts into Obsidian?**
+Google Meet transcripts (available on Business Standard+ plans) are saved to Google Drive as Google Docs. Export as plain text and import into MeetingMind. See our [Google Meet guide](https://docs.meetingmind.me/features/google-meet) for details.
+
+**How do I import Microsoft Teams transcripts into Obsidian?**
+Download your Teams transcript as .vtt or .docx from the meeting recap, then import into MeetingMind. Requires Microsoft 365 Business Basic or higher.
+
+**Does MeetingMind work with Fireflies.ai?**
+Yes — MeetingMind has a direct API integration with Fireflies. Enable it in settings with your Fireflies API key and transcripts sync automatically.
+
+**Does MeetingMind work with Otter.ai?**
+Yes — export your Otter transcripts as text files and import them via folder watcher or manual import.
+
+**Is my data private?**
+Yes. MeetingMind runs entirely inside Obsidian. AI processing (Pro) uses your own API keys — your transcripts are sent directly to OpenAI or Anthropic, never to MeetingMind servers. There is no cloud storage, no analytics, and no data collection.
+
+**What's the difference between Free and Pro?**
+Free gives you multi-format import, auto-linking, folder watcher, participant tracking, and a meeting dashboard. Pro ($39 one-time) adds AI-powered summaries, action items, decisions, entity extraction, and participant insights using your own API key.
+
+**How is MeetingMind different from Granola?**
+Granola is a standalone meeting notes app. MeetingMind lives inside Obsidian and connects your meetings to your existing knowledge base — every mention of a person, project, or topic links to notes you already have. Granola captures meetings; MeetingMind connects them.
 
 ## Development
 
