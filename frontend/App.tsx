@@ -822,7 +822,7 @@ const FAQ = () => {
     },
     {
       question: "What if I don't like it?",
-      answer: "We offer refunds within 14 days, no questions asked. If Pro doesn't save you time or fit your workflow, just email support@meetingmind.me and we'll process your refund immediately."
+      answer: "We offer refunds within 14 days, no questions asked. If Pro doesn't save you time or fit your workflow, just email patricktumbucon@gmail.com and we'll process your refund immediately."
     },
     {
       question: "Is this worth $39?",
@@ -896,7 +896,7 @@ const Footer = () => (
           <div className="hidden md:flex gap-6 text-sm text-stone-500">
             <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
             <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
-            <a href="mailto:support@meetingmind.me" className="hover:text-stone-900 transition-colors">Support</a>
+            <a href="mailto:patricktumbucon@gmail.com" className="hover:text-stone-900 transition-colors">Support</a>
             <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
           </div>
         </div>

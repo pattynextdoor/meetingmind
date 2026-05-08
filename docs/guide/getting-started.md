@@ -67,6 +67,6 @@ This will retroactively add summaries, action items, and AI insights to all your
 ## Need Help?
 
 - **Documentation**: [docs.meetingmind.me](https://docs.meetingmind.me)
-- **Support**: support@meetingmind.me
+- **Support**: patricktumbucon@gmail.com
 - **Issues**: [GitHub Issues](https://github.com/pattynextdoor/meetingmind/issues)
 

@@ -197,7 +197,7 @@ This plugin connects to the following external services:
 ## Support
 
 - **Documentation**: [docs.meetingmind.me](https://docs.meetingmind.me)
-- **Email**: support@meetingmind.me
+- **Email**: patricktumbucon@gmail.com
 - **Issues**: [GitHub Issues](https://github.com/pattynextdoor/meetingmind/issues)
 
 ## License
