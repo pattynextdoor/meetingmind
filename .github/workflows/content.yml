@@ -1,0 +1,76 @@
+name: Content CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'content/**'
+      - 'frontend/index.html'
+      - 'frontend/public/**'
+      - 'frontend/package.json'
+      - 'frontend/vite.config.ts'
+      - 'scripts/build-with-content.mjs'
+      - 'scripts/check-seo.mjs'
+      - 'scripts/check-schema.mjs'
+      - 'scripts/check-llms.mjs'
+      - '.github/workflows/content.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'content/**'
+      - 'frontend/index.html'
+      - 'frontend/public/**'
+      - 'frontend/package.json'
+      - 'frontend/vite.config.ts'
+      - 'scripts/build-with-content.mjs'
+      - 'scripts/check-seo.mjs'
+      - 'scripts/check-schema.mjs'
+      - 'scripts/check-llms.mjs'
+      - '.github/workflows/content.yml'
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Install content deps
+        working-directory: content
+        run: npm ci --no-audit --no-fund
+
+      - name: Build merged site
+        working-directory: frontend
+        run: npm run build
+
+      - name: Verify SEO (titles, descriptions, meta, canonical, internal links)
+        run: npm run check:seo
+
+      - name: Verify JSON-LD schemas
+        run: npm run check:schema
+
+      - name: Verify llms.txt (local link health)
+        run: npm run check:llms
+
+      - name: Verify llms.txt (external link health)
+        run: npm run check:llms:network
+        continue-on-error: true
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-${{ github.sha }}
+          path: frontend/dist
+          retention-days: 7

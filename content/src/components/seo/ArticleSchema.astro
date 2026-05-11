@@ -1,0 +1,34 @@
+---
+import JsonLd from './JsonLd.astro';
+import { SITE, ORG, AUTHOR } from '~/consts';
+import type { Post } from '~/lib/posts';
+import { postUrl, ogImageUrl, isoDate } from '~/lib/posts';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const url = `${SITE.url}${postUrl(post)}`;
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${url}#article`,
+  headline: post.data.title,
+  description: post.data.description,
+  url,
+  datePublished: isoDate(post.data.publishedAt),
+  dateModified: isoDate(post.data.updatedAt ?? post.data.publishedAt),
+  author: {
+    '@type': 'Person',
+    name: post.data.author ?? AUTHOR.name,
+    url: AUTHOR.url,
+  },
+  publisher: { '@id': `${ORG.url}#organization` },
+  image: `${SITE.url}${ogImageUrl(post)}`,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  keywords: post.data.tags.join(', '),
+  inLanguage: SITE.locale,
+};
+---
+<JsonLd data={data} />

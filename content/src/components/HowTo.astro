@@ -1,0 +1,35 @@
+---
+import HowToSchema from './seo/HowToSchema.astro';
+
+interface Step {
+  name: string;
+  text: string;
+  image?: string;
+  url?: string;
+}
+interface Props {
+  name: string;
+  description: string;
+  totalTime?: string;
+  image?: string;
+  steps: Step[];
+  emitSchema?: boolean;
+}
+const { name, description, totalTime, image, steps, emitSchema = true } = Astro.props;
+---
+<section class="howto-block">
+  <h3>{name}</h3>
+  <p class="howto-meta">
+    {description}
+    {totalTime && <span> · Estimated time: {totalTime}</span>}
+  </p>
+  <ol>
+    {steps.map((s) => (
+      <li>
+        <span class="step-name">{s.name}</span>
+        <span>{s.text}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+{emitSchema && <HowToSchema name={name} description={description} totalTime={totalTime} image={image} steps={steps} />}

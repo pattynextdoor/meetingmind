@@ -1,0 +1,131 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ArticleSchema from '~/components/seo/ArticleSchema.astro';
+import BreadcrumbSchema from '~/components/seo/BreadcrumbSchema.astro';
+import FAQSchema from '~/components/seo/FAQSchema.astro';
+import HowToSchema from '~/components/seo/HowToSchema.astro';
+import {
+  formatDate,
+  isoDate,
+  estimateReadingMinutes,
+  postUrl,
+  postMarkdownUrl,
+  ogImageUrl,
+  relatedPosts,
+  getPublishedPosts,
+  type Post,
+} from '~/lib/posts';
+import { AUTHOR } from '~/consts';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+interface Props {
+  post: Post;
+  headings: Heading[];
+  body: string;
+}
+const { post, headings, body } = Astro.props;
+
+const readMins = estimateReadingMinutes(body);
+const all = await getPublishedPosts();
+const related = relatedPosts(post, all);
+const tocItems = headings.filter((h) => h.depth === 2);
+const updated = post.data.updatedAt ?? post.data.publishedAt;
+const url = postUrl(post);
+---
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonical={post.data.canonical ?? `https://meetingmind.me${url}`}
+  ogImage={ogImageUrl(post)}
+  ogType="article"
+  noindex={post.data.noindex}
+  publishedTime={isoDate(post.data.publishedAt)}
+  modifiedTime={isoDate(updated)}
+>
+  <slot name="head" slot="head" />
+
+  <article>
+    <h1>{post.data.title}</h1>
+    <p class="post-meta">
+      <span>By <a href="/about">{post.data.author ?? AUTHOR.name}</a></span>
+      <span class="dot" />
+      <time datetime={isoDate(post.data.publishedAt)}>{formatDate(post.data.publishedAt)}</time>
+      {post.data.updatedAt && (
+        <>
+          <span class="dot" />
+          <span>Updated <time datetime={isoDate(post.data.updatedAt)}>{formatDate(post.data.updatedAt)}</time></span>
+        </>
+      )}
+      <span class="dot" />
+      <span>{readMins} min read</span>
+      <span class="dot" />
+      <a href={postMarkdownUrl(post)} title="Plain markdown for LLMs">.md</a>
+    </p>
+
+    {tocItems.length > 1 && (
+      <nav class="toc" aria-label="Table of contents">
+        <h2>On this page</h2>
+        <ol>
+          {tocItems.map((h) => (
+            <li><a href={`#${h.slug}`}>{h.text}</a></li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
+    <slot />
+
+    {post.data.tags.length > 0 && (
+      <div class="post-tags">
+        {post.data.tags.map((tag) => (
+          <a href={`/blog?tag=${encodeURIComponent(tag)}`}>#{tag}</a>
+        ))}
+      </div>
+    )}
+
+    <footer class="post-footer">
+      <p>
+        Written by <strong>{post.data.author ?? AUTHOR.name}</strong> —
+        <a href={AUTHOR.url}>personal site</a> · <a href={AUTHOR.github}>GitHub</a>
+      </p>
+    </footer>
+
+    {related.length > 0 && (
+      <section class="related" aria-label="Related posts">
+        <h2>Related</h2>
+        <ul>
+          {related.map((p) => (
+            <li>
+              <a href={postUrl(p)}>
+                <strong>{p.data.title}</strong>
+                <div class="related-meta">{formatDate(p.data.publishedAt)} · {p.data.description}</div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+
+  <ArticleSchema post={post} />
+  <BreadcrumbSchema
+    items={[
+      { name: 'Home', url: '/' },
+      { name: 'Blog', url: '/blog' },
+      { name: post.data.title, url },
+    ]}
+  />
+  {post.data.faq && <FAQSchema items={post.data.faq} />}
+  {post.data.howto && (
+    <HowToSchema
+      name={post.data.howto.name}
+      description={post.data.howto.description}
+      totalTime={post.data.howto.totalTime}
+      steps={post.data.howto.steps}
+    />
+  )}
+</BaseLayout>

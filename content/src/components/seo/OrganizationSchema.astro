@@ -1,0 +1,25 @@
+---
+import JsonLd from './JsonLd.astro';
+import { ORG, AUTHOR } from '~/consts';
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${ORG.url}#organization`,
+  name: ORG.name,
+  url: ORG.url,
+  logo: {
+    '@type': 'ImageObject',
+    url: ORG.logo,
+    width: 600,
+    height: 600,
+  },
+  sameAs: ORG.sameAs,
+  founder: {
+    '@type': 'Person',
+    name: AUTHOR.name,
+    url: AUTHOR.url,
+  },
+};
+---
+<JsonLd data={data} />

@@ -1,0 +1,25 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  start?: number;
+}
+const { id, title, start } = Astro.props;
+const src = `https://www.youtube-nocookie.com/embed/${id}${start ? `?start=${start}` : ''}`;
+---
+<figure class="video-embed">
+  <div
+    style="position: relative; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; border: 1px solid var(--rule);"
+  >
+    <iframe
+      src={src}
+      title={title}
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"
+      style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"
+    ></iframe>
+  </div>
+  <figcaption>{title}</figcaption>
+</figure>

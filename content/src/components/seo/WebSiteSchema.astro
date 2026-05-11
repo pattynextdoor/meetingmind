@@ -1,0 +1,16 @@
+---
+import JsonLd from './JsonLd.astro';
+import { SITE, ORG } from '~/consts';
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}#website`,
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  inLanguage: SITE.locale,
+  publisher: { '@id': `${ORG.url}#organization` },
+};
+---
+<JsonLd data={data} />

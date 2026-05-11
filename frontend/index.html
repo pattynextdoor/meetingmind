@@ -8,7 +8,7 @@
     <!-- SEO Meta Tags -->
     <meta
       name="description"
-      content="Turn meeting transcripts into connected Obsidian notes. Auto-import from Fireflies, Otter, Zoom. AI summaries, action items, auto-linking. Free core features, $39 Pro license."
+      content="Turn meeting transcripts into connected Obsidian notes. Auto-import from Fireflies, Otter, Zoom. AI summaries, action items, auto-linking. Free + $39 Pro."
     />
     <meta
       name="keywords"
@@ -28,7 +28,10 @@
       property="og:description"
       content="Automatically import transcripts from Fireflies, Otter, and Zoom. Generate AI summaries, extract action items, and link mentions to your Obsidian vault—instantly."
     />
-    <meta property="og:image" content="https://meetingmind.me/meetingmind_logo_600.png" />
+    <meta property="og:image" content="https://meetingmind.me/og-home.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="MeetingMind — turn meeting chatter into connected knowledge" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -41,27 +44,76 @@
       name="twitter:description"
       content="Automatically import transcripts from Fireflies, Otter, and Zoom. Generate AI summaries, extract action items, and link mentions to your Obsidian vault—instantly."
     />
-    <meta name="twitter:image" content="https://meetingmind.me/meetingmind_logo_600.png" />
+    <meta name="twitter:image" content="https://meetingmind.me/og-home.png" />
+    <meta name="twitter:image:alt" content="MeetingMind — turn meeting chatter into connected knowledge" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 
-    <!-- Structured Data -->
+    <!-- ============================================================
+         Structured Data (JSON-LD) — one block per type for clarity.
+         Edit each block independently. Keep FAQPage in sync with the
+         visible FAQ in App.tsx (Google penalizes schema-only content).
+         ============================================================ -->
+
+    <!-- Organization (sitewide) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://meetingmind.me#organization",
+      "name": "MeetingMind",
+      "url": "https://meetingmind.me",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://meetingmind.me/meetingmind_logo_600.png",
+        "width": 600,
+        "height": 600
+      },
+      "sameAs": [
+        "https://github.com/pattynextdoor/meetingmind",
+        "https://tumbucon.gumroad.com/l/meetingmind-pro",
+        "https://www.producthunt.com/products/meetingmind",
+        "https://patricktumbucon.com"
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Patrick Tumbucon",
+        "url": "https://patricktumbucon.com"
+      }
+    }
+    </script>
+
+    <!-- WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://meetingmind.me#website",
+      "name": "MeetingMind",
+      "url": "https://meetingmind.me",
+      "description": "Turn meeting transcripts into connected Obsidian notes. Auto-import from Fireflies, Otter, Zoom. AI summaries, action items, auto-linking.",
+      "inLanguage": "en-US",
+      "publisher": { "@id": "https://meetingmind.me#organization" }
+    }
+    </script>
+
+    <!-- SoftwareApplication (the plugin itself) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
+      "@id": "https://meetingmind.me#software",
       "name": "MeetingMind",
       "applicationCategory": "ProductivityApplication",
-      "operatingSystem": "Cross-platform (Obsidian Plugin)",
+      "applicationSubCategory": "BrowserApplication",
+      "operatingSystem": "Windows, macOS, Linux",
       "description": "Turn meeting transcripts into connected knowledge inside Obsidian. Import from Fireflies, Otter, Zoom, Google Meet, Microsoft Teams, or any VTT/SRT/TXT file. AI-powered summaries, action items, decisions, and auto-linking to your vault.",
       "url": "https://meetingmind.me",
       "downloadUrl": "https://github.com/pattynextdoor/meetingmind/releases/latest",
-      "author": {
-        "@type": "Person",
-        "name": "Patrick Tumbucon",
-        "url": "https://github.com/pattynextdoor"
-      },
+      "screenshot": "https://meetingmind.me/og-home.png",
+      "author": { "@id": "https://patricktumbucon.com#person" },
+      "publisher": { "@id": "https://meetingmind.me#organization" },
       "offers": [
         {
           "@type": "Offer",
@@ -73,6 +125,7 @@
           "@type": "Offer",
           "price": "39",
           "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
           "description": "Pro license (one-time) — AI summaries, action items, decisions, entity extraction, participant insights. BYOK (OpenAI/Claude).",
           "url": "https://tumbucon.gumroad.com/l/meetingmind-pro"
         }
@@ -96,6 +149,182 @@
       ],
       "softwareRequirements": "Obsidian v1.0.0+",
       "license": "https://opensource.org/licenses/MIT"
+    }
+    </script>
+
+    <!-- Product (the Pro license, for product-rich-result eligibility) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "@id": "https://meetingmind.me#product-pro",
+      "name": "MeetingMind Pro",
+      "description": "One-time license unlocking AI summaries, action items, decisions, entity extraction, and participant insights. BYOK (OpenAI/Claude).",
+      "brand": { "@id": "https://meetingmind.me#organization" },
+      "image": "https://meetingmind.me/meetingmind_logo_600.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "39",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://tumbucon.gumroad.com/l/meetingmind-pro",
+        "priceValidUntil": "2030-12-31"
+      }
+    }
+    </script>
+
+    <!-- Person (the founder) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://patricktumbucon.com#person",
+      "name": "Patrick Tumbucon",
+      "url": "https://patricktumbucon.com",
+      "sameAs": [
+        "https://github.com/pattynextdoor",
+        "https://linkedin.com/in/patricktumbucon",
+        "https://patricktumbucon.com"
+      ]
+    }
+    </script>
+
+    <!-- FAQPage — MUST mirror the visible FAQ in App.tsx (search for `const faqs = [`).
+         When you change the on-page FAQ, update this block. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I import Zoom transcripts into Obsidian?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Export your Zoom transcript as a VTT file (Recording → Download Transcript), then either drop it into MeetingMind's watched folder or use the Import file command. MeetingMind parses the timestamps, speakers, and content automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I import Google Meet transcripts into Obsidian?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google Meet transcripts (available on Business Standard+ plans) are saved to Google Drive as Google Docs. Export as plain text and import into MeetingMind. See our Google Meet guide for details."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I import Microsoft Teams transcripts into Obsidian?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Download your Teams transcript as .vtt or .docx from the meeting recap, then import into MeetingMind. Requires Microsoft 365 Business Basic or higher."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does MeetingMind work with Fireflies.ai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — MeetingMind has a direct API integration with Fireflies. Enable it in settings with your Fireflies API key and transcripts sync automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does MeetingMind work with Otter.ai?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — export your Otter transcripts as text files and import them via the folder watcher or manual import."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What transcript formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MeetingMind supports VTT, SRT, TXT, and JSON formats. You can import from Otter.ai, Fathom, Zoom, Fireflies.ai, or any tool that exports transcripts in these formats."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the Fireflies.ai sync work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With Fireflies.ai API sync enabled, MeetingMind automatically imports new transcripts as they're created in your Fireflies account. Just set up your API key once, and new meetings appear in your vault automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. MeetingMind runs entirely inside Obsidian. AI processing (Pro) uses your own API keys — your transcripts are sent directly to OpenAI or Anthropic, never to MeetingMind servers. There is no cloud storage, no analytics, and no data collection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is MeetingMind different from Granola?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Granola is a standalone meeting notes app. MeetingMind lives inside Obsidian and connects your meetings to your existing knowledge base — every mention of a person, project, or topic links to notes you already have. Granola captures meetings; MeetingMind connects them."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between Free and Pro?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Free gives you multi-format import, auto-linking, folder watcher, participant tracking, and a meeting dashboard. Pro ($39 one-time) adds AI-powered summaries, action items, decisions, entity extraction, and participant insights using your own API key."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need an API key for the Free version?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No! The Free version works completely offline. Auto-linking, participant tracking, folder watcher, and all core features work without any API keys. Only Pro features (AI summaries, action items, etc.) require your own API key."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this worth $39?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you attend just 2 meetings per week, you'll save hours of manual note organization in the first month alone. Most users report saving 15-30 minutes per meeting by not having to manually write summaries, extract action items, or create issue tracking notes. That's 1-2 hours saved per week — your time back for $39, once."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I try Pro before buying?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The free version gives you the full import and linking experience — try it first and see how it fits your workflow. When you're ready for AI summaries, action items, and entity extraction, upgrade to Pro with a one-time payment. You can also reprocess all your existing meetings to add AI enrichment after upgrading."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much do API calls cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Typical meeting processing costs ~$0.01-0.05 per transcript, depending on length and which AI provider you use (Claude or OpenAI). You pay directly to the AI provider — MeetingMind doesn't charge any usage fees."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this on mobile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, MeetingMind is desktop-only (macOS, Windows, Linux). This is because it requires file system access for folder watching and vault indexing. Mobile Obsidian apps don't support these features."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I don't like it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We offer refunds within 14 days, no questions asked. If Pro doesn't save you time or fit your workflow, just email patricktumbucon@gmail.com and we'll process your refund immediately."
+          }
+        }
+      ]
     }
     </script>
 
@@ -206,6 +435,9 @@
 
         <h2>Get Started</h2>
         <p><a href="https://github.com/pattynextdoor/meetingmind/releases/latest">Download latest release</a> | <a href="https://docs.meetingmind.me">Documentation</a> | <a href="https://tumbucon.gumroad.com/l/meetingmind-pro">Get Pro License ($39)</a></p>
+
+        <h2>More</h2>
+        <p><a href="/blog">Blog</a> | <a href="/about">About</a> | <a href="/feed.xml">RSS feed</a></p>
       </div>
     </noscript>
   <script type="module" src="/index.tsx"></script>

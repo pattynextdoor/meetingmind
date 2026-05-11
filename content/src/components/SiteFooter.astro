@@ -1,0 +1,17 @@
+---
+import { AUTHOR } from '~/consts';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      © {year} {AUTHOR.name} ·
+      <a href="https://github.com/pattynextdoor/meetingmind">GitHub</a> ·
+      <a href="/feed.xml">RSS</a> ·
+      <a href="/llms.txt">llms.txt</a>
+    </div>
+    <div>
+      <a href="https://obsidian.md">Built for Obsidian</a>
+    </div>
+  </div>
+</footer>

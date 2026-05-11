@@ -1,0 +1,207 @@
+---
+title: "How to import Zoom transcripts into Obsidian"
+description: "A step-by-step workflow for converting Zoom VTT and TXT transcripts into clean Obsidian notes. Manual cleanup, Templater scripts, and one-click automation."
+publishedAt: 2026-05-15
+updatedAt: 2026-05-15
+author: Patrick Tumbucon
+tags:
+  - obsidian
+  - zoom
+  - meeting-notes
+  - transcripts
+  - vtt
+faq:
+  - q: Where does Zoom store transcripts?
+    a: >-
+      Cloud recordings: zoom.us → Recordings. Local recordings don't generate
+      transcripts automatically — you'd need to run the audio through Whisper
+      or Otter separately.
+  - q: Can I get a transcript from a meeting I already recorded?
+    a: >-
+      Only if it was a cloud recording. Local recordings produce audio only,
+      no transcript. Run the audio through Whisper after the fact.
+  - q: Why is my VTT file empty?
+    a: >-
+      Zoom transcripts take 10-30 minutes to process after the meeting ends.
+      If it's been longer, check that you have transcription enabled in Zoom
+      settings (Account Settings → Recording → Audio transcript).
+  - q: What if my Zoom plan doesn't include transcription?
+    a: >-
+      Cloud recording transcripts require a paid Zoom plan. As a workaround,
+      record the meeting locally and transcribe the audio with Whisper or
+      Otter.
+  - q: Will this work for .txt transcripts too?
+    a: >-
+      Yes. TXT transcripts are simpler — no timestamps to strip. Skip step 3
+      in the manual workflow and the cue-block regex in the Templater script.
+---
+
+If you've ever downloaded a Zoom transcript and pasted it into Obsidian, you've seen the problem. The file is technically text, but it's not text you can read. It's `.vtt` — WebVTT format — and it looks like this:
+
+```vtt
+WEBVTT
+
+1
+00:00:02.430 --> 00:00:05.910
+Dorothy Cisneros: Alright, let's get started. Can everyone hear me?
+
+2
+00:00:06.120 --> 00:00:09.450
+Remi Parks: Yeah, audio's good on my end.
+```
+
+That's useless as a note. The timestamps clutter every line, the numbering is meaningless, and the formatting fights with Obsidian's markdown rendering. This post is the cleanup workflow.
+
+## What Zoom actually gives you
+
+Zoom produces three different transcript-shaped artifacts and it's worth knowing which is which:
+
+**Recording transcript (`.vtt`)** — Generated from cloud-recorded meetings. Available 10-30 minutes after the meeting ends. Includes speaker labels and timestamps. This is what most people mean by "Zoom transcript."
+
+**Live transcript (`.txt`)** — If you enabled live transcription during the meeting, Zoom saves it as a plain text file. Cleaner than the VTT but no timestamps.
+
+**Chat log (`.txt`)** — Separate from transcripts entirely. The chat panel saved as text. Useful but a different document type.
+
+To grab any of them: Zoom web portal → Recordings → click the meeting → download. VTT and TXT live alongside the video file.
+
+This post focuses on the VTT case since it's the most common and the most annoying to deal with.
+
+## The cleanup problem
+
+A clean Obsidian meeting note looks like this:
+
+```markdown
+---
+date: 2026-05-15
+duration: 47
+participants:
+  - "[[Dorothy Cisneros]]"
+  - "[[Remi Parks]]"
+source: zoom
+tags: [engineering, api]
+---
+
+## Summary
+
+(your summary)
+
+## Action Items
+
+- [ ] Item one (@person)
+
+## Transcript
+
+> [!note]- Full transcript (click to expand)
+>
+> **Dorothy Cisneros**: Alright, let's get started.
+> **Remi Parks**: Yeah, audio's good on my end.
+```
+
+To get from raw VTT to that, you need to:
+
+1. Strip the `WEBVTT` header and cue numbers
+2. Remove or hide the timestamps
+3. Convert the speaker labels into something readable
+4. Wrap the transcript in a collapsible callout so it doesn't take over the note
+5. Add frontmatter with date, participants, and tags
+
+Three ways to do it. Pick based on volume.
+
+## Manual workflow (occasional use)
+
+If you process a Zoom transcript every week or two, manual is fine. Total time: ~5 minutes per meeting.
+
+1. Open the `.vtt` file in any text editor.
+2. Delete the `WEBVTT` header line.
+3. Find-and-replace the timestamp blocks. In VS Code, regex `\d+\n\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}\n` replaced with nothing strips all the cue numbers and timestamps in one pass.
+4. Find-and-replace `^(.+?):` (regex) with `**$1**:` to bold the speaker names.
+5. Paste into a new Obsidian note, add frontmatter, wrap in a callout.
+
+Save the regex pair somewhere. You'll use them again.
+
+## Templater workflow (recurring use)
+
+If you do 3+ Zoom meetings a week, automate it. [Templater](https://github.com/SilentVoid13/Templater) is the standard Obsidian plugin for scripted templates.
+
+A minimal Templater script that takes a VTT file path and produces a formatted note:
+
+```javascript
+<%*
+const vttPath = await tp.system.prompt("Path to VTT file");
+const raw = await app.vault.adapter.read(vttPath);
+
+// Strip WEBVTT header and cue blocks
+let cleaned = raw
+  .replace(/^WEBVTT\n+/, "")
+  .replace(/^\d+\n\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}\n/gm, "")
+  .replace(/^(.+?):/gm, "**$1**:")
+  .trim();
+
+// Extract unique speakers for the participants list
+const speakers = [...new Set(
+  cleaned.match(/\*\*(.+?)\*\*:/g)?.map(s => s.replace(/\*\*|:/g, "")) ?? []
+)];
+
+const participants = speakers.map(s => `  - "[[${s}]]"`).join("\n");
+const today = tp.date.now("YYYY-MM-DD");
+
+tR += `---
+date: ${today}
+source: zoom
+participants:
+${participants}
+tags: [meeting]
+---
+
+## Summary
+
+## Action Items
+
+- [ ]
+
+## Transcript
+
+> [!note]- Full transcript (click to expand)
+>
+${cleaned.split("\n").map(l => "> " + l).join("\n")}
+`;
+%>
+```
+
+Drop a VTT file into your vault, run the template, point it at the file path, and you get a complete note with participants pre-linked. Edit the summary and action items by hand.
+
+This handles maybe 80% of cases. The remaining 20% — speakers without colons, multi-line statements, edge cases in Zoom's VTT output — you'll fix manually as they come up.
+
+## Plugin workflow (zero friction)
+
+The Templater script works but is brittle. Zoom occasionally changes its VTT format. Speaker names with punctuation break the regex. Edge cases accumulate.
+
+If you don't want to maintain a regex, [MeetingMind](/) handles Zoom VTT parsing natively — drop the file in a watched folder and it produces the same shape of note automatically, plus auto-links participants to existing notes in your vault. Free tier handles import; [Pro tier](https://tumbucon.gumroad.com/l/meetingmind-pro) ($39 lifetime) adds AI summaries and action item extraction. Disclosure: I built it.
+
+The structural advantage over Templater is the auto-linking. If you already have a `[[Dorothy Cisneros]]` note in your vault, the plugin links to it. If you don't, it creates one. The Templater script just emits the wikilink and hopes the note exists.
+
+## What about Zoom's AI summaries?
+
+Zoom AI Companion produces summaries and action items inside Zoom itself. They're fine. The reason to import the transcript into Obsidian anyway is that the summary lives in Zoom's web portal — disconnected from everything else you know. The same summary in your Obsidian vault connects to the project, the people, and the prior meetings on the same topic.
+
+If you have AI Companion, paste its summary into the `## Summary` section of your note and skip the part where you write one yourself. You still want the transcript imported for searchability.
+
+## After import
+
+Getting the transcript into Obsidian is step 1 of a longer workflow. The full version — capture, transcribe, import, connect — is covered in [How to transcribe meetings into Obsidian](/blog/transcribe-meetings-into-obsidian). The short version: wikilink your participants and projects, run Dataview queries over the notes, and the meeting graveyard becomes a navigable record.
+
+## Common questions
+
+**Where does Zoom store transcripts?** Cloud recordings: zoom.us → Recordings. Local recordings don't generate transcripts automatically — you'd need to run the audio through Whisper or Otter separately.
+
+**Can I get a transcript from a meeting I already recorded?** Only if it was a cloud recording. Local recordings produce audio only, no transcript. Run the audio through Whisper after the fact.
+
+**Why is my VTT file empty?** Zoom transcripts take 10-30 minutes to process after the meeting ends. If it's been longer, check that you have transcription enabled in Zoom settings (Account Settings → Recording → Audio transcript).
+
+**What if my Zoom plan doesn't include transcription?** Cloud recording transcripts require a paid Zoom plan. As a workaround, record the meeting locally and transcribe the audio with Whisper or Otter.
+
+**Will this work for `.txt` transcripts too?** Yes. TXT transcripts are simpler — no timestamps to strip. Skip step 3 in the manual workflow and the cue-block regex in the Templater script.
+
+---
+
+*Patrick Tumbucon builds MeetingMind, an Obsidian plugin for importing and enriching meeting transcripts. Previously a Senior Software Engineer at Microsoft Azure (Identity Governance) and Amazon (Compliance Engineering). Currently at Guild Education.*

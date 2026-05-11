@@ -1,0 +1,143 @@
+---
+title: Example post — copy this template
+description: Placeholder reference post that exercises every feature — frontmatter, FAQ schema, HowTo schema, OG image, callouts, code blocks, and markdown variants.
+publishedAt: 2026-05-10
+updatedAt: 2026-05-10
+author: Patrick Tumbucon
+tags:
+  - reference
+  - template
+  - meta
+draft: true
+faq:
+  - q: How do I import a Zoom transcript into Obsidian?
+    a: Export the transcript from Zoom as a .vtt file, drop it into MeetingMind's watched folder, and the plugin parses speakers, timestamps, and content automatically. Existing notes for participants and topics get auto-linked.
+  - q: Does MeetingMind work offline?
+    a: Yes. The free tier runs entirely offline. The Pro AI features send transcripts to your own OpenAI or Claude API key — never to MeetingMind servers.
+  - q: What transcript formats are supported?
+    a: VTT, SRT, TXT, and JSON. That covers exports from Zoom, Google Meet, Microsoft Teams, Otter.ai, Fireflies.ai, and Fathom.
+howto:
+  name: Set up a watched folder for automatic transcript import
+  description: One-time setup so any transcript dropped into a folder is imported into your Obsidian vault automatically.
+  totalTime: PT3M
+  steps:
+    - name: Open MeetingMind settings
+      text: In Obsidian, open Settings → Community Plugins → MeetingMind.
+    - name: Enable the folder watcher
+      text: Toggle "Watch folder for transcripts" on.
+    - name: Choose the folder
+      text: Point the watcher at any folder you regularly export transcripts to (e.g., ~/Documents/Transcripts).
+    - name: Drop a transcript in
+      text: Export a transcript from your meeting tool into that folder. MeetingMind imports it within seconds.
+---
+
+import Callout from '~/components/Callout.astro';
+import FAQ from '~/components/FAQ.astro';
+import HowTo from '~/components/HowTo.astro';
+import YouTube from '~/components/YouTube.astro';
+
+This is the **reference post**. Copy it when starting a new article — every
+feature the content system supports is exercised below.
+
+<Callout type="note" title="Placeholder">
+  Replace the body of this post with real content before publishing. The
+  frontmatter at the top of this file is also placeholder — `publishedAt`,
+  `tags`, `faq`, and `howto` all need to be set per post.
+</Callout>
+
+## What the template covers
+
+- Frontmatter — title, description, dates, tags, FAQ schema, HowTo schema
+- Auto-generated table of contents from `##` headings
+- Author byline, reading time, last-updated date
+- Syntax-highlighted code blocks via Shiki
+- Embedded images with width/height (no CLS)
+- Internal links to other site pages
+- An OG image generated at `/blog/example-post/og.png`
+- A plain-markdown variant at `/blog/example-post.md`
+- FAQ block + `FAQPage` schema
+- HowTo block + `HowTo` schema
+
+## How to author a new post
+
+1. Copy this file to `content/src/content/blog/your-slug.mdx`.
+2. Fill in the frontmatter — keep `description` under 170 characters.
+3. Write your H2 sections. Each becomes a TOC entry automatically.
+4. Optionally fill `faq` or `howto` frontmatter to emit rich-result schema.
+5. Run `npm run check:seo && npm run check:schema && npm run check:llms` before merging.
+
+## Code block example
+
+```typescript
+// Auto-link mention to existing vault note
+function autoLink(mention: string, vault: VaultIndex): string {
+  const match = vault.findByAlias(mention);
+  return match ? `[[${match.title}]]` : mention;
+}
+```
+
+## Callouts
+
+<Callout type="info" title="Tip">
+  Callouts come in three flavors: `info`, `note`, `warn`. Use them sparingly —
+  they're for content the reader must not miss.
+</Callout>
+
+<Callout type="warn" title="Heads up">
+  Anything destructive or non-obvious belongs in a `warn` callout.
+</Callout>
+
+## Internal links
+
+Link to other parts of the site by relative path:
+
+- [About](/about) — author bio and editorial principles
+- [Documentation](https://docs.meetingmind.me) — full product docs
+- [Pro license](https://tumbucon.gumroad.com/l/meetingmind-pro) — $39 one-time
+
+## Embedded image
+
+Always include `width` and `height` to prevent layout shift. Astro will
+optimize the file if it's imported from `src/assets/`.
+
+<figure>
+  <img
+    src="/meetingmind_logo_600.png"
+    alt="MeetingMind logo"
+    width="240"
+    height="240"
+    loading="lazy"
+  />
+  <figcaption>Always lazy-load images below the fold.</figcaption>
+</figure>
+
+## FAQ block
+
+The FAQ below renders inline AND emits `FAQPage` schema. Frontmatter `faq`
+is the single source of truth — Astro generates both the HTML and JSON-LD.
+
+<FAQ items={frontmatter.faq} />
+
+<Callout type="note" title="Why duplicate?">
+  Schema-only FAQ content violates Google's rich-result guidelines. Always
+  render the same Q&A pairs in the visible body that you emit in the schema.
+</Callout>
+
+## HowTo block
+
+<HowTo {...frontmatter.howto} />
+
+## Video embed
+
+<YouTube id="KZ8D_RlLz7c" title="MeetingMind demo" />
+
+## What's emitted on this page
+
+- `<title>` and `<meta name="description">` from frontmatter
+- `<link rel="canonical">` to the canonical URL
+- Open Graph + Twitter Card tags pointing to the generated OG image
+- JSON-LD: `BlogPosting`, `BreadcrumbList`, `FAQPage`, `HowTo`
+- A `<link rel="alternate">` exposes the plain-markdown variant at `.md`
+
+Run `curl https://meetingmind.me/blog/example-post.md` to see the markdown
+variant LLM crawlers can ingest directly.

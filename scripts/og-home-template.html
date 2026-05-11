@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MeetingMind — OG Image Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #2a2a2a; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .og {
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #faf9f7 0%, #f5f3ef 100%);
+      padding: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #1a1a1a;
+      position: relative;
+      overflow: hidden;
+      /* helpful outline when viewing in browser; harmless in screenshot */
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    }
+    /* subtle dot-grid texture, drawn entirely in CSS */
+    .og::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(26,26,26,0.05) 1px, transparent 0);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    /* soft emerald glow bottom-right */
+    .og::after {
+      content: '';
+      position: absolute;
+      right: -120px;
+      bottom: -160px;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,95,70,0.10), transparent 70%);
+      pointer-events: none;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 11px;
+      background: #065f46;
+      color: #faf9f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: 32px;
+      letter-spacing: -0.02em;
+      box-shadow: 0 6px 20px rgba(6,95,70,0.25);
+    }
+    .brand .accent { color: #065f46; }
+    .main { position: relative; z-index: 1; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid #e7e5e4;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #57534e;
+      margin-bottom: 28px;
+    }
+    .badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.20);
+    }
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: 88px;
+      line-height: 1.04;
+      letter-spacing: -0.022em;
+      margin: 0;
+      max-width: 980px;
+    }
+    h1 em {
+      color: #065f46;
+      font-style: italic;
+    }
+    .sub {
+      font-size: 26px;
+      line-height: 1.4;
+      color: #57534e;
+      margin: 26px 0 0;
+      max-width: 880px;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 22px;
+      color: #78716c;
+      position: relative;
+      z-index: 1;
+    }
+    .url {
+      color: #065f46;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .meta {
+      display: inline-flex;
+      gap: 18px;
+      font-weight: 500;
+    }
+    .meta span + span::before {
+      content: '·';
+      margin-right: 18px;
+      color: #d6d3d1;
+    }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <div class="header">
+      <div class="logo">M</div>
+      <div class="brand">Meeting<span class="accent">Mind</span></div>
+    </div>
+
+    <div class="main">
+      <div class="badge">
+        <span class="dot"></span>
+        Obsidian Plugin for Meeting Transcripts
+      </div>
+      <h1>
+        Turn meeting chatter into<br>
+        <em>connected knowledge</em>.
+      </h1>
+      <p class="sub">
+        Import from Zoom, Fireflies, Otter, Teams. Auto-link every person,
+        project, and decision into your vault.
+      </p>
+    </div>
+
+    <div class="footer">
+      <span class="url">meetingmind.me</span>
+      <span class="meta">
+        <span>Free + $39 Pro</span>
+        <span>BYOK</span>
+      </span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+---
+import JsonLd from './JsonLd.astro';
+import { AUTHOR } from '~/consts';
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${AUTHOR.url}#person`,
+  name: AUTHOR.name,
+  url: AUTHOR.url,
+  sameAs: [AUTHOR.github, AUTHOR.linkedin, AUTHOR.url],
+  email: `mailto:${AUTHOR.email}`,
+  description: AUTHOR.bio,
+};
+---
+<JsonLd data={data} />

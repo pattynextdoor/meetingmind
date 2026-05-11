@@ -1,0 +1,26 @@
+---
+import JsonLd from './JsonLd.astro';
+
+interface FAQItem {
+  q: string;
+  a: string;
+}
+interface Props {
+  items: FAQItem[];
+}
+const { items } = Astro.props;
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+};
+---
+<JsonLd data={data} />

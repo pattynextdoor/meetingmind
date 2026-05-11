@@ -1,0 +1,23 @@
+---
+import JsonLd from './JsonLd.astro';
+import { ORG, PRODUCT_PRO, SITE } from '~/consts';
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  '@id': `${SITE.url}#product-pro`,
+  name: PRODUCT_PRO.name,
+  description: PRODUCT_PRO.description,
+  brand: { '@id': `${ORG.url}#organization` },
+  image: ORG.logo,
+  offers: {
+    '@type': 'Offer',
+    price: PRODUCT_PRO.price,
+    priceCurrency: PRODUCT_PRO.currency,
+    availability: 'https://schema.org/InStock',
+    url: PRODUCT_PRO.url,
+    priceValidUntil: '2030-12-31',
+  },
+};
+---
+<JsonLd data={data} />

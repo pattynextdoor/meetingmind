@@ -1,0 +1,25 @@
+---
+import JsonLd from './JsonLd.astro';
+import { SITE } from '~/consts';
+
+interface Crumb {
+  name: string;
+  url: string;
+}
+interface Props {
+  items: Crumb[];
+}
+const { items } = Astro.props;
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.name,
+    item: c.url.startsWith('http') ? c.url : `${SITE.url}${c.url}`,
+  })),
+};
+---
+<JsonLd data={data} />

@@ -1,0 +1,82 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PersonSchema from '~/components/seo/PersonSchema.astro';
+import BreadcrumbSchema from '~/components/seo/BreadcrumbSchema.astro';
+import { AUTHOR } from '~/consts';
+---
+<BaseLayout
+  title="About — MeetingMind"
+  description={`About MeetingMind and ${AUTHOR.name}, the builder behind the plugin.`}
+>
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Home', url: '/' },
+    { name: 'About', url: '/about' },
+  ]} />
+  <PersonSchema slot="head" />
+
+  <article>
+    <h1>About</h1>
+
+    <h2>About MeetingMind</h2>
+    <p>
+      MeetingMind is an Obsidian plugin for people who run a lot of meetings and
+      want their notes to do more than sit in a folder. It imports transcripts
+      from Zoom, Google Meet, Microsoft Teams, Fireflies, and Otter, then
+      auto-links every person, project, and topic to your existing vault notes.
+    </p>
+    <p>
+      The free tier covers multi-format import, auto-linking, the folder
+      watcher, and participant tracking. The <a href="https://tumbucon.gumroad.com/l/meetingmind-pro">$39
+      Pro license</a> adds AI-powered summaries, action items, decisions,
+      entity extraction, and participant insights — running with your own
+      OpenAI or Claude API key. Transcripts never pass through MeetingMind's
+      servers.
+    </p>
+
+    <h2>About the author</h2>
+    <p>
+      I'm <strong>{AUTHOR.name}</strong>. {AUTHOR.bio}
+    </p>
+    <p>
+      I'm a Senior Software Engineer at Guild Education, with 5+ years between Microsoft Azure (Identity) and Amazon (Compliance Technology) prior to that.
+    </p>
+    <p>
+      You can find me at <a href={AUTHOR.url}>{AUTHOR.url.replace('https://', '')}</a>,
+      on <a href={AUTHOR.github}>GitHub</a>,
+      on <a href={AUTHOR.linkedin}>LinkedIn</a>,
+      or by email at <a href={`mailto:${AUTHOR.email}`}>{AUTHOR.email}</a>.
+    </p>
+
+    <h2>Why this exists</h2>
+    <p>
+      {/* PLACEHOLDER: 1-2 paragraphs in your voice. The version below is a safe
+          default — replace with your actual origin story. The most credible
+          framings are usually "I built this because I needed it" or "the
+          specific problem I kept running into." */}
+      MeetingMind started because every meeting I went to produced useful
+      information that immediately disappeared into a different app from the
+      rest of my notes. The decision, the assignee, the project context were
+      siloed from the vault where I actually look things up.
+    </p>
+    <p>
+      Honestly, auditory processing is also a weakness of mine, especially for
+      unfamiliar and complicated topics where I have to connect multiple dots on 
+      the fly. Being able to get the key details in front of my eyes does wonders
+      for my comprehension.
+    </p>
+    <p>
+      The plugin exists to close that gap. Obsidian is already great at
+      connecting ideas; meetings should be part of that graph, not a folder
+      full of `.docx` files no one will ever open again.
+    </p>
+
+    <h2>Editorial principles</h2>
+    <p>
+      Posts on this blog are written from real workflow experience — no
+      AI-spun listicles. When a post recommends a third-party tool, it's
+      because I use it. When a post explains an integration, it's because
+      I've shipped or supported that integration. Updates are dated.
+      Corrections are made in place and noted at the top.
+    </p>
+  </article>
+</BaseLayout>

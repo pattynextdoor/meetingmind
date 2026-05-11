@@ -1,0 +1,11 @@
+---
+interface Props {
+  data: Record<string, unknown> | Record<string, unknown>[];
+}
+const { data } = Astro.props;
+// Escape `<` so the JSON-LD payload can't break out of the <script> block.
+// JSON-LD is parsed as data (not JS), so the U+2028 / U+2029 escapes used in
+// inline JS payloads aren't necessary here.
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" is:inline set:html={json} />

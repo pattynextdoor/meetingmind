@@ -1,0 +1,186 @@
+---
+title: "How to transcribe meetings into Obsidian: a practical workflow"
+description: "A complete workflow for meeting transcripts in Obsidian — recording, transcription, import, cleanup, and linking. Covers Otter, Whisper, Fireflies, Zoom."
+publishedAt: 2026-05-15
+updatedAt: 2026-05-15
+author: Patrick Tumbucon
+tags:
+  - obsidian
+  - meeting-notes
+  - transcription
+  - workflow
+  - pkm
+faq:
+  - q: Do I need Pro features?
+    a: >-
+      No. The free tier of any of these tools (or a Templater + watched folder
+      setup) handles import and linking. AI features are nice-to-have, not
+      required.
+  - q: What about privacy?
+    a: >-
+      If you process meetings about sensitive material, use local Whisper and
+      a self-contained plugin setup. Don't send transcripts through a
+      third-party AI service. Your own OpenAI or Claude API key sending
+      content directly to those providers is the next tier — your transcripts
+      go to OpenAI/Anthropic but not through an intermediary.
+  - q: Why Obsidian and not Notion, Granola, or Mem?
+    a: >-
+      Mostly because everything else lives in Obsidian for me already. Granola
+      is a better standalone meetings app. Notion is fine if your knowledge
+      base is already there. Obsidian wins when you want the meeting to
+      connect to a much larger personal knowledge graph.
+  - q: What if I have hundreds of old transcripts?
+    a: >-
+      Batch import them into a folder, run the watcher once, then triage.
+      You'll lose some linking quality because the notes don't exist for some
+      of the old context, but the participant and project links will still
+      form. Run "MeetingMind: Rebuild vault index" (or equivalent) after you
+      add new context notes to catch up.
+---
+
+Meetings produce a lot of useful information and almost no usable artifacts. The transcript exists somewhere — in Otter, in your Zoom cloud, in a Granola folder — but it doesn't connect to anything else you know. The decision you made about the API migration lives in one app. The person who made it lives in another. The project context lives in a third.
+
+The workflow below gets meeting transcripts into Obsidian where they can actually be cross-referenced with everything else. It's the one I use, refined over a couple of years of trying to make this stop being annoying.
+
+## The shape of the workflow
+
+Four steps, in order:
+
+1. **Capture** — record the meeting
+2. **Transcribe** — turn audio into text
+3. **Import** — get the text into your Obsidian vault
+4. **Connect** — link it to the people, projects, and decisions it touches
+
+Most posts about this stop at step 3. Step 4 is where the value is.
+
+## 1. Capture
+
+You have three reasonable options. Pick based on what's already in your stack.
+
+**Use the meeting platform's built-in recording.** Zoom, Google Meet, and Microsoft Teams all record and transcribe natively. Quality is good enough for most use cases. Transcripts are stored in the cloud and exportable as `.vtt` (Zoom), `.docx` (Teams), or Google Doc (Meet).
+
+**Use a dedicated transcription tool.** Otter.ai, Fireflies, Granola, and Fathom all join meetings as a bot, transcribe in real time, and produce cleaner output than the native tools. Fireflies and Granola also offer APIs, which matters later. Otter is the most common and the cheapest.
+
+**Record locally and transcribe later.** Voice Memos on iOS, Recorder on Android, or any audio recorder on your laptop. Useful for in-person meetings or when you don't want a bot in the room. Pair with Whisper for transcription.
+
+If you're not sure which to pick: Otter for online meetings, Voice Memos + Whisper for in-person.
+
+## 2. Transcribe
+
+If your capture tool already produced a transcript, skip to step 3.
+
+For raw audio, you have two paths.
+
+**OpenAI Whisper (local or cloud).** The quality benchmark. Run it locally with `whisper-cpp` if you care about privacy or have a lot of files. Use the OpenAI API if you want it to be one command:
+
+```bash
+# Local
+whisper meeting.m4a --model medium --output_format txt
+
+# Cloud (via API)
+curl https://api.openai.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -F file="@meeting.m4a" \
+  -F model="whisper-1"
+```
+
+**Hosted services.** Otter, Rev, Descript, AssemblyAI. Faster turnaround, no setup. Pricier per hour but worth it if you have one meeting a week and don't want to maintain a Whisper install.
+
+Whichever you use, export as plain text or VTT. Markdown is fine. SRT is fine if you want timestamps.
+
+## 3. Import
+
+This is the step that's annoyingly manual for most people and the reason this post exists.
+
+The naive workflow is: download transcript, open Obsidian, create new note, paste, fix the formatting, add frontmatter, save. Do that fifteen times and you'll stop doing it.
+
+The decent workflow uses a watched folder. Configure your transcription tool (or a manual download step) to drop files into a specific folder inside your vault. Use a plugin or script to pick them up and convert them into notes with consistent formatting.
+
+A minimal template:
+
+```markdown
+---
+date: 2026-05-15
+duration: 47
+participants:
+  - "[[Dorothy Cisneros]]"
+  - "[[Remi Parks]]"
+source: otter
+tags: [engineering, api, migration]
+---
+
+## Summary
+
+(paste your summary here, or generate one)
+
+## Action Items
+
+- [ ] Item one (@person)
+- [ ] Item two (@person)
+
+## Transcript
+
+> [!note]- Full transcript (click to expand)
+>
+> **Dorothy Cisneros** (00:00): Alright, let's get started...
+```
+
+The YAML frontmatter at the top is what makes the note queryable with Dataview later. The collapsible callout keeps the raw transcript out of your face but available when you need it.
+
+If you want to do this yourself, [Templater](https://github.com/SilentVoid13/Templater) plus a folder-watcher script will get you there. If you want it to just work, this is what [MeetingMind](/) handles automatically — disclosure: I built it, so take that endorsement with the appropriate grain of salt. Free tier covers the import, [Pro tier](https://tumbucon.gumroad.com/l/meetingmind-pro) ($39 lifetime) adds AI summaries and entity extraction.
+
+## 4. Connect
+
+This is the step that makes Obsidian different from a folder full of `.docx` files.
+
+A transcript that says "Dorothy mentioned the Phoenix Project" should become a transcript that says `[[Dorothy Cisneros]] mentioned the [[Phoenix Project]]`. Then the meeting shows up when you open Dorothy's note. And Dorothy's note shows up when you open the Phoenix Project note. The graph builds itself.
+
+Three ways to do this:
+
+**Manual.** Open the note, wikilink the names yourself. Works fine for one or two meetings a week. Falls apart fast above that.
+
+**Find-and-replace with Templater.** If your participant list is stable, you can write a Templater script that auto-wikilinks names from a known list. Brittle but workable.
+
+**Plugin automation.** Plugins like MeetingMind, Smart Connections, and Various Complements can detect existing notes and link them automatically. They differ in approach: Smart Connections uses embeddings, Various Complements uses fuzzy text matching, MeetingMind uses your existing vault index plus aliases.
+
+Once linking is in place, layer Dataview on top:
+
+```dataview
+TABLE date, duration, participants
+FROM "Meetings"
+WHERE contains(participants, [[Dorothy Cisneros]])
+SORT date DESC
+```
+
+That query gives you every meeting you've had with Dorothy, sortable, in any note. The transcript graveyard becomes a navigable record.
+
+## A complete example workflow
+
+For a working professional with 5-10 meetings a week — say, Remi running a small consultancy with Dorothy, Safia Spence, and Eliana Kidd as recurring clients:
+
+1. **Capture.** Bot joins via Otter or Fireflies.
+2. **Transcribe.** Happens automatically.
+3. **Import.** Transcripts land in a `Meetings/Inbox/` folder via API integration. They're auto-formatted into the template above with frontmatter, participants, and a collapsible transcript.
+4. **Connect.** Participants get wikilinked to their existing notes — `[[Safia Spence]]`, `[[Eliana Kidd]]`, the client projects they're working on. AI extracts action items and decisions if that's configured.
+
+Total ongoing effort per meeting: ~2 minutes to scan the summary and confirm action items, vs. ~15 minutes to do it manually.
+
+## Common questions
+
+**Do I need Pro features?** No. The free tier of any of these tools (or a Templater + watched folder setup) handles import and linking. AI features are nice-to-have, not required.
+
+**What about privacy?** If you process meetings about sensitive material, use local Whisper and a self-contained plugin setup. Don't send transcripts through a third-party AI service. Your own OpenAI/Claude API key sending content directly to those providers is the next tier — your transcripts go to OpenAI/Anthropic but not through an intermediary.
+
+**Why Obsidian and not Notion / Granola / Mem?** Mostly because everything else lives in Obsidian for me already. Granola is a better standalone meetings app. Notion is fine if your knowledge base is already there. Obsidian wins when you want the meeting to connect to a much larger personal knowledge graph.
+
+**What if I have hundreds of old transcripts?** Batch import them into a folder, run the watcher once, then triage. You'll lose some linking quality because the notes don't exist for some of the old context, but the participant and project links will still form. Run `MeetingMind: Rebuild vault index` (or equivalent) after you add new context notes to catch up.
+
+## What this gets you
+
+After a couple of months of doing this consistently, you have something most people don't: a searchable, cross-referenced record of every meeting you've been in. You can ask questions like "what did we decide about authentication?" and get a real answer with links to the conversations where it was decided. You can pull up a person's note and see every interaction you've had. You can run Dataview queries over decisions, action items, and topics.
+
+The setup is two hours of work once. The compounding value is a knowledge base that gets more useful every week instead of less.
+
+---
+
+*Patrick Tumbucon builds MeetingMind, an Obsidian plugin for importing and enriching meeting transcripts. Previously a Senior Software Engineer at Microsoft Azure (Identity Governance) and Amazon (Compliance Engineering). Currently at Guild Education.*

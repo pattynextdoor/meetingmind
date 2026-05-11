@@ -16,7 +16,14 @@
     "lint:bot:fix": "eslint --config eslint.config.bot.mjs src/**/*.ts --fix",
     "lint:strict": "eslint --config eslint.config.strict.mjs src/**/*.ts",
     "lint:strict:fix": "eslint --config eslint.config.strict.mjs src/**/*.ts --fix",
-    "version": "node version-bump.mjs && git add manifest.json versions.json"
+    "version": "node version-bump.mjs && git add manifest.json versions.json",
+    "content:build": "node scripts/build-with-content.mjs",
+    "check:seo": "node scripts/check-seo.mjs",
+    "check:schema": "node scripts/check-schema.mjs",
+    "check:llms": "node scripts/check-llms.mjs",
+    "check:llms:network": "node scripts/check-llms.mjs --network",
+    "check:all": "node scripts/check-seo.mjs && node scripts/check-schema.mjs && node scripts/check-llms.mjs",
+    "og:home": "node scripts/render-og-home.mjs"
   },
   "keywords": [
     "obsidian",

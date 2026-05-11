@@ -1,0 +1,43 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import BreadcrumbSchema from '~/components/seo/BreadcrumbSchema.astro';
+import { getPublishedPosts, postUrl, formatDate, isoDate } from '~/lib/posts';
+
+const posts = await getPublishedPosts();
+---
+<BaseLayout
+  title="Blog — MeetingMind"
+  description="Workflow guides, integrations, and product notes for turning meeting transcripts into connected knowledge inside Obsidian."
+>
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+  ]} />
+
+  <article>
+    <h1>Blog</h1>
+    <p style="color: var(--ink-muted); font-size: 18px; margin-bottom: 8px;">
+      Workflow guides and field notes on meeting capture, transcript import, and
+      connected knowledge inside Obsidian.
+    </p>
+
+    {posts.length === 0 ? (
+      <p style="margin-top: 32px;">No posts yet. Check back soon.</p>
+    ) : (
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <h2><a href={postUrl(post)}>{post.data.title}</a></h2>
+            <p class="post-list-meta">
+              <time datetime={isoDate(post.data.publishedAt)}>{formatDate(post.data.publishedAt)}</time>
+              {post.data.tags.length > 0 && (
+                <> · {post.data.tags.slice(0, 3).join(' · ')}</>
+              )}
+            </p>
+            <p>{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </article>
+</BaseLayout>

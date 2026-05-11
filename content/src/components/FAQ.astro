@@ -1,0 +1,22 @@
+---
+import FAQSchema from './seo/FAQSchema.astro';
+
+interface Item {
+  q: string;
+  a: string;
+}
+interface Props {
+  items: Item[];
+  emitSchema?: boolean;
+}
+const { items, emitSchema = true } = Astro.props;
+---
+<div class="faq-block">
+  {items.map((item) => (
+    <details>
+      <summary>{item.q}</summary>
+      <div class="faq-answer" set:html={item.a} />
+    </details>
+  ))}
+</div>
+{emitSchema && <FAQSchema items={items} />}

@@ -19,7 +19,9 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8">
           <a href="#features" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Features</a>
           <a href="#pricing" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Pricing</a>
+          <a href="/blog" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Blog</a>
           <a href="https://docs.meetingmind.me" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">Docs</a>
+          <a href="/about" className="text-sm font-sans text-stone-500 hover:text-stone-900 transition-colors">About</a>
         </div>
 
         <div className="flex items-center gap-4">
@@ -815,30 +817,29 @@ const Pricing = () => {
 const FAQ = () => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
+  // NOTE: The FAQPage JSON-LD in frontend/index.html mirrors this list.
+  // When you edit a question or answer here, update the schema block to match —
+  // Google penalizes schema-only content (visible text must match).
   const faqs = [
     {
-      question: "Do I need an API key for the Free version?",
-      answer: "No! The Free version works completely offline. Auto-linking, participant tracking, folder watcher, and all core features work without any API keys. Only Pro features (AI summaries, action items, etc.) require your own API key."
+      question: "How do I import Zoom transcripts into Obsidian?",
+      answer: "Export your Zoom transcript as a VTT file (Recording → Download Transcript), then either drop it into MeetingMind's watched folder or use the Import file command. MeetingMind parses the timestamps, speakers, and content automatically."
     },
     {
-      question: "What if I don't like it?",
-      answer: "We offer refunds within 14 days, no questions asked. If Pro doesn't save you time or fit your workflow, just email patricktumbucon@gmail.com and we'll process your refund immediately."
+      question: "How do I import Google Meet transcripts into Obsidian?",
+      answer: "Google Meet transcripts (available on Business Standard+ plans) are saved to Google Drive as Google Docs. Export as plain text and import into MeetingMind. See our Google Meet guide for details."
     },
     {
-      question: "Is this worth $39?",
-      answer: "If you attend just 2 meetings per week, you'll save hours of manual note organization in the first month alone. Most users report saving 15-30 minutes per meeting by not having to manually write summaries, extract action items, or create issue tracking notes. That's 1-2 hours saved per week—your time back for $39, once."
+      question: "How do I import Microsoft Teams transcripts into Obsidian?",
+      answer: "Download your Teams transcript as .vtt or .docx from the meeting recap, then import into MeetingMind. Requires Microsoft 365 Business Basic or higher."
     },
     {
-      question: "Can I try Pro before buying?",
-      answer: "The free version gives you the full import and linking experience—try it first and see how it fits your workflow. When you're ready for AI summaries, action items, and entity extraction, upgrade to Pro with a one-time payment. You can also reprocess all your existing meetings to add AI enrichment after upgrading."
+      question: "Does MeetingMind work with Fireflies.ai?",
+      answer: "Yes — MeetingMind has a direct API integration with Fireflies. Enable it in settings with your Fireflies API key and transcripts sync automatically."
     },
     {
-      question: "How much do API calls cost?",
-      answer: "Typical meeting processing costs ~$0.01-0.05 per transcript, depending on length and which AI provider you use (Claude or OpenAI). You pay directly to the AI provider—MeetingMind doesn't charge any usage fees."
-    },
-    {
-      question: "Can I use this on mobile?",
-      answer: "No, MeetingMind is desktop-only (macOS, Windows, Linux). This is because it requires file system access for folder watching and vault indexing. Mobile Obsidian apps don't support these features."
+      question: "Does MeetingMind work with Otter.ai?",
+      answer: "Yes — export your Otter transcripts as text files and import them via the folder watcher or manual import."
     },
     {
       question: "What transcript formats are supported?",
@@ -847,6 +848,42 @@ const FAQ = () => {
     {
       question: "How does the Fireflies.ai sync work?",
       answer: "With Fireflies.ai API sync enabled, MeetingMind automatically imports new transcripts as they're created in your Fireflies account. Just set up your API key once, and new meetings appear in your vault automatically."
+    },
+    {
+      question: "Is my data private?",
+      answer: "Yes. MeetingMind runs entirely inside Obsidian. AI processing (Pro) uses your own API keys — your transcripts are sent directly to OpenAI or Anthropic, never to MeetingMind servers. There is no cloud storage, no analytics, and no data collection."
+    },
+    {
+      question: "How is MeetingMind different from Granola?",
+      answer: "Granola is a standalone meeting notes app. MeetingMind lives inside Obsidian and connects your meetings to your existing knowledge base — every mention of a person, project, or topic links to notes you already have. Granola captures meetings; MeetingMind connects them."
+    },
+    {
+      question: "What's the difference between Free and Pro?",
+      answer: "Free gives you multi-format import, auto-linking, folder watcher, participant tracking, and a meeting dashboard. Pro ($39 one-time) adds AI-powered summaries, action items, decisions, entity extraction, and participant insights using your own API key."
+    },
+    {
+      question: "Do I need an API key for the Free version?",
+      answer: "No! The Free version works completely offline. Auto-linking, participant tracking, folder watcher, and all core features work without any API keys. Only Pro features (AI summaries, action items, etc.) require your own API key."
+    },
+    {
+      question: "Is this worth $39?",
+      answer: "If you attend just 2 meetings per week, you'll save hours of manual note organization in the first month alone. Most users report saving 15-30 minutes per meeting by not having to manually write summaries, extract action items, or create issue tracking notes. That's 1-2 hours saved per week — your time back for $39, once."
+    },
+    {
+      question: "Can I try Pro before buying?",
+      answer: "The free version gives you the full import and linking experience — try it first and see how it fits your workflow. When you're ready for AI summaries, action items, and entity extraction, upgrade to Pro with a one-time payment. You can also reprocess all your existing meetings to add AI enrichment after upgrading."
+    },
+    {
+      question: "How much do API calls cost?",
+      answer: "Typical meeting processing costs ~$0.01-0.05 per transcript, depending on length and which AI provider you use (Claude or OpenAI). You pay directly to the AI provider — MeetingMind doesn't charge any usage fees."
+    },
+    {
+      question: "Can I use this on mobile?",
+      answer: "No, MeetingMind is desktop-only (macOS, Windows, Linux). This is because it requires file system access for folder watching and vault indexing. Mobile Obsidian apps don't support these features."
+    },
+    {
+      question: "What if I don't like it?",
+      answer: "We offer refunds within 14 days, no questions asked. If Pro doesn't save you time or fit your workflow, just email patricktumbucon@gmail.com and we'll process your refund immediately."
     }
   ];
 
@@ -894,7 +931,9 @@ const Footer = () => (
             <span className="tracking-tighter">Meeting<span className="text-emerald-800">Mind</span></span>
           </a>
           <div className="hidden md:flex gap-6 text-sm text-stone-500">
+            <a href="/blog" className="hover:text-stone-900 transition-colors">Blog</a>
             <a href="https://docs.meetingmind.me" className="hover:text-stone-900 transition-colors">Documentation</a>
+            <a href="/about" className="hover:text-stone-900 transition-colors">About</a>
             <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
             <a href="mailto:patricktumbucon@gmail.com" className="hover:text-stone-900 transition-colors">Support</a>
             <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>

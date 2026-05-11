@@ -1,0 +1,39 @@
+---
+import JsonLd from './JsonLd.astro';
+import { SITE } from '~/consts';
+
+interface Step {
+  name: string;
+  text: string;
+  image?: string;
+  url?: string;
+}
+interface Props {
+  name: string;
+  description: string;
+  totalTime?: string;
+  steps: Step[];
+  image?: string;
+}
+const { name, description, totalTime, steps, image } = Astro.props;
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name,
+  description,
+  ...(totalTime ? { totalTime } : {}),
+  ...(image ? { image: image.startsWith('http') ? image : `${SITE.url}${image}` } : {}),
+  step: steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+    ...(s.image
+      ? { image: s.image.startsWith('http') ? s.image : `${SITE.url}${s.image}` }
+      : {}),
+    ...(s.url ? { url: s.url.startsWith('http') ? s.url : `${SITE.url}${s.url}` } : {}),
+  })),
+};
+---
+<JsonLd data={data} />
