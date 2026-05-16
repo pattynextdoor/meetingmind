@@ -66,7 +66,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createSourcesSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📥 sources')
+      .setName('Sources')
       .setHeading();
     
     // Folder watcher toggle (primary method)
@@ -106,17 +106,20 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
     new Setting(otterGuide)
       .setName('Otter integration guide')
       .setHeading();
-    otterGuide.createEl('p', { 
-      text: 'Export your transcripts from otter and drop them in your watched folder.',
+    otterGuide.createEl('p', {
+      // eslint-disable-next-line obsidianmd/ui/sentence-case
+      text: 'Export your transcripts from Otter and drop them in your watched folder.',
       cls: 'setting-item-description'
     });
     const steps = otterGuide.createEl('ol', { cls: 'meetingmind-otter-steps' });
-    steps.createEl('li', { text: 'Open your transcript in otter.' });
+    // eslint-disable-next-line obsidianmd/ui/sentence-case
+    steps.createEl('li', { text: 'Open your transcript in Otter.' });
     steps.createEl('li', { text: 'Click the "..." menu → export.' });
     steps.createEl('li', { text: 'Choose "text" format.' });
     steps.createEl('li', { text: 'Save to your watched folder.' });
-    otterGuide.createEl('p', { 
-      text: 'Your otter transcripts will bd automatically imported and processed!',
+    otterGuide.createEl('p', {
+      // eslint-disable-next-line obsidianmd/ui/sentence-case
+      text: 'Your Otter transcripts will be automatically imported and processed!',
       cls: 'setting-item-description meetingmind-otter-tip'
     });
     
@@ -126,8 +129,10 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       .setHeading();
     
     new Setting(containerEl)
-      .setName('Enable fireflies sync')
-      .setDesc('Automatically sync transcripts from your fireflies account.')
+      // eslint-disable-next-line obsidianmd/ui/sentence-case
+      .setName('Enable Fireflies sync')
+      // eslint-disable-next-line obsidianmd/ui/sentence-case
+      .setDesc('Automatically sync transcripts from your Fireflies account.')
       .addToggle(toggle => toggle
         .setValue(this.plugin.settings.firefliesEnabled)
         .onChange(async (value) => {
@@ -143,7 +148,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
         .setName('Fireflies API key')
         .addText(text => {
           text
-            .setPlaceholder('Enter your fireflies API key.')
+            // eslint-disable-next-line obsidianmd/ui/sentence-case
+            .setPlaceholder('Enter your Fireflies API key.')
             .setValue(this.plugin.settings.firefliesApiKey)
             .onChange(async (value) => {
               this.plugin.settings.firefliesApiKey = value;
@@ -157,7 +163,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Test connection button
       new Setting(containerEl)
         .setName('Test connection')
-        .setDesc('Verify your fireflies API key is working.')
+        // eslint-disable-next-line obsidianmd/ui/sentence-case
+        .setDesc('Verify your Fireflies API key is working.')
         .addButton(button => button
           .setButtonText('Test connection')
           .onClick(async () => {
@@ -197,7 +204,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       // Sync now button
       new Setting(containerEl)
         .setName('Sync now')
-        .setDesc('Manually trigger a sync with fireflies.')
+        // eslint-disable-next-line obsidianmd/ui/sentence-case
+        .setDesc('Manually trigger a sync with Fireflies.')
         .addButton(button => button
           .setButtonText('Sync now')
           .setCta()
@@ -225,7 +233,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createOutputSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📁 output')
+      .setName('Output')
       .setHeading();
     
     // Destination folder
@@ -262,7 +270,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createAISection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🤖 AI enrichment')
+      .setName('AI enrichment')
       .setHeading();
     
     // Check license status
@@ -500,7 +508,8 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
       list.createEl('li', { text: '✅ action item extraction with owners' });
       list.createEl('li', { text: '🎯 decision tracking' });
       list.createEl('li', { text: '🏷️ smart tag suggestions from your vault' });
-      list.createEl('li', { text: '👤 ai-powered participant insights' });
+      // eslint-disable-next-line obsidianmd/ui/sentence-case
+      list.createEl('li', { text: '👤 AI-powered participant insights' });
     }
   }
   
@@ -509,7 +518,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createLinkingSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🔗 auto-linking')
+      .setName('Auto-linking')
       .setHeading();
     
     // Enable auto-linking
@@ -595,7 +604,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createParticipantsSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('👥 participants')
+      .setName('Participants')
       .setHeading();
     
     // Auto-create participant notes
@@ -647,7 +656,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createEntitySection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('📊 entity extraction (pro)')
+      .setName('Entity extraction (pro)')
       .setHeading();
     
     const isPro = this.plugin.licenseService.isPro();
@@ -757,7 +766,7 @@ export class MeetingMindSettingsTab extends PluginSettingTab {
    */
   private createLicenseSection(containerEl: HTMLElement): void {
     new Setting(containerEl)
-      .setName('🔑 license')
+      .setName('License')
       .setHeading();
     
     const licenseInfo = this.plugin.licenseService.getLicenseInfo();
