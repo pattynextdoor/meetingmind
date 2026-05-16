@@ -20,7 +20,7 @@ export const GET: APIRoute = async () => {
     '',
     `- [Homepage](${SITE.url}/): Product overview, features, pricing.`,
     `- [About](${SITE.url}/about): About the project and the author.`,
-    `- [Pro license ($39 one-time)](https://tumbucon.gumroad.com/l/meetingmind-pro): Unlocks AI features. BYOK.`,
+    `- [Pro license ($39 one-time)](https://tumbucon.gumroad.com/l/meetingmind-pro?utm_source=meetingmind.me&utm_medium=llms_txt&utm_campaign=pro): Unlocks AI features. BYOK.`,
     `- [GitHub repository](https://github.com/pattynextdoor/meetingmind): Source code, releases, issues.`,
     '',
     '## Documentation',

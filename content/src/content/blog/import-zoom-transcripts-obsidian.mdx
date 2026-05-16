@@ -176,7 +176,7 @@ This handles maybe 80% of cases. The remaining 20% — speakers without colons, 
 
 The Templater script works but is brittle. Zoom occasionally changes its VTT format. Speaker names with punctuation break the regex. Edge cases accumulate.
 
-If you don't want to maintain a regex, [MeetingMind](/) handles Zoom VTT parsing natively — drop the file in a watched folder and it produces the same shape of note automatically, plus auto-links participants to existing notes in your vault. Free tier handles import; [Pro tier](https://tumbucon.gumroad.com/l/meetingmind-pro) ($39 lifetime) adds AI summaries and action item extraction. Disclosure: I built it.
+If you don't want to maintain a regex, [MeetingMind](/) handles Zoom VTT parsing natively — drop the file in a watched folder and it produces the same shape of note automatically, plus auto-links participants to existing notes in your vault. Free tier handles import; [Pro tier](https://tumbucon.gumroad.com/l/meetingmind-pro?utm_source=meetingmind.me&utm_medium=blog&utm_campaign=pro&utm_content=import-zoom-transcripts-obsidian) ($39 lifetime) adds AI summaries and action item extraction. Disclosure: I built it.
 
 The structural advantage over Templater is the auto-linking. If you already have a `[[Dorothy Cisneros]]` note in your vault, the plugin links to it. If you don't, it creates one. The Templater script just emits the wikilink and hopes the note exists.
 

@@ -25,7 +25,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="px-5 py-2.5 bg-stone-900 text-[#faf9f7] text-sm font-medium rounded-md hover:bg-stone-800 hover:-translate-y-0.5 transition-all shadow-sm">
+          <a href="https://tumbucon.gumroad.com/l/meetingmind-pro?utm_source=meetingmind.me&utm_medium=cta_nav&utm_campaign=pro" className="px-5 py-2.5 bg-stone-900 text-[#faf9f7] text-sm font-medium rounded-md hover:bg-stone-800 hover:-translate-y-0.5 transition-all shadow-sm">
             Get Pro License
           </a>
         </div>
@@ -787,7 +787,7 @@ const Pricing = () => {
         "Your data, your keys—full privacy control (Claude/OpenAI)"
       ],
       cta: "Get Pro License",
-      href: "https://tumbucon.gumroad.com/l/meetingmind-pro",
+      href: "https://tumbucon.gumroad.com/l/meetingmind-pro?utm_source=meetingmind.me&utm_medium=cta_pricing&utm_campaign=pro",
       featured: true
     }
   ];
@@ -936,7 +936,7 @@ const Footer = () => (
             <a href="/about" className="hover:text-stone-900 transition-colors">About</a>
             <a href="https://github.com/pattynextdoor/meetingmind" className="hover:text-stone-900 transition-colors">GitHub</a>
             <a href="mailto:patricktumbucon@gmail.com" className="hover:text-stone-900 transition-colors">Support</a>
-            <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
+            <a href="https://tumbucon.gumroad.com/l/meetingmind-pro?utm_source=meetingmind.me&utm_medium=cta_footer&utm_campaign=pro" className="hover:text-stone-900 transition-colors">Get Pro</a>
           </div>
         </div>
         <div className="text-sm text-stone-400">
@@ -965,7 +965,7 @@ const App = () => {
         <div className="max-w-2xl mx-auto px-6">
           <h2 className="font-serif text-5xl text-stone-900 mb-6">Your meetings deserve better</h2>
           <p className="text-stone-500 text-lg mb-8">Stop letting valuable discussions disappear. Turn every meeting into connected, actionable knowledge.</p>
-          <a href="https://tumbucon.gumroad.com/l/meetingmind-pro" className="inline-block px-8 py-4 bg-stone-900 text-[#faf9f7] font-medium rounded-lg hover:bg-stone-800 hover:-translate-y-1 transition-all shadow-lg text-lg">
+          <a href="https://tumbucon.gumroad.com/l/meetingmind-pro?utm_source=meetingmind.me&utm_medium=cta_final&utm_campaign=pro" className="inline-block px-8 py-4 bg-stone-900 text-[#faf9f7] font-medium rounded-lg hover:bg-stone-800 hover:-translate-y-1 transition-all shadow-lg text-lg">
             Get MeetingMind Pro →
           </a>
           <p className="mt-4 text-sm text-stone-400">
